@@ -1,5 +1,5 @@
 import styles from './CardFund.module.scss';
-import plugImage from '../../../../assets/images/img_chess_512.png';
+import plugImage from '@/assets/images/img_chess_512.png';
 import { Card } from '@/components/Common/Card/Card.tsx';
 import { UserLarge } from '@/components/Common/User/UserLarge/UserLarge.tsx';
 import { age } from '@/utils.ts';

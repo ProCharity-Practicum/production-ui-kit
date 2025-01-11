@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './Select.module.scss';
-import ArrowRoundedUp from '../../../assets/icon_arrow_rounded_up_light.svg';
-import ArrowRoundedDown from '../../../assets/icon_arrow_rounded_down_light.svg';
+import ArrowRoundedUp from './assets/icon_arrow_rounded_up_light.svg';
+import ArrowRoundedDown from './assets/icon_arrow_rounded_down_light.svg';
 
 export type SelectProps = {
 	label: string;
