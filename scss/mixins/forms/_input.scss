@@ -1,0 +1,110 @@
+@use '@styles/variables' as variables;
+$inputBgDefault: #f1f5f9;
+$inputHover: #e0e9f2;
+$inputBgAutoComplete: #fcf3c5;
+
+
+@mixin inputFont {
+  font-family: variables.$fontFamily;
+  font-style: normal;
+  font-weight: variables.$fontWeightMedium;
+  font-size: variables.$fontSizeS;
+  line-height: 20px;
+  color: variables.$fontColor;
+  background-color: variables.$backgroundColor;
+}
+
+@mixin textAreaFont {
+  font-family: variables.$fontFamily;
+  font-style: normal;
+  font-weight: variables.$fontWeightMedium;
+  font-size: variables.$fontSizeS;
+  line-height: 24px;
+  color: variables.$titleFontColor;
+  background-color: transparent;
+}
+
+@mixin textAreaCounterFont {
+  font-family: variables.$fontFamily;
+  font-style: normal;
+  font-weight: variables.$fontWeightMedium;
+  font-size: variables.$fontSizeXs;
+  line-height: 16px;
+  color: #7b878f;
+}
+
+@mixin inputStyle {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 48px;
+  padding: 5px 11px 5px 15px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background-color: $inputBgDefault;
+}
+
+@mixin inputPseudoClasses {
+  &:has(.input__field:-webkit-autofill) {
+   background-color: $inputBgAutoComplete;
+  }
+    &:hover {
+    background-color: $inputHover;
+  }
+  //
+  //&_focused {
+  //  background-color: variables.$backgroundColor;
+  //  border-color: #a0abb5;
+  //}
+  //
+  //&_readonly {
+  //  background: variables.$backgroundColor;
+  //  border-color: $inputHover;
+  //}
+  //
+  //&_disabled {
+  //  background-color: $inputBgDefault;
+  //}
+}
+
+@mixin inputField {
+  @include inputFont;
+  position: relative;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  outline: none;
+  color: variables.$secondary;
+  letter-spacing: normal;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+@mixin inputIconStyle {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+@mixin buttonPseudoClasses {
+  &:hover {
+    opacity: 0.7;
+    border: none;
+    outline: none;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible{
+    outline: none;
+
+  }
+}

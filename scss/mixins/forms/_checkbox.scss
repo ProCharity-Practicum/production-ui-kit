@@ -1,0 +1,27 @@
+@use '../../variables' as *;
+
+@mixin native-input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(0 0 0 0);
+}
+
+@mixin pseudo-input {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	margin: 0;
+	font-size: $fontSizeS;
+	gap: 8px;
+
+	&::before {
+		display: block;
+		flex-shrink: 0;
+		width: 16px;
+		height: 16px;
+    content: '';
+	}
+}

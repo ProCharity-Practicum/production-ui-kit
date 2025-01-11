@@ -1,0 +1,53 @@
+@use '@styles/variables' as *;
+
+.breadCrumbs {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 7px;
+	width: 100%;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.crumbCurrent {
+	font-weight: $fontWeightBold;
+	color: #7b878f;
+	cursor: default;
+}
+
+.crumbLink {
+	font-weight: $fontWeightMedium;
+	color: #048aa7;
+	text-decoration: none;
+	cursor: pointer;
+	transition: 0.5s;
+}
+
+.crumbLink:hover {
+	opacity: 60%;
+}
+
+.crumbSeparator {
+	width: 1px;
+	height: 12.85px;
+	transform: rotate(20.71deg);
+	background-color: #7b878f;
+	cursor: default;
+	margin: 0 4px;
+}
+
+.crumbSection {
+	display: flex;
+	gap: 11px;
+}
+
+@media (max-width: 600px) {
+	.crumbSection {
+		display: none;
+	}
+	.breadCrumbs {
+		gap: 0;
+	}
+}

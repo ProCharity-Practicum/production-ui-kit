@@ -1,0 +1,61 @@
+@use '@styles/variables' as *;
+
+.button {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	height: 24px;
+	border-radius: 16px;
+	background-color: transparent;
+	transition: all 0.3s ease; // Плавный переход для всех свойств
+	cursor: pointer;
+}
+
+.button_email {
+	flex-flow: row-reverse;
+	border: 1px solid #a0abb5;
+	padding: 3px 6px 3px 3px;
+
+	& .icon_email {
+		transition: opacity 0.3s ease;
+		opacity: 80%;
+	}
+}
+
+.button_email:hover {
+	border: 1px solid $fontColor;
+	.text {
+		opacity: 100%;
+	}
+	.icon_email {
+		transition: opacity 0.3s ease;
+		opacity: 100%;
+	}
+}
+
+.button_tg {
+	padding: 3px 3px 3px 6px;
+	border: 1px solid #54a9ea;
+}
+
+.button_tg:hover {
+	border: 1px solid $fontColor;
+	.text {
+		opacity: 100%;
+	}
+}
+
+.text {
+	margin: 0;
+	font-size: $fontSizeXXS;
+	font-weight: $fontWeightMedium;
+	color: $titleFontColor;
+	opacity: 80%;
+	text-align: center; // Центрирование текста внутри контейнера
+	transition: all 0.3s ease; // Плавный переход для всех свойств
+}
+
+.icon {
+	width: 18px;
+	height: 18px;
+}

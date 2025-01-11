@@ -1,0 +1,172 @@
+@use '@styles/variables' as *;
+
+$cardInternalBorder: 1px solid $buttonSecondaryLight;
+$cardPadding: 24px;
+$cardGap: 16px;
+
+.container {
+	display: flex;
+	box-sizing: border-box;
+	flex-direction: column;
+	min-width: 352px;
+	padding: $cardPadding 0;
+	background-color: $backgroundColor;
+	border-radius: calc($cardGap / 2);
+	box-shadow: 0px 0px 10px 4px rgba(55, 65, 70, 0.18);
+	gap: $cardGap;
+
+	&.featured {
+		box-shadow: 0px 0px 10px 4px rgba(204, 77, 0, 0.18);
+	}
+}
+
+.cardRow {
+	border-left: none;
+	border-right: none;
+	padding: 0 $cardPadding;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.borderTop {
+	border-top: $cardInternalBorder;
+}
+
+.borderBottom {
+	border-bottom: $cardInternalBorder;
+}
+
+.activity {
+	padding: $cardGap 0;
+	display: flex;
+	align-items: stretch;
+	flex-direction: column;
+
+	border: $cardInternalBorder;
+	gap: 0.5rem;
+
+	p {
+		margin: 0;
+		text-align: center;
+	}
+
+	.activityKey {
+		font-size: 0.8rem;
+	}
+
+	.activityValue {
+		font-weight: $fontWeightBold;
+	}
+}
+
+.totals {
+	padding: 0 $cardPadding;
+
+	.totalsRow {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 40px;
+	}
+
+	.totalsKey {
+		font-size: 0.8rem;
+		font-weight: $fontWeightBold;
+		text-transform: uppercase;
+		line-height: 1rem;
+		letter-spacing: 1px;
+		white-space: break-spaces;
+		max-width: 60%;
+		color: $secondary;
+	}
+
+	.totalsValue {
+		line-height: 40px;
+		font-size: 40px;
+		font-weight: $fontWeightMedium;
+		letter-spacing: -1px;
+	}
+}
+
+.primary {
+	color: rgba(234, 90, 10, 1);
+}
+
+.secondary {
+	color: rgba(4, 138, 167, 1);
+}
+
+.actions {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	height: 40px;
+	border-top: 1px solid $buttonSecondaryLight;
+	padding-top: $cardPadding;
+}
+
+.state {
+	justify-content: space-around;
+	padding: $cardGap 0;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.work {
+	display: grid;
+	grid-template-areas: 'tasks tasks' 'current completed' '- -' 'helps works' 'funds hours';
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: repeat(5, 1fr);
+
+	&Tasks {
+		grid-area: tasks;
+	}
+
+	&Current {
+		grid-area: current;
+	}
+
+	&Completed {
+		grid-area: completed;
+	}
+
+	&Helps {
+		grid-area: helps;
+	}
+
+	&Works {
+		grid-area: works;
+	}
+
+	&Funds {
+		grid-area: funds;
+	}
+
+	&Hours {
+		grid-area: hours;
+	}
+
+	&Tasks,
+	&Helps,
+	&Works {
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+	}
+
+	&Current,
+	&Completed,
+	&Funds,
+	&Hours {
+		display: flex;
+		justify-content: center;
+		gap: 0.5rem;
+		font-weight: $fontWeightBold;
+	}
+}

@@ -1,0 +1,70 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/user' as *;
+
+.container {
+	background-color: $backgroundColor;
+	display: flex;
+	flex-direction: row;
+	height: 80px;
+	align-items: center;
+	column-gap: 16px;
+
+	.image {
+		height: 100%;
+		width: 80px;
+	}
+}
+
+.infoBlock {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+	gap: 4px;
+}
+
+.grade {
+	display: flex;
+	width: 86px;
+	height: 24px;
+	gap: 4px;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid currentColor;
+	border-radius: 16px;
+
+	&.junior {
+		color: $colorSeniorityJunior;
+	}
+	&.middle {
+		color: $colorSeniorityMiddle;
+	}
+	&.senior {
+		color: $colorSenioritySenior;
+	}
+}
+
+.text {
+	font-size: 14px;
+	line-height: 16px;
+	font-family: $fontFamily;
+	text-transform: uppercase;
+}
+
+.title {
+	display: block;
+	font-family: $fontFamily;
+	color: $titleFontColor;
+	font-size: 16px;
+	line-height: 24px;
+	margin: 0px;
+}
+
+.infoText {
+	display: block;
+	font-family: $fontFamily;
+	color: $fontColor;
+	font-size: 12px;
+	line-height: 16px;
+	margin: 0px;
+}

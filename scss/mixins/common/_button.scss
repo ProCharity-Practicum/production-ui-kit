@@ -1,0 +1,52 @@
+@mixin common($radius: 6px) {
+	font-size: 0.8rem;
+	line-height: 1rem;
+	letter-spacing: 1px;
+	font-weight: 700;
+	text-transform: uppercase;
+
+	border: 1px solid transparent;
+	border-radius: $radius;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	overflow: hidden;
+
+	padding: 20px 32px;
+	gap: 4px;
+
+	transition:
+		background-color 0.3s,
+		border-color 0.3s,
+		color 0.3s;
+
+	img,
+	svg {
+		width: 1rem;
+		height: 1rem;
+		flex-shrink: 0;
+	}
+
+	&:disabled {
+		cursor: default;
+		opacity: 0.6;
+	}
+}
+
+@mixin loader {
+	svg {
+		animation: spin 1s linear infinite;
+		position: relative;
+		margin-left: -20px;
+	}
+
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+}

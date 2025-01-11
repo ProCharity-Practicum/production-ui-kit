@@ -1,0 +1,25 @@
+@use '@styles/variables' as *;
+
+$sectionPadding: 0px 80px;
+$sectionTitleFontSize: 24px;
+$sectionTitleFontWeight: 700;
+$sectionContentGap: 32px;
+
+@mixin section-base {
+	padding: $sectionPadding;
+	background-color: #ffffff;
+}
+
+@mixin section-title {
+	font-size: $sectionTitleFontSize;
+	font-weight: $sectionTitleFontWeight;
+	color: $titleFontColor;
+}
+
+@mixin section-content {
+	gap: $sectionContentGap;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	font-weight: $fontWeightMedium;
+}

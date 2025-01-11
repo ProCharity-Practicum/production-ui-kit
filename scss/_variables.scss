@@ -1,8 +1,50 @@
-$fontFamily: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-$fontColor: rgba(255, 255, 255, 0.87);
-$backgroundColor: #242424;
+// font
+$fontFamily: PT-Root-UI-VF, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
+// fontWeights
+$fontWeightRegular: 400;
+$fontWeightMedium: 500;
+$fontWeightBold: 700;
+
+// fontSizes
+$baseFontSize: 16px;
+$fontSizeXXS: 0.8rem;
+$fontSizeXs: 0.9rem;
+$fontSizeS: 1rem;
+$fontLineS: 1.5rem;
+
+// fontColors
+$fontColor: #58646a;
+$fontColorLink: #288aa7;
+$fontLabelColor: #7b878f;
+$titleFontColor: #374146;
+$linkFontColor: #048aa7;
+
+// sizes
 $wideScreenWidth: 1920px;
-$desktopScreenWidth: 1280px;
-$tabletScreenWidth: 768px;
-$mobileScreenWidth: 320px;
+$desktopScreenWidth: 1280px; $desktopContainerSize: 1120px;
+$tabletScreenWidth: 768px; $tabletContainerSize: 704px;
+$largeMobileScreenWidth: 560px; $largeMobileContainerSize: 520px;
+$mobileScreenWidth: 360px; $mobileContainerSize: 312px;
+
+// colors
+$backgroundColor: #ffffff;
+$colorBgLightPrimary: #f8fbff;
+$primary: #7dcdd7;
+$secondary: #374146;
+$accent: #ea5a0a;
+$error: #d20202;
+
+// common button colors
+$accentHard: #aa4000;
+$accentLight: #cc4d00;
+$buttonPrimary: $accent;
+$buttonPrimaryDark: #374146;
+$buttonPrimaryLight: #f8fbff;
+$buttonSecondary: $secondary;
+$buttonSecondaryDark: #58646a;
+$buttonSecondaryLight: #f1f5f9;
+$buttonOutlineLight: #a0abb5;
+$buttonOutlineDark: #7b878f;
+$buttonBlue: #048aa7;
+$buttonDarkBlue: #006b83;

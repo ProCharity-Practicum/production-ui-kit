@@ -1,0 +1,53 @@
+@use '@styles/variables' as *;
+
+// $sectionPadding: 0px 80px;
+// $sectionTitleFontSize: 24px;
+// $sectionTitleFontWeight: 700;
+// $sectionContentGap: 32px;
+
+// @mixin section-base {
+// 	padding: $sectionPadding;
+// 	background-color: #ffffff;
+// }
+
+@mixin title {
+  margin: 0;
+  color: $backgroundColor;
+  font-weight: $fontWeightBold;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+@mixin text {
+  margin: 0;
+  color: $backgroundColor;
+  font-weight: $fontWeightMedium;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@mixin span {
+  margin: 0;
+  color: $backgroundColor;
+  font-weight: $fontWeightMedium;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration: underline;
+}
+
+@mixin linkReg {
+  margin: 0;
+  color: $primary;
+  font-weight: $fontWeightBold;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+// @mixin content {
+// 	gap: $sectionContentGap;
+// 	display: flex;
+// 	flex-direction: column;
+// 	justify-content: space-between;
+// 	font-weight: $fontWeightMedium;
+// }

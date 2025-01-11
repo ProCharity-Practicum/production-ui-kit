@@ -1,0 +1,66 @@
+@use '../../variables' as *;
+
+$headerHeight: 8.5rem;
+$headerCompactHeight: 5rem;
+$logoSize: 4.5rem;
+$menuGap: 2vw;
+$menuLineHeight: 1.5rem;
+$controlSize: 3rem;
+
+$mobileHeaderHeight: 3rem;
+$mobileControlSize: 2rem;
+
+$transition: all 0.4s ease-in-out;
+
+@mixin container {
+  width: 100%;
+  max-width: var(--container);
+  box-sizing: border-box;
+  padding: 0 1rem;
+  min-width: calc(#{$mobileContainerSize} - 1rem);
+}
+
+@mixin desktop {
+  @media (min-width: $desktopScreenWidth) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $tabletScreenWidth) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: $largeMobileScreenWidth) {
+    @content;
+  }
+}
+
+@mixin centered($justify: center) {
+  display: flex;
+  align-items: center;
+  justify-content: $justify;
+}
+
+@mixin fixed {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  @content;
+}
+
+@mixin square($size) {
+  box-sizing: border-box;
+  width: $size;
+  height: $size;
+}
+
+@mixin activated($display: flex) {
+  display: none;
+
+  &.active {
+    display: $display;
+  }
+}

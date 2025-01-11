@@ -1,0 +1,27 @@
+@use '@styles/variables' as *;
+
+.container {
+	margin: 0;
+	padding: 0;
+}
+
+.caption {
+	font-size: 0.8rem;
+	font-weight: $fontWeightMedium;
+}
+
+.label {
+	font-size: 0.8rem;
+	font-weight: $fontWeightBold;
+	text-transform: uppercase;
+}
+
+.normal {
+	font-size: 1rem;
+	font-weight: $fontWeightRegular;
+}
+
+.title {
+	font-size: 1rem;
+	font-weight: $fontWeightBold;
+}

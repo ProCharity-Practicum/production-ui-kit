@@ -1,0 +1,16 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/layout' as *;
+
+.content {
+	width: 100%;
+	padding-bottom: 8rem;
+}
+
+.section {
+	@include centered;
+	width: 100%;
+}
+
+.container {
+	@include container;
+}

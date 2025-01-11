@@ -1,0 +1,15 @@
+@use '@styles/variables' as *;
+
+.modalContent {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	align-items: flex-start;
+	padding: 36px 36px 40px 36px;
+}
+
+.title {
+	color: $titleFontColor;
+	font-weight: $fontWeightBold;
+	font-size: 32px;
+}

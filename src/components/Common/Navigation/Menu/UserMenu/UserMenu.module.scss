@@ -1,0 +1,16 @@
+@use '@styles/variables' as *;
+
+.userMenu {
+	position: relative;
+}
+
+.userButton {
+	background: none;
+	cursor: pointer;
+}
+
+.dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+}

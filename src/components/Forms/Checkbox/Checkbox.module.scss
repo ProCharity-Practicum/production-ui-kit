@@ -1,0 +1,65 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/forms/checkbox' as *;
+
+.checkbox {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	cursor: pointer;
+	width: 100%;
+}
+
+.text_medium {
+	font-weight: $fontWeightMedium;
+}
+
+.link {
+	color: $linkFontColor;
+	font-weight: $fontWeightMedium;
+	text-decoration: underline;
+}
+
+.checkbox__pseudo-input {
+	@include pseudo-input;
+
+	&::before {
+		background-repeat: no-repeat;
+		background-position: center center;
+	}
+}
+
+.checkbox__native-input {
+	@include native-input;
+
+	& + .checkbox__pseudo-input::before {
+		background-image: url(./assets/icon_checkbox_unchecked_default.svg);
+	}
+
+	&:hover + .checkbox__pseudo-input::before {
+		background-image: url(./assets/icon_checkbox_unchecked_hover.svg);
+	}
+
+	&:focus + .checkbox__pseudo-input::before {
+		background-image: url(./assets/icon_checkbox_unchecked_focus.svg);
+	}
+
+	&:checked + .checkbox__pseudo-input::before {
+		background-image: url(./assets/icon_checkbox_checked_default.svg);
+	}
+
+	&:checked:hover + .checkbox__pseudo-input::before {
+		background-image: url(./assets/icon_checkbox_checked_hover.svg);
+	}
+
+	&:checked:focus + .checkbox__pseudo-input::before {
+		background-image: url(./assets/icon_checkbox_checked_focus.svg);
+	}
+
+	&:indeterminate + .checkbox__pseudo-input::before {
+		background-image: url(./assets/icon_checkbox_indeterminate.svg);
+	}
+
+	&:disabled + .checkbox__pseudo-input {
+		opacity: 0.6;
+	}
+}

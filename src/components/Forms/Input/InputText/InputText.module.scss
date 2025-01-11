@@ -1,0 +1,82 @@
+@use '@styles/variables' as variables;
+@use '@styles/mixins/forms/input' as mixins;
+
+.container {
+	position: relative;
+}
+
+.textarea {
+	position: relative;
+	display: grid;
+	grid-template:
+		//'. . .' auto
+
+		'input . controls' auto
+		//'. . .' auto
+		'counter counter counter' auto
+		/ 1fr 16px auto;
+	width: 100%;
+	min-height: 68px;
+	padding: 8px 12px 8px 16px;
+	margin: 0;
+	box-sizing: border-box;
+	background-color: mixins.$inputBgDefault;
+	border: 1px solid transparent;
+	border-radius: 6px;
+}
+
+.textarea__field {
+	@include mixins.textAreaFont;
+	grid-area: input;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: none;
+	appearance: none;
+	resize: none;
+}
+
+.textarea__counter {
+	@include mixins.textAreaCounterFont;
+	grid-area: counter;
+	justify-self: flex-end;
+}
+
+.textarea__btn-wrapper {
+	display: flex;
+	grid-area: controls;
+}
+
+.textarea__btn {
+	@include mixins.inputIconStyle;
+	@include mixins.buttonPseudoClasses;
+	align-self: flex-start;
+
+	&_position_first {
+		right: 36px;
+	}
+}
+
+//&:has(.input__field:-webkit-autofill) {
+//  background-color: mixins.$inputBgAutoComplete;
+//}
+
+//
+//
+//.input__controls {
+//  display: flex;
+//  align-items: center;
+//  grid-area: controls;
+//}
+//
+//.input__field{
+//  @include mixins.inputField;
+//  grid-area: input;
+//}
+//
+//.input__button {
+//  @include mixins.inputIconStyle;
+//  @include mixins.buttonPseudoClasses
+//}
+//

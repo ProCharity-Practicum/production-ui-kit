@@ -1,0 +1,45 @@
+@use '@styles/variables' as *;
+
+.container {
+	background-color: $backgroundColor;
+	display: flex;
+	flex-direction: column;
+	column-gap: 16px;
+	width: 160px;
+
+	.image {
+		max-height: 160px;
+		height: fit-content;
+		width: 100%;
+	}
+
+	&.center {
+		align-items: center;
+	}
+
+	&.left {
+		align-items: start;
+	}
+
+	&.right {
+		align-items: end;
+	}
+}
+
+.title {
+	display: block;
+	font-family: $fontFamily;
+	color: $titleFontColor;
+	font-size: 20px;
+	height: 24px;
+	margin: 16px 0px 0px 0px;
+}
+
+.infoText {
+	display: block;
+	font-family: $fontFamily;
+	color: $fontColor;
+	font-size: 14px;
+	height: 20px;
+	margin: 4px 0px 0px 0px;
+}

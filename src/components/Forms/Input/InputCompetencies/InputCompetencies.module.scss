@@ -1,0 +1,27 @@
+@use '@styles/variables' as variables;
+@use '@styles/mixins/forms/input' as mixins;
+
+.container {
+	grid-template-areas:
+		'label . controls'
+		'input . controls';
+	grid-template-columns: 1fr 12px auto;
+	grid-template-rows: auto minmax(20px, 1fr);
+	flex-shrink: 0;
+}
+
+.input__controls {
+	display: flex;
+	align-items: center;
+	grid-area: controls;
+}
+
+.input__field {
+	@include mixins.inputField;
+	grid-area: input;
+}
+
+.input__button {
+	@include mixins.inputIconStyle;
+	@include mixins.buttonPseudoClasses;
+}

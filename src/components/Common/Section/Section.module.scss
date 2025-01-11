@@ -1,0 +1,55 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/section' as section;
+
+.container {
+	@include section.section-base;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto;
+	align-items: center;
+
+	&.centered {
+		text-align: center;
+		grid-template-columns: 1fr;
+	}
+
+	&.full {
+		width: 100%;
+	}
+}
+
+.image {
+	grid-column: 2 / 3;
+	justify-self: center;
+	max-width: 352px;
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.title {
+	@include section.section-title;
+}
+
+.content {
+	@include section.section-content;
+	grid-row: 1 / 2;
+}
+
+.children {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.actionWrapper {
+	align-self: flex-end;
+	justify-self: flex-end;
+}
+
+p,
+h2 {
+	margin: 0;
+}

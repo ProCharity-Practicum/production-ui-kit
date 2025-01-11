@@ -1,0 +1,59 @@
+@use '@styles/variables' as *;
+
+.container {
+	background-color: $backgroundColor;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	column-gap: 32px;
+
+	.image {
+		height: 160px;
+		width: 160px;
+	}
+}
+
+.infoBlock {
+	display: flex;
+	flex-direction: column;
+	align-self: self-start;
+	height: 100%;
+	width: 736px;
+	row-gap: 24px;
+	&__subtitle {
+		display: flex;
+		column-gap: 8px;
+	}
+}
+
+.title {
+	display: block;
+	font-family: $fontFamily;
+	color: $titleFontColor;
+	font-size: 32px;
+	line-height: 40px;
+	margin: 0px;
+}
+
+.infoText {
+	display: block;
+	font-family: $fontFamily;
+	color: $fontColor;
+	font-size: 16px;
+	line-height: 24px;
+	margin: 0px;
+}
+
+.link {
+	display: block;
+	font-family: $fontFamily;
+	color: $fontColorLink;
+	text-decoration: underline;
+	font-size: 16px;
+	line-height: 24px;
+	margin: 0px;
+}
+.link:hover {
+	color: $accent;
+	border-color: $accent;
+}

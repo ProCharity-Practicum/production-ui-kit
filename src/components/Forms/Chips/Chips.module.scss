@@ -1,0 +1,62 @@
+@use '@styles/variables' as *;
+
+.inputChipsBox {
+	display: flex;
+	flex-wrap: wrap;
+	row-gap: 8px;
+	column-gap: 16px;
+}
+
+.inputChip {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 2px;
+	padding: 2px;
+	font-weight: $fontWeightMedium;
+	font-size: $fontSizeXs;
+	line-height: 16px;
+
+	&:hover {
+		color: $error;
+
+		.deleteIcon {
+			fill: $error;
+		}
+	}
+
+	&:has(button:active) {
+		color: $accent;
+
+		.deleteIcon {
+			fill: $accent;
+		}
+	}
+}
+
+.deleteIcon {
+	align-self: center;
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+	fill: $fontColor;
+}
+
+.button {
+	display: flex;
+	height: 16px;
+	width: 16px;
+	border: 0px;
+	border-radius: 0px;
+	padding: 0;
+	background-color: transparent;
+	cursor: pointer;
+
+	&:hover {
+		border-color: transparent;
+	}
+}
+
+p {
+	margin: 0;
+}

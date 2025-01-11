@@ -1,0 +1,28 @@
+@use '@styles/variables' as *;
+
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: 100vw;
+	max-width: 736px;
+}
+
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid #f1f5f9;
+	padding-block-end: 8px;
+}
+
+.title {
+	margin: 0;
+	font-weight: $fontWeightBold;
+	font-size: $fontSizeS;
+}
+
+.body {
+	margin: 0;
+	font-weight: $fontWeightMedium;
+	font-size: $fontSizeS;
+}

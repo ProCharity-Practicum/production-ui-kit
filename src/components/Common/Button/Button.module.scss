@@ -1,0 +1,64 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/button';
+
+.button {
+	@include button.common;
+}
+
+.primary {
+	background-color: $buttonPrimary;
+	color: $buttonPrimaryLight;
+
+	&:hover:not(:disabled) {
+		background-color: $accentLight;
+	}
+
+	&:active:not(:disabled) {
+		background-color: $buttonPrimaryDark;
+	}
+
+	&:focus:not(:disabled) {
+		outline: 2px solid $accentHard;
+	}
+}
+
+.secondary {
+	background-color: $buttonSecondary;
+	color: $buttonPrimaryLight;
+
+	&:hover:not(:disabled) {
+		background-color: $accent;
+	}
+
+	&:active:not(:disabled) {
+		background-color: $accentLight;
+	}
+
+	&:focus:not(:disabled) {
+		outline: 2px solid $accent;
+	}
+}
+
+.outline {
+	background-color: transparent;
+	color: $buttonPrimaryDark;
+	border: 1px solid $buttonOutlineLight;
+
+	&:hover:not(:disabled) {
+		color: $accent;
+		border-color: $accent;
+	}
+
+	&:active:not(:disabled) {
+		color: $accentLight;
+		border-color: $accentLight;
+	}
+
+	&:focus:not(:disabled) {
+		outline: 2px solid $buttonOutlineDark;
+	}
+}
+
+.waiting {
+	@include button.loader;
+}

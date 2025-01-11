@@ -1,0 +1,50 @@
+@use '@styles/variables' as *;
+
+.toggle {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.text {
+	font-weight: $fontWeightBold;
+	font-size: $fontSizeXXS;
+}
+
+.cyrcleIcon {
+	width: 18px;
+	height: 18px;
+	background-color: $fontColor;
+	border-radius: 50%;
+	transition:
+		background-color 0.25s,
+		transform 0.25s;
+	transform: translateX(0px);
+
+	&_active {
+		background-color: $accent;
+		transform: translateX(16px);
+	}
+}
+
+.button {
+	width: 40px;
+	height: 23px;
+	border: 1px solid $fontColor;
+	border-radius: 12px;
+	padding: 1.75px;
+	background-color: transparent;
+
+	&:hover {
+		border: 1px solid $fontColor;
+	}
+
+	&_active {
+		border: 1px solid $accent;
+
+		&:hover {
+			border: 1px solid $accent;
+		}
+	}
+}

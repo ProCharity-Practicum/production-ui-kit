@@ -1,0 +1,26 @@
+@use '@styles/variables' as *;
+
+.container {
+	max-width: 352px;
+	min-height: 152px;
+
+	.title {
+		height: 48px;
+		font-size: 20px;
+		line-height: 24px;
+	}
+
+	.infoBlock {
+		display: flex;
+		height: 48px;
+	}
+
+	.text {
+		line-height: 24px;
+	}
+
+	.image {
+		display: block;
+		align-self: flex-end;
+	}
+}

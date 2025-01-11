@@ -1,4 +1,4 @@
-# Template for React UI-library
+# React UI-library for ProCharity project
 
 Stack: 
 - React 18

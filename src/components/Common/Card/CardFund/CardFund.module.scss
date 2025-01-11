@@ -1,0 +1,80 @@
+@use '@styles/variables' as *;
+
+.container {
+	display: flex;
+	&__card {
+		width: 352px;
+		height: 344px;
+		box-sizing: border-box;
+		border-radius: 8px;
+		box-shadow: 0px 0px 10px 0px rgba(55, 65, 70, 0.08);
+		background-color: $backgroundColor;
+		flex-direction: column;
+	}
+	&__title {
+		height: 128px;
+	}
+	&__age {
+		height: 95px;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+	&__status {
+		height: 120px;
+		flex-direction: column;
+		padding: 16px 24px 16px 24px;
+		row-gap: 8px;
+		&__block {
+			height: 40px;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+}
+
+.title {
+	display: block;
+	font-family: $fontFamily;
+	color: $titleFontColor;
+	font-size: 16px;
+	line-height: 24px;
+	align-self: center;
+	margin: 0;
+}
+
+.text {
+	display: block;
+	font-family: $fontFamily;
+	margin: 0;
+	font-size: 12px;
+	line-height: 16px;
+	&__important {
+		font-size: 16px;
+		line-height: 24px;
+		font-weight: bold;
+		margin: 0;
+		&__footer {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+	}
+	&__lenght {
+		font-size: 40px;
+		line-height: 40px;
+		font-weight: 500;
+		&__help {
+			color: rgba(234, 90, 10, 1);
+		}
+		&__task {
+			color: rgba(4, 138, 167, 1);
+		}
+	}
+}
+
+.image {
+	display: block;
+	width: 96px;
+	height: 96px;
+	margin: 16px 16px 16px 24px;
+}

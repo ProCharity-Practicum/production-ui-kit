@@ -1,0 +1,49 @@
+@use '@styles/variables' as *;
+
+.container {
+	display: flex;
+	box-shadow: 0px 4px 24px 0px rgba(0, 77, 95, 0.24);
+	border-radius: 8px;
+	width: 352px;
+}
+
+.infoBlock {
+	display: flex;
+	flex-direction: column;
+	width: 276px;
+	margin: 12px 12px 12px 8px;
+}
+
+.infoIcon {
+	display: flex;
+	margin-top: 12px;
+	margin-left: 16px;
+	&__success {
+		color: rgba(125, 205, 215, 1);
+	}
+	&__warningNotification {
+		color: rgba(210, 2, 2, 1);
+	}
+	&__clock {
+		color: rgba(160, 171, 181, 1);
+	}
+}
+.title {
+	display: block;
+	color: $titleFontColor;
+	font-size: 14px;
+	line-height: 20px;
+	margin: 0px 0px 4px 0px;
+}
+
+.text {
+	display: block;
+	color: $fontColor;
+	font-size: 14px;
+	line-height: 20px;
+	margin: 0;
+}
+
+.close {
+	cursor: pointer;
+}

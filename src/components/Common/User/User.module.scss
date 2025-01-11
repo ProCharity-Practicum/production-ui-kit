@@ -1,0 +1,35 @@
+@use '@styles/variables' as *;
+
+.container {
+	background-color: $backgroundColor;
+	display: flex;
+	flex-direction: row;
+	height: 48px;
+	align-items: center;
+	column-gap: 16px;
+}
+
+.infoBlock {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	gap: 4px;
+}
+
+.title {
+	display: block;
+	font-family: $fontFamily;
+	color: $titleFontColor;
+	font-size: 16px;
+	height: 24px;
+	margin: 0px;
+}
+
+.infoText {
+	display: block;
+	font-family: $fontFamily;
+	color: $fontColor;
+	font-size: 14px;
+	height: 20px;
+	margin: 0px;
+}

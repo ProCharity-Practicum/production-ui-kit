@@ -1,4 +1,4 @@
-import i18n from 'i18next';
+import i18n, { DefaultNamespace, ParseKeys } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
@@ -11,7 +11,7 @@ void i18n
 	.use(initReactI18next)
 	.init({
 		supportedLngs: ['en', 'ru'],
-		fallbackLng: 'en',
+		fallbackLng: 'ru',
 		ns: [],
 		debug: true,
 		interpolation: {
@@ -20,3 +20,5 @@ void i18n
 	});
 
 export default i18n;
+
+export type TranslationKeys = ParseKeys<DefaultNamespace>;

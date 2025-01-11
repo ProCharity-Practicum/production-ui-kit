@@ -1,0 +1,15 @@
+@use '@styles/variables' as *;
+
+.image {
+	height: 100%;
+	width: 48px;
+	object-fit: cover;
+	object-position: center;
+}
+
+.circle {
+	border-radius: 50%;
+}
+.square {
+	border-radius: 0%;
+}

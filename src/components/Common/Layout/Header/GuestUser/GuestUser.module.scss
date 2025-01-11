@@ -1,0 +1,83 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/layout' as *;
+
+.guestUser {
+	display: flex;
+	gap: 2px;
+
+	.signUp,
+	.signIn {
+		display: flex;
+		box-sizing: border-box;
+		align-items: center;
+		text-decoration: none;
+		color: $backgroundColor;
+		height: $controlSize;
+		border-radius: calc(#{$controlSize} / 2);
+		cursor: pointer;
+		transition: all 0.5s;
+		border: none;
+	}
+
+	.signUp {
+		background: $accent;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		padding: 0 calc(#{$controlSize} / 2.67) 0 calc(#{$controlSize} / 1.78);
+
+		img,
+		svg {
+			display: none;
+		}
+	}
+
+	.signIn {
+		width: $controlSize;
+		background: rgba(55, 65, 70, 0.24);
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		padding: 0 calc(#{$controlSize} / 6) 0 calc(#{$controlSize} / 8);
+	}
+
+	@media (min-width: $tabletScreenWidth + 1) {
+		.signUp,
+		.signIn {
+			&:hover {
+				background: $primary;
+			}
+		}
+	}
+
+	@media (max-width: $desktopContainerSize) {
+		.signUp,
+		.signIn {
+			display: flex;
+			box-sizing: border-box;
+			align-items: center;
+			justify-content: center;
+			width: $controlSize;
+			height: $controlSize;
+		}
+
+		.signUp {
+			padding: 0 calc(#{$controlSize} / 8) 0 calc(#{$controlSize} / 6);
+
+			span {
+				display: none;
+			}
+
+			img,
+			svg {
+				display: block;
+			}
+		}
+	}
+
+	@media (max-width: $tabletScreenWidth) {
+		.signUp,
+		.signIn {
+			width: $mobileControlSize;
+			height: $mobileControlSize;
+		}
+	}
+}

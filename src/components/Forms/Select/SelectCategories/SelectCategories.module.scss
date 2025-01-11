@@ -1,0 +1,262 @@
+@use '@styles/variables' as *;
+
+.select {
+	width: 100%;
+	min-width: 506px;
+}
+
+.selection {
+	display: flex;
+	justify-content: space-between;
+	min-height: 40px;
+	margin-block-end: 4px;
+	border-radius: 6px;
+	padding: 8px 12px 8px 16px;
+	background: $buttonSecondaryLight;
+	transition: all 0.3s ease;
+	cursor: pointer;
+
+	&:hover {
+		background: #e0e9f2;
+	}
+
+	&__open {
+		border: 1px solid $buttonOutlineLight;
+		background-color: $backgroundColor;
+	}
+
+	&__wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__wrapper:last-child {
+		align-items: end;
+	}
+}
+
+.label {
+	color: $buttonOutlineDark;
+	font-weight: $fontWeightMedium;
+	font-size: $fontSizeS;
+}
+
+.selectionCount {
+	color: $buttonOutlineDark;
+	font-weight: $fontWeightMedium;
+	font-size: $fontSizeXs;
+}
+
+.options {
+	z-index: 20;
+	border-radius: 8px;
+	padding-top: 8px;
+	box-shadow: 0px 4px 24px 0px rgba(0, 77, 95, 0.24);
+}
+
+.scroll {
+	max-height: 344px;
+	margin-right: 8px;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		width: 4px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 6px;
+		background: $buttonOutlineDark;
+	}
+
+	&::-webkit-scrollbar-track-piece:end {
+		margin-bottom: 20px;
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-track-piece:start {
+		background: transparent;
+	}
+}
+
+.optionGroup {
+	padding: 8px 0 8px 16px;
+}
+
+.optionTitle {
+	font-weight: $fontWeightBold;
+	font-size: $fontSizeS;
+	letter-spacing: 0.25px;
+}
+
+.optionWrap {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(240px, 1fr));
+	grid-column-gap: 32px;
+	justify-items: start;
+}
+
+.singleWrap {
+	display: flex;
+	flex-direction: column;
+}
+
+.single {
+	max-height: 120px;
+}
+
+.expanded {
+	overflow: visible;
+}
+
+.collapsed {
+	max-height: 80px;
+	overflow: hidden;
+}
+
+.option {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding: 8px 0px;
+	cursor: pointer;
+	white-space: nowrap;
+
+	&:hover {
+		border-radius: 6px;
+		background: $buttonSecondaryLight;
+	}
+}
+
+.checkboxText {
+	font-weight: $fontWeightMedium;
+	font-size: $fontSizeS;
+	width: 100%;
+}
+
+.multiplyLink {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 5px;
+	color: $linkFontColor;
+	font-weight: $fontWeightMedium;
+	font-size: $fontSizeXs;
+	cursor: pointer;
+
+	&:hover {
+		opacity: 0.6;
+	}
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+	padding: 24px;
+}
+
+.button {
+	display: flex;
+	border: 1px solid $buttonOutlineLight;
+	border-radius: 100px;
+	padding: 12px 24px;
+	color: $buttonPrimaryDark;
+	font-weight: $fontWeightBold;
+	font-size: $fontSizeXXS;
+	letter-spacing: 1px;
+	text-align: center;
+	text-transform: uppercase;
+	background-color: transparent;
+	transition: all 0.3s ease;
+	white-space: nowrap;
+
+	&:hover {
+		border: 1px solid $accent;
+		color: $accent;
+	}
+
+	&:active {
+		border: 1px solid $accentLight;
+		color: $accentLight;
+	}
+}
+
+.buttonCountCircle {
+	display: block;
+	margin-left: 8px;
+	border-radius: 150px;
+	padding: 0px 6px;
+	background: $accent;
+}
+
+.buttonCountCircleText {
+	margin: 0;
+	color: $backgroundColor;
+	font-weight: $fontWeightBold;
+	font-size: $fontSizeXXS;
+	letter-spacing: 1px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+@media screen and (max-width: 550px) {
+	.options {
+		width: 100vw;
+		height: 100vh;
+	}
+
+	.optionsTitleWrap {
+		display: flex;
+		margin: 32px 24px 0 24px;
+	}
+
+	.scroll {
+		max-height: 75vh;
+		margin-right: 8px;
+
+		&::-webkit-scrollbar {
+			width: 2px;
+		}
+
+		&::-webkit-scrollbar-track-piece:end {
+			margin-bottom: 0;
+		}
+
+		&::-webkit-scrollbar-track-piece:start {
+			margin-top: 0;
+		}
+	}
+
+	.optionTitleArrow {
+		width: 24px;
+		height: 24px;
+
+		&:hover {
+			opacity: 0.6;
+			cursor: pointer;
+		}
+	}
+
+	.collapsed {
+		max-height: 0;
+		overflow: hidden;
+	}
+
+	.optionWrap {
+		grid-template-columns: repeat(1, minmax(240px, 1fr));
+		grid-row-gap: 8px;
+		margin: 8px 14px 8px 24px;
+	}
+
+	.option {
+		padding: 8px;
+	}
+
+	.buttons {
+		padding: 24px;
+	}
+}

@@ -1,0 +1,83 @@
+@use '@styles/variables' as *;
+
+.container {
+	display: flex;
+	min-width: 350px;
+}
+
+.label {
+	height: fit-content;
+	width: 50%;
+	cursor: pointer;
+	text-align: center;
+	border: 1px solid $buttonBlue;
+	border-radius: 6px;
+	padding: 16px 0;
+	transition: all 0.3s ease;
+	color: $primary;
+	font-size: $fontSizeXXS;
+	line-height: $fontSizeS;
+	text-transform: uppercase;
+	font-weight: $fontWeightBold;
+	text-wrap: nowrap;
+	letter-spacing: 1px;
+
+	&_active {
+		border-color: transparent;
+		background-color: $primary;
+		color: $backgroundColor;
+	}
+
+	&_first {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+
+	&_second {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+
+	&:hover {
+		border-color: $buttonDarkBlue;
+	}
+
+	&_active:hover {
+		border-color: transparent;
+		background-color: $buttonBlue;
+	}
+
+	&:has(input:disabled) {
+		cursor: default;
+		opacity: 60%;
+	}
+}
+
+.input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+@media screen and (max-width: 550px) {
+	.container {
+		flex-direction: column;
+	}
+
+	.label {
+		width: 100%;
+
+		&_first {
+			border-top-right-radius: 6px;
+			border-bottom-left-radius: 0;
+		}
+
+		&_second {
+			border-top-right-radius: 0;
+			border-bottom-left-radius: 6px;
+		}
+	}
+}

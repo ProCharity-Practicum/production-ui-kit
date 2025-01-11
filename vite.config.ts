@@ -51,6 +51,11 @@ export default defineConfig({
 			output: {
 				assetFileNames: "assets/[name].[ext]",
 			},
+			onwarn: (warning, defaultHandler) => {
+				if (warning.code !== 'FILE_NAME_CONFLICT') {
+					defaultHandler(warning);
+				}
+			},
 		}
 	}
 });

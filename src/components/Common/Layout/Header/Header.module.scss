@@ -1,0 +1,181 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/layout' as *;
+
+body:has(.header.sticky) {
+	padding-top: calc(#{$headerHeight});
+	height: calc(100vh - #{$headerHeight});
+	box-sizing: border-box;
+	display: block;
+
+	@include tablet {
+		padding-top: calc(#{$mobileHeaderHeight});
+	}
+}
+
+body:has(.header.collapsed) {
+	padding-top: calc(#{$mobileHeaderHeight});
+}
+
+.header {
+	@include centered;
+	width: 100%;
+	height: $headerHeight;
+	background-color: $primary;
+	transition: $transition;
+	//margin-bottom: 2rem;
+
+	--link: #{$backgroundColor};
+	--logo: url('@/assets/logo/logo_procharity.svg');
+
+	&:hover {
+		background-color: white;
+		--link: #{$secondary};
+		--logo: url('@/assets/logo/logo_procharity_blue.svg');
+	}
+
+	&.sticky {
+		@include fixed {
+			left: 0;
+		}
+
+		//margin-bottom: 0;
+	}
+
+	&.collapsed {
+		height: $headerCompactHeight;
+		--logo: url('@/assets/logo/icon_logo_grey_white.svg');
+
+		&:hover {
+			--logo: url('@/assets/logo/icon_logo_grey_blue.svg');
+		}
+	}
+
+	@media (max-width: $tabletScreenWidth) {
+		height: $mobileHeaderHeight;
+
+		&:hover {
+			background-color: $primary;
+			--link: #{$backgroundColor};
+			--logo: url('@/assets/logo/logo_procharity.svg');
+		}
+	}
+}
+
+.container {
+	@include container;
+	@include centered(space-between);
+
+	.trigger,
+	.close {
+		display: none;
+	}
+
+	.logo {
+		display: block;
+		@include square($logoSize);
+		background-size: cover;
+		background: var(--logo) no-repeat center;
+	}
+
+	@media (max-width: $tabletScreenWidth) {
+		.trigger,
+		.close {
+			display: flex;
+		}
+
+		.logo {
+			background-size: $mobileControlSize;
+		}
+
+		.trigger,
+		.logo,
+		.close {
+			@include centered;
+			@include square($mobileControlSize);
+			padding: 0;
+			cursor: pointer;
+			transition: $transition;
+			border: none;
+		}
+
+		.close {
+			color: $secondary;
+		}
+
+		.trigger,
+		.close {
+			background: transparent;
+		}
+	}
+}
+
+.menu {
+	.menuContent {
+		display: flex;
+		gap: $menuGap;
+		padding: 0;
+		height: $menuLineHeight;
+	}
+
+	.link {
+		list-style: none;
+
+		a {
+			display: block;
+			color: var(--link);
+			font-weight: $fontWeightMedium;
+			line-height: $menuLineHeight;
+			transition: $transition;
+			border-bottom: 3px solid transparent;
+
+			&:hover {
+				color: $primary;
+				border-color: $primary;
+			}
+		}
+
+		svg,
+		img {
+			position: relative;
+			top: -2px;
+		}
+	}
+
+	@media (max-width: $tabletScreenWidth) {
+		flex-direction: column;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 80%;
+		padding: 1rem 1.5rem;
+		background: white;
+
+		@include activated(flex);
+
+		.menuContent {
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			width: 100%;
+			margin-top: 3rem;
+		}
+
+		.link {
+			border-top: 1px solid #f1f5f9;
+			list-style: none;
+			width: 100%;
+
+			a {
+				color: $fontColor;
+				font-weight: $fontWeightMedium;
+				line-height: $menuLineHeight;
+			}
+
+			&:has(img),
+			&:has(svg) {
+				display: none;
+			}
+		}
+	}
+}

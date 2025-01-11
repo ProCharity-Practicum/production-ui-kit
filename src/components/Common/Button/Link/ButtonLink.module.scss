@@ -1,0 +1,135 @@
+@use '@styles/variables' as *;
+
+.link {
+	background-color: transparent;
+	border: none;
+	text-decoration: none;
+	display: inline-flex;
+	line-height: 0;
+	align-items: center;
+	gap: 4px;
+	cursor: pointer;
+	transition: color 0.3s;
+
+	font-size: 14px;
+	font-weight: $fontWeightMedium;
+	letter-spacing: 1px;
+
+	color: $buttonBlue;
+
+	&:hover {
+		color: $buttonDarkBlue;
+	}
+
+	&:active {
+		color: $accent;
+	}
+
+	&:visited {
+		color: $accentHard;
+	}
+
+	&:focus {
+		outline: 2px solid $accentLight;
+		outline-offset: 0.5rem;
+		border-radius: 1rem;
+	}
+
+	&:disabled {
+		display: none;
+	}
+}
+
+.button {
+	@extend .link;
+
+	padding: 12px 24px;
+	gap: 8px;
+	font-size: 12px;
+	font-weight: $fontWeightBold;
+	text-transform: uppercase;
+}
+
+.secondary {
+	color: $buttonSecondary;
+
+	&:hover {
+		color: $buttonBlue;
+	}
+
+	&:active {
+		color: $buttonDarkBlue;
+	}
+
+	&:visited {
+		color: inherit;
+	}
+
+	&:focus {
+		//outline-color: $buttonDarkBlue;
+		outline: none;
+	}
+}
+
+.blue {
+	color: $buttonBlue;
+
+	&:hover {
+		color: $buttonDarkBlue;
+	}
+
+	&:active {
+		color: $buttonPrimary;
+	}
+
+	&:focus {
+		outline: none;
+		//outline-color: $buttonPrimary;
+	}
+}
+
+.grey {
+	color: $buttonOutlineLight;
+
+	&:hover {
+		color: $buttonOutlineDark;
+	}
+
+	&:active {
+		color: $buttonPrimary;
+	}
+
+	&:focus {
+		outline: none;
+		//outline-color: $buttonPrimary;
+	}
+}
+
+.primary {
+	color: $buttonPrimary;
+
+	&:hover {
+		color: $accentHard;
+	}
+
+	&:active {
+		color: $accentLight;
+	}
+
+	&:focus {
+		//outline-color: $accentLight;
+		outline: none;
+	}
+}
+
+.icon {
+	img,
+	svg {
+		width: 16px;
+		height: 16px;
+	}
+}
+
+.iconLeft {
+	flex-direction: row-reverse;
+}

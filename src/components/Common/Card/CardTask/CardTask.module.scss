@@ -1,0 +1,27 @@
+@use '@styles/variables' as *;
+
+.container {
+	min-width: 352px;
+
+	.title {
+		margin: 0;
+	}
+
+	.tags {
+		display: flex;
+		gap: 0.5rem;
+		justify-content: flex-end;
+	}
+}
+
+.user {
+	height: 128px;
+	padding: 16px 0;
+}
+
+.responses {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	height: 40px;
+}

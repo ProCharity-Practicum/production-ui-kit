@@ -1,8 +1,8 @@
-import translation from '@public/locales/en/translation.json';
+import translation from '@public/locales/ru/translation.json';
 
 export const defaultNS = 'translation';
 export const resources = {
-	en: {
+	ru: {
 		translation,
 	},
 } as const;
@@ -10,6 +10,6 @@ export const resources = {
 declare module 'i18next' {
 	interface CustomTypeOptions {
 		defaultNS: typeof defaultNS;
-		resources: (typeof resources)['en'];
+		resources: (typeof resources)['ru'];
 	}
 }

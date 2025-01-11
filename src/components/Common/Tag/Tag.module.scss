@@ -1,0 +1,33 @@
+@use '@styles/variables' as *;
+
+.tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	border-radius: 16px;
+	padding: 4px 8px;
+	font-family: $fontFamily;
+	font-size: 12px;
+	font-weight: 700;
+	color: $backgroundColor;
+	text-transform: uppercase;
+	cursor: default;
+}
+
+.blue {
+	background-color: $primary;
+}
+
+.secondary {
+	background-color: $buttonSecondaryDark;
+}
+
+.primary {
+	background-color: $accent;
+}
+
+.outline {
+	border: 1px solid rgba(234, 90, 10, 1);
+	background-color: transparent;
+	color: rgba(234, 90, 10, 1);
+}

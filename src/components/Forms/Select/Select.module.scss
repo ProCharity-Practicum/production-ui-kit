@@ -1,0 +1,109 @@
+@use '@styles/variables' as *;
+
+.select {
+	width: 100%;
+	min-width: 358px;
+}
+
+.panel {
+	display: flex;
+	justify-content: space-between;
+	background-color: #f1f5f9;
+	padding: 12px 12px 12px 16px;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+
+	&:hover {
+		background-color: #e0e9f2;
+	}
+
+	&_open {
+		background-color: #ffffff;
+		border: 1px solid #a0abb5;
+	}
+}
+
+.panel__text {
+	display: flex;
+	flex-direction: column;
+}
+
+.label {
+	color: #7b878f;
+	font-size: $fontSizeS;
+	font-weight: $fontWeightMedium;
+}
+
+.label_active {
+	font-size: $fontSizeXXS;
+}
+
+.options {
+	z-index: 20;
+	margin-top: 4px;
+	border-radius: 8px;
+	padding: 8px 0;
+	box-shadow: 0px 4px 24px 0px rgba(0, 77, 95, 0.24);
+	background-color: #ffffff;
+}
+
+.option {
+	padding: 8px 12px 8px 16px;
+	cursor: pointer;
+	transition: all 0.1s ease;
+
+	&:hover {
+		background-color: #f1f5f9;
+	}
+}
+
+.optionText {
+	margin: 0;
+	font-size: $fontSizeS;
+	font-weight: $fontWeightMedium;
+
+	&:active {
+		color: $linkFontColor;
+	}
+}
+
+.selection {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: flex-end;
+	box-sizing: border-box;
+	min-height: 48px;
+	border-radius: 6px;
+	padding: 20px 48px 4px 16px;
+	background: var(--light-secondary);
+
+	&:hover {
+		background: var(--color-bg-input-hover);
+		cursor: pointer;
+	}
+
+	&:focus {
+		outline: 1px solid var(--color-text-nav-secondary);
+		background: var(--light-primary);
+		cursor: pointer;
+	}
+}
+
+.placeholder {
+	position: absolute;
+	top: 12px;
+	left: 16px;
+	margin: 0;
+	color: var(--color-text-secondary-light);
+	font: var(--font-s-medium);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.value {
+	margin: 0;
+	color: $titleFontColor;
+	font-size: $fontSizeS;
+	font-weight: $fontWeightMedium;
+}

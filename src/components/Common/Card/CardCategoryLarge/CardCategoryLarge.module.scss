@@ -1,0 +1,42 @@
+@use '@styles/variables' as *;
+
+.container {
+	min-width: 352px;
+	max-height: 344px;
+	gap: 32px;
+
+	.image {
+		width: 80px;
+		height: 80px;
+	}
+
+	.header {
+		align-items: flex-start;
+	}
+
+	.title {
+		color: $titleFontColor;
+		line-height: 28px;
+		white-space: break-spaces;
+		margin: 0;
+	}
+
+	.stat {
+		display: flex;
+		justify-content: flex-start;
+		gap: 0.9rem;
+
+		.amount {
+			color: rgba(234, 90, 10, 1);
+			font-size: 40px;
+			line-height: 40px;
+		}
+
+		.label {
+			color: $fontColor;
+			font-size: 0.9rem;
+			line-height: 1.2rem;
+			width: 120px;
+		}
+	}
+}

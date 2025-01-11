@@ -1,0 +1,47 @@
+@use '@styles/variables' as *;
+
+.head {
+	display: flex;
+	align-items: center;
+	border: 1px solid #7b878f;
+	padding: 3px 3px 3px 7px;
+	border-radius: 6px;
+	gap: 4px;
+}
+
+.head_active {
+	border: 1px solid #58646a;
+}
+
+.text {
+	font: $fontSizeXs;
+	color: $fontColor;
+	font-weight: $fontWeightMedium;
+	line-height: 16px;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.text_active {
+	color: $titleFontColor;
+}
+
+.conteinerVecors {
+	display: flex;
+	flex-direction: column;
+}
+
+.vectorUp {
+	display: block;
+	margin-left: 4px;
+}
+
+.vectorDown {
+	display: block;
+	margin-left: 4px;
+	transform: rotate(180deg);
+}

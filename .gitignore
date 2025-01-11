@@ -24,3 +24,6 @@ node_modules
 *.log
 storybook-static
 dist
+
+*.txt
+*.sh

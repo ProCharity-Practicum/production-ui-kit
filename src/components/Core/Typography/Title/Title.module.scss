@@ -1,0 +1,56 @@
+@use '@styles/variables' as *;
+
+.title {
+	color: $titleFontColor;
+	margin: 0;
+	padding: 0;
+}
+
+h1.title {
+	font-weight: $fontWeightBold;
+	font-size: 40px;
+}
+
+h2.title {
+	font-weight: $fontWeightBold;
+	font-size: 32px;
+	min-height: 48px;
+	letter-spacing: 0;
+}
+
+h3.title {
+	font-weight: $fontWeightBold;
+	font-size: 24px;
+}
+
+h4.title {
+	font-weight: $fontWeightBold;
+	font-size: 20px;
+}
+
+h5.title {
+	font-weight: $fontWeightBold;
+	font-size: 16px;
+}
+
+@media only screen and (max-width: 1279px) {
+	h2.title {
+		font-size: 24px;
+		line-height: 32px;
+	}
+}
+
+@media only screen and (max-device-width: 767px) {
+	h1.title {
+		font-weight: $fontWeightBold;
+		font-size: 24px;
+	}
+	h2.title {
+		font-weight: $fontWeightBold;
+		font-size: 24px;
+	}
+	h3.title {
+		font-weight: $fontWeightBold;
+		font-size: 20px;
+	}
+}
