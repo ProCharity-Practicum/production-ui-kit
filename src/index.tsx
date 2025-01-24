@@ -1,6 +1,20 @@
 import './index.scss';
 
-export { Icon } from './components/Core/Icon';
+// Core exports
+export { Icon, type IconNames } from './components/Core/Icon';
+export { Title, Text, TextVariants } from './components/Core/Typography';
+export { Anchor } from './components/Core/Anchor/Anchor';
+export {
+	AnchorProvider,
+	type AnchorProps,
+	type LinkTag,
+} from './components/Core/Anchor/AnchorProvider';
+
+// Common exports
+export { Layout } from './components/Common/Layout/Layout';
+export { Header } from './components/Common/Layout/Header/Header';
+export { Footer } from './components/Common/Layout/Footer/Footer';
+
 export {
 	Tag,
 	PrimaryTag,
@@ -9,12 +23,9 @@ export {
 	DiamondTag,
 } from './components/Common/Tag/Tag';
 export { Tooltip } from './components/Common/Tooltip/Tooltip';
-export { Title, Text, TextVariants } from './components/Core/Typography';
-export { Anchor } from './components/Core/Anchor/Anchor';
-export { AnchorProvider } from './components/Core/Anchor/AnchorProvider';
-
 export { BreadCrumbs } from './components/Common/Navigation/Breadcrumbs/Breadcrumbs';
 export { Paginator } from './components/Common/Navigation/Paginator/Paginator';
+export { Tabs } from './components/Common/Navigation/Tabs/Tabs';
 
 export {
 	Button,
@@ -53,6 +64,7 @@ export {
 	UserVolunterLarge,
 } from './components/Common/User';
 
+// Forms exports
 export { Input } from './components/Forms/Input/Input';
 export { InputText } from './components/Forms/Input/InputText/InputText';
 export { InputPassword } from './components/Forms/Input/InputPassword/InputPassword';
@@ -67,7 +79,3 @@ export { InputMultipleLinks } from './components/Forms/Input/InputLink/InputMult
 
 export { Select } from './components/Forms/Select/Select';
 export { SelectCategories } from './components/Forms/Select/SelectCategories/SelectCategories';
-
-export { Layout } from './components/Common/Layout/Layout';
-export { Header } from './components/Common/Layout/Header/Header';
-export { Footer } from './components/Common/Layout/Footer/Footer';
