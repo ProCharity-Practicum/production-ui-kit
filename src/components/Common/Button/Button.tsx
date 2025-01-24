@@ -6,12 +6,12 @@ import {
 	ButtonType,
 	ButtonVariant,
 } from '@/components/Common/Button/types';
-import { ReactNode } from 'react';
+import { DetailedHTMLProps, HTMLAttributes, ReactNode } from 'react';
 import { Anchor } from '@/components/Core/Anchor/Anchor.tsx';
 
 export type ButtonProps = {
-	type?: ButtonType;
-	variant?: ButtonVariant;
+	type?: ButtonType | keyof typeof ButtonType;
+	variant?: ButtonVariant | keyof typeof ButtonVariant;
 	disabled?: boolean;
 	waiting?: boolean;
 	onClick?: () => void;
@@ -19,11 +19,23 @@ export type ButtonProps = {
 	children?: ReactNode;
 	href?: string;
 	Tag?: ButtonTag;
-};
+} & DetailedHTMLProps<
+	HTMLAttributes<HTMLAnchorElement | HTMLButtonElement>,
+	HTMLAnchorElement | HTMLButtonElement
+>;
+
+type ButtonElement = DetailedHTMLProps<
+	HTMLAttributes<HTMLButtonElement>,
+	HTMLButtonElement
+>;
+type AnchorElement = DetailedHTMLProps<
+	HTMLAttributes<HTMLAnchorElement>,
+	HTMLAnchorElement
+>;
 
 export function Button({
-	type = ButtonType.Button,
-	variant = ButtonVariant.Primary,
+	type = ButtonType.button,
+	variant = ButtonVariant.primary,
 	disabled = false,
 	waiting = false,
 	onClick,
@@ -31,6 +43,7 @@ export function Button({
 	children,
 	href,
 	Tag = 'button',
+	...props
 }: ButtonProps) {
 	const commonProps = {
 		className: clsx(styles.button, styles[variant], className, {
@@ -45,12 +58,21 @@ export function Button({
 				{children}
 			</>
 		),
-		'data-testid': 'Button',
 	};
 
 	return Tag === 'a' ? (
-		<Anchor {...commonProps} href={href} />
+		<Anchor
+			data-testid="Button"
+			{...(props as AnchorElement)}
+			{...commonProps}
+			href={href}
+		/>
 	) : (
-		<Tag type={type} {...commonProps} />
+		<Tag
+			data-testid="Button"
+			{...(props as ButtonElement)}
+			{...commonProps}
+			type={type}
+		/>
 	);
 }

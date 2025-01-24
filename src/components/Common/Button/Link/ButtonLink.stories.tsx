@@ -64,7 +64,7 @@ export const Styles: Story = {
 					{...props}
 					color={color}
 					icon={<Icon name="add" />}
-					variant={ButtonLinkVariant.Link}
+					variant={ButtonLinkVariant.link}
 				/>
 			))}
 		</div>

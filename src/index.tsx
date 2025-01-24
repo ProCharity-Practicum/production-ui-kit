@@ -9,6 +9,7 @@ export {
 	type AnchorProps,
 	type LinkTag,
 } from './components/Core/Anchor/AnchorProvider';
+export { Image } from './components/Core/Image/Image';
 
 // Common exports
 export { Layout } from './components/Common/Layout/Layout';

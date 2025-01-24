@@ -5,29 +5,30 @@ export type ButtonTag =
 	| FunctionComponent;
 
 export enum ButtonVariant {
-	Primary = 'primary',
-	Outline = 'outline',
-	Secondary = 'secondary',
+	primary = 'primary',
+	outline = 'outline',
+	secondary = 'secondary',
 }
 
 export enum ButtonType {
-	Button = 'button',
-	Submit = 'submit',
+	button = 'button',
+	submit = 'submit',
+	reset = 'reset',
 }
 
 export enum ButtonLinkVariant {
-	Button = 'button',
-	Link = 'link',
+	button = 'button',
+	link = 'link',
 }
 
 export enum IconPosition {
-	Left = 'left',
-	Right = 'right',
+	left = 'left',
+	right = 'right',
 }
 
 export enum ButtonLinkColor {
-	Blue = 'blue',
-	Grey = 'grey',
-	Primary = 'primary',
-	Secondary = 'secondary',
+	blue = 'blue',
+	grey = 'grey',
+	primary = 'primary',
+	secondary = 'secondary',
 }

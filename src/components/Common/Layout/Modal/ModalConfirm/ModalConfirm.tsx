@@ -27,7 +27,7 @@ export function ModalConfirm({
 			<div className={clsx(styles.modalContent, className)}>
 				<div className={clsx(styles.title, className)}>{title}</div>
 				{children}
-				<Button type={ButtonType.Submit} onClick={onConfirm}>
+				<Button type={ButtonType.submit} onClick={onConfirm}>
 					<p>{text}</p>
 				</Button>
 			</div>

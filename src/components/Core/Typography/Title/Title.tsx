@@ -1,8 +1,10 @@
 import clsx from 'clsx';
 import styles from './Title.module.scss';
-import React, { PropsWithChildren } from 'react';
-import { useTranslation } from 'react-i18next';
-import { TranslationKeys } from '@/i18n.ts';
+import React, {
+	DetailedHTMLProps,
+	HTMLAttributes,
+	PropsWithChildren,
+} from 'react';
 
 export type HeaderTag = keyof Pick<
 	React.JSX.IntrinsicElements,
@@ -11,24 +13,22 @@ export type HeaderTag = keyof Pick<
 
 export type TitleProps = {
 	Tag?: HeaderTag;
-	className?: string;
-	value?: TranslationKeys;
-	opts?: Record<string, unknown>;
-} & PropsWithChildren;
+} & PropsWithChildren &
+	DetailedHTMLProps<HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement>;
 
 export function Title({
 	Tag = 'h3',
 	children,
-	value,
-	opts,
 	className,
+	...props
 }: TitleProps) {
-	const { t } = useTranslation();
-	const text = children ?? t(value!, opts);
-
 	return (
-		<Tag className={clsx(styles.title, className)} data-testid="Title">
-			{text}
+		<Tag
+			data-testid="Title"
+			{...props}
+			className={clsx(styles.title, className)}
+		>
+			{children}
 		</Tag>
 	);
 }

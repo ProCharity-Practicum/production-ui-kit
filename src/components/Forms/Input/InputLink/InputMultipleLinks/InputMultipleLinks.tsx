@@ -49,7 +49,7 @@ export function InputMultipleLinks({
 					onChange={onChangeLink(index)}
 				/>
 			))}
-			<AddLink onClick={onAddLink} variant={ButtonLinkVariant.Button} />
+			<AddLink onClick={onAddLink} variant={ButtonLinkVariant.button} />
 		</div>
 	);
 }

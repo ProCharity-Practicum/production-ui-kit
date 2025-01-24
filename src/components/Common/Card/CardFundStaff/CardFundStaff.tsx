@@ -52,8 +52,8 @@ export function CardFundStaff({
 			</Card.Row>
 
 			<Card.Actions className={styles.cta}>
-				<Text variant={TextVariants.Caption}>Поддержите проекты фонда</Text>
-				<Button variant={ButtonVariant.Outline} className={styles.button}>
+				<Text variant={TextVariants.caption}>Поддержите проекты фонда</Text>
+				<Button variant={ButtonVariant.outline} className={styles.button}>
 					Пожертвовать
 				</Button>
 			</Card.Actions>

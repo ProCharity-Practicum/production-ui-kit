@@ -1,6 +1,6 @@
 export enum TextVariants {
-	Caption = 'caption', // 0.8, 500
-	Label = 'label', // 0.8, 700, UP
-	Normal = 'normal', // 1, 500
-	Title = 'title', // 1, 700
+	caption = 'caption', // 0.8, 500
+	label = 'label', // 0.8, 700, UP
+	normal = 'normal', // 1, 500
+	title = 'title', // 1, 700
 }

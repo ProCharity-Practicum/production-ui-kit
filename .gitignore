@@ -27,3 +27,6 @@ dist
 
 *.txt
 *.sh
+
+# settings
+.npmrc

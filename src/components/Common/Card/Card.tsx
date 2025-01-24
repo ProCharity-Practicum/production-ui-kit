@@ -21,32 +21,32 @@ export function WorkLoad({
 }: WorkLoadProps) {
 	return (
 		<div className={clsx(styles.cardRow, styles.work, className)}>
-			<Text className={styles.workTasks} variant={TextVariants.Caption}>
+			<Text className={styles.workTasks} variant={TextVariants.caption}>
 				Задачи
 			</Text>
 			<div className={clsx(styles.workCurrent)}>
 				<span className={styles.primary}>{current}</span>
-				<Text variant={TextVariants.Title}>в работе</Text>
+				<Text variant={TextVariants.title}>в работе</Text>
 			</div>
 			<div className={clsx(styles.workCompleted)}>
 				<span className={styles.primary}>{completed}</span>
-				<Text variant={TextVariants.Title}>
+				<Text variant={TextVariants.title}>
 					{pluralize(completed, ['выполнена', 'выполнены', 'выполнено'])}
 				</Text>
 			</div>
-			<Text className={styles.workHelps} variant={TextVariants.Caption}>
+			<Text className={styles.workHelps} variant={TextVariants.caption}>
 				Помог
 			</Text>
 			<div className={clsx(styles.workFunds)}>
 				<span className={styles.secondary}>{funds}</span>
-				<Text variant={TextVariants.Title}>НКО</Text>
+				<Text variant={TextVariants.title}>НКО</Text>
 			</div>
-			<Text className={styles.workWorks} variant={TextVariants.Caption}>
+			<Text className={styles.workWorks} variant={TextVariants.caption}>
 				Затрачено
 			</Text>
 			<div className={clsx(styles.workHours)}>
 				<span className={styles.secondary}>{hours}</span>
-				<Text variant={TextVariants.Title}>
+				<Text variant={TextVariants.title}>
 					{pluralize(hours, ['час', 'часа', 'часов'])}
 				</Text>
 			</div>
@@ -72,12 +72,12 @@ export function State({ registered, moderated, className }: StateProps) {
 			)}
 		>
 			<div className={styles.column}>
-				<Text variant={TextVariants.Caption}>Регистрация</Text>
-				<Text variant={TextVariants.Title}>{registered}</Text>
+				<Text variant={TextVariants.caption}>Регистрация</Text>
+				<Text variant={TextVariants.title}>{registered}</Text>
 			</div>
 			<div className={styles.column}>
-				<Text variant={TextVariants.Caption}>Модерация</Text>
-				<Text variant={TextVariants.Title}>{moderated}</Text>
+				<Text variant={TextVariants.caption}>Модерация</Text>
+				<Text variant={TextVariants.title}>{moderated}</Text>
 			</div>
 		</div>
 	);

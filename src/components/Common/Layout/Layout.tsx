@@ -29,7 +29,7 @@ type SectionProps = {
 function Section({ children, className, pt }: SectionProps) {
 	const { content } = pt || {};
 	return (
-		<section className={clsx(styles.section, className)}>
+		<section className={clsx(styles.section, className)} data-testId="Section">
 			<div className={clsx(styles.container, content)}>{children}</div>
 		</section>
 	);

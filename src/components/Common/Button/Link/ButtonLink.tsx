@@ -16,12 +16,12 @@ export type ButtonLinkProps = {
 	className?: string;
 	children?: ReactNode;
 	icon?: ReactNode | IconNames;
-	iconPosition?: IconPosition;
+	iconPosition?: IconPosition | keyof typeof IconPosition;
 	disabled?: boolean;
-	variant?: ButtonLinkVariant;
+	variant?: ButtonLinkVariant | keyof typeof ButtonLinkVariant;
 	href?: string;
 	onClick?: () => void;
-	color?: ButtonLinkColor;
+	color?: ButtonLinkColor | keyof typeof ButtonLinkColor;
 	Tag?: ButtonTag;
 };
 
@@ -52,7 +52,7 @@ function withStyle(
 
 		const commonProps = {
 			className: clsx(styles.link, styles[variant], styles[color], className, {
-				[styles.iconLeft]: iconPosition === IconPosition.Left,
+				[styles.iconLeft]: iconPosition === IconPosition.left,
 			}),
 			onClick,
 			disabled,
@@ -74,33 +74,33 @@ function withStyle(
 }
 
 export const ButtonLink = withStyle(
-	ButtonLinkVariant.Button,
-	ButtonLinkColor.Secondary,
-	IconPosition.Left
+	ButtonLinkVariant.button,
+	ButtonLinkColor.secondary,
+	IconPosition.left
 );
 
 export const AddLink = withStyle(
-	ButtonLinkVariant.Link,
-	ButtonLinkColor.Blue,
-	IconPosition.Right,
+	ButtonLinkVariant.link,
+	ButtonLinkColor.blue,
+	IconPosition.right,
 	<Icon name="add" />,
 	'Добавить',
 	'button'
 );
 
 export const ShowMoreLink = withStyle(
-	ButtonLinkVariant.Link,
-	ButtonLinkColor.Primary,
-	IconPosition.Right,
+	ButtonLinkVariant.link,
+	ButtonLinkColor.primary,
+	IconPosition.right,
 	<Icon name="chevronDown" />,
 	'Показать ещё',
 	'button'
 );
 
 export const GoToLink = withStyle(
-	ButtonLinkVariant.Link,
-	ButtonLinkColor.Secondary,
-	IconPosition.Right,
+	ButtonLinkVariant.link,
+	ButtonLinkColor.secondary,
+	IconPosition.right,
 	<Icon name="arrowRight" />,
 	'Подробнее'
 );
