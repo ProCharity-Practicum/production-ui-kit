@@ -19,3 +19,16 @@ export const convertURL = (url: string) => {
 	a.href = url;
 	return new URL(a.href);
 };
+
+export function chunk<T>(arr: T[], chunkSize: number) {
+	const res: T[][] = [];
+	for (let i = 0; i < arr.length; i += chunkSize) {
+		const row = arr.slice(i, i + chunkSize);
+		res.push(row);
+	}
+	return res;
+}
+
+export function capitalizeString(s: string) {
+	return s.slice(0, 1).toUpperCase() + s.slice(1);
+}
