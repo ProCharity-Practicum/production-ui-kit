@@ -7,7 +7,7 @@
 	width: 312px;
 	padding: 20px 24px 24px;
 	box-shadow: 0px 4px 24px 0px rgba(0, 77, 95, 0.24);
-	background: var(--light-primary);
+	background: $backgroundColor;
 	border-radius: 8px;
 	gap: 8px;
 }
@@ -58,29 +58,32 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	background: var(--light-primary);
+	background: $backgroundColor;
 	border: none;
 	border-radius: 4px;
 	outline: none;
-	color: var(--color-text-primary);
-	font: normal var(--font-weigth-regular) var(--font-size-xxs) /
-		var(--font-line-xxs) var(--font-family-numbers);
+	color: $secondary;
+	font:
+		normal 400 14px / 16px 'PT-Root-UI-VF',
+		Arial,
+		Helvetica,
+		sans-serif;
 	font-feature-settings:
 		'clig' off,
 		'liga' off;
 
 	&_selected {
-		background: var(--color-bg-secondary);
-		color: var(--light-primary);
+		background: $primary;
+		color: $colorBgLightPrimary;
 	}
 
 	&:hover:enabled {
-		background: var(--color-bg-secondary);
-		color: var(--light-primary);
+		background: $backgroundColor;
+		color: $secondary;
 	}
 
 	&:disabled {
-		color: var(--color-text-secondary-light);
+		color: $fontLabelColor;
 	}
 
 	&:enabled {
@@ -89,10 +92,13 @@
 }
 
 .week-day__label {
-	color: var(--dark-secondary);
+	color: $buttonSecondaryDark;
 	text-align: center;
-	font: normal var(--font-weigth-regular) var(--font-size-xs) /
-		var(--font-line-xs) var(--font-family-numbers);
+	font:
+		normal 400 14px / 20px 'PT-Root-UI-VF',
+		Arial,
+		Helvetica,
+		sans-serif;
 
 	font-feature-settings:
 		'clig' off,
@@ -108,7 +114,7 @@
 	.slider__control {
 		width: 24px;
 		height: 24px;
-		background: var(--light-primary);
+		background: $backgroundColor;
 		border: none;
 		outline: none;
 		opacity: 1;
@@ -138,15 +144,18 @@
 		border: none;
 		opacity: 1;
 		text-align: center;
-		font: normal var(--font-weigth-regular) var(--font-size-xs) /
-			var(--font-line-xs) var(--font-family-numbers);
+		font:
+			normal 400 14px / 20px 'PT-Root-UI-VF',
+			Arial,
+			Helvetica,
+			sans-serif;
 		transition: opacity 0.3s ease;
 
 		&:disabled {
-			color: var(--color-text-primary);
+			color: $secondary;
 		}
 		&:enabled {
-			color: var(--color-text-link);
+			color: $linkFontColor;
 			text-decoration: underline;
 			cursor: pointer;
 		}

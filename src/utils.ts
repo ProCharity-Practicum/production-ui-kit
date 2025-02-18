@@ -1,3 +1,14 @@
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import localeData from 'dayjs/plugin/localeData';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.locale('ru');
+dayjs.extend(relativeTime);
+dayjs.extend(customParseFormat);
+dayjs.extend(localeData);
+
 export function pluralize(
 	count: number,
 	words: [string, string, string],
