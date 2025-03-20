@@ -1,3 +1,14 @@
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import localeData from 'dayjs/plugin/localeData';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.locale('ru');
+dayjs.extend(relativeTime);
+dayjs.extend(customParseFormat);
+dayjs.extend(localeData);
+
 export function pluralize(
 	count: number,
 	words: [string, string, string],
@@ -19,3 +30,16 @@ export const convertURL = (url: string) => {
 	a.href = url;
 	return new URL(a.href);
 };
+
+export function chunk<T>(arr: T[], chunkSize: number) {
+	const res: T[][] = [];
+	for (let i = 0; i < arr.length; i += chunkSize) {
+		const row = arr.slice(i, i + chunkSize);
+		res.push(row);
+	}
+	return res;
+}
+
+export function capitalizeString(s: string) {
+	return s.slice(0, 1).toUpperCase() + s.slice(1);
+}

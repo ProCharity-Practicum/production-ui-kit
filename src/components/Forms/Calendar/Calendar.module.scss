@@ -1,4 +1,167 @@
 @use '@styles/variables' as *;
 
-.container {
+.calendar {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	width: 312px;
+	padding: 20px 24px 24px;
+	box-shadow: 0px 4px 24px 0px rgba(0, 77, 95, 0.24);
+	background: $backgroundColor;
+	border-radius: 8px;
+	gap: 8px;
+}
+
+.view {
+	display: flex;
+	flex: 1 1 0;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.days__container {
+	display: flex;
+	flex: 1 1 0;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.row-group {
+	display: flex;
+	flex-direction: column;
+	padding-top: 8px;
+	gap: 8px;
+}
+
+.row {
+	display: flex;
+	flex: 1 1 0;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.cell-content {
+	width: 24px;
+	height: 24px;
+
+	&_wide {
+		width: 48px;
+	}
+}
+
+.button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	background: $backgroundColor;
+	border: none;
+	border-radius: 4px;
+	outline: none;
+	color: $secondary;
+	font:
+		normal 400 14px / 16px 'PT-Root-UI-VF',
+		Arial,
+		Helvetica,
+		sans-serif;
+	font-feature-settings:
+		'clig' off,
+		'liga' off;
+
+	&_selected {
+		background: $primary;
+		color: $colorBgLightPrimary;
+	}
+
+	&:hover:enabled {
+		background: $backgroundColor;
+		color: $secondary;
+	}
+
+	&:disabled {
+		color: $fontLabelColor;
+	}
+
+	&:enabled {
+		cursor: pointer;
+	}
+}
+
+.week-day__label {
+	color: $buttonSecondaryDark;
+	text-align: center;
+	font:
+		normal 400 14px / 20px 'PT-Root-UI-VF',
+		Arial,
+		Helvetica,
+		sans-serif;
+
+	font-feature-settings:
+		'clig' off,
+		'liga' off;
+}
+
+.slider {
+	display: flex;
+	flex: 1 1 0;
+	justify-content: space-between;
+	align-items: center;
+
+	.slider__control {
+		width: 24px;
+		height: 24px;
+		background: $backgroundColor;
+		border: none;
+		outline: none;
+		opacity: 1;
+
+		&:enabled {
+			cursor: pointer;
+		}
+
+		&:enabled:hover {
+			opacity: 0.7;
+			transition: opacity 0.7s ease;
+		}
+
+		&_left {
+			background: url(./assets/icon_arrow_left.svg) center center no-repeat;
+		}
+
+		&_right {
+			background: url(./assets/icon_arrow_right.svg) center center no-repeat;
+		}
+	}
+
+	.slider__button {
+		padding: 0;
+		margin: 0;
+		background: none;
+		border: none;
+		opacity: 1;
+		text-align: center;
+		font:
+			normal 400 14px / 20px 'PT-Root-UI-VF',
+			Arial,
+			Helvetica,
+			sans-serif;
+		transition: opacity 0.3s ease;
+
+		&:disabled {
+			color: $secondary;
+		}
+		&:enabled {
+			color: $linkFontColor;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+
+		&:enabled:hover {
+			opacity: 0.7;
+		}
+	}
 }

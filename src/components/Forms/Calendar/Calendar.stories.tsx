@@ -1,28 +1,48 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, within } from '@storybook/test';
+import { useArgs } from '@storybook/preview-api';
+import { Meta, StoryObj } from '@storybook/react';
+import { ChangeEvent } from 'react';
+import { Calendar } from './Calendar.tsx';
+import { ICalendarProps } from './types.tsx';
 
-import { Calendar } from './Calendar';
-
-const meta = {
-	title: 'New/Calendar',
+const meta: Meta<ICalendarProps> = {
+	title: 'Forms/Calendar',
 	component: Calendar,
-	parameters: {
-		// More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-		layout: 'centered',
-		// viewport: {
-		// 	defaultViewport: 'desktop',
-		// },
+	decorators: [
+		(Story) => {
+			const [args, setArgs] = useArgs();
+
+			function onChange(e: ChangeEvent<HTMLInputElement>) {
+				setArgs({ currentDate: e.target.value });
+			}
+
+			return (
+				<>
+					<Story
+						args={{
+							...args,
+							onChange,
+						}}
+					/>
+				</>
+			);
+		},
+	],
+	argTypes: {
+		currentDate: { control: 'text' },
+		min: { control: 'text' },
+		max: { control: 'text' },
 	},
-} satisfies Meta<typeof Calendar>;
+	args: {
+		currentDate: '2024-01-15',
+		min: '1900-01-05',
+		max: '2029-01-30',
+	},
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-// More on interaction testing: https://storybook.js.org/docs/writing-tests/interaction-testing
-export const WithStateChanged: Story = {
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const element = canvas.getByTestId('Calendar');
-		await expect(element).toBeInTheDocument();
-	},
+type Story = StoryObj<typeof Calendar>;
+
+export const CalendarDefault: Story = {
+	args: {},
 };
