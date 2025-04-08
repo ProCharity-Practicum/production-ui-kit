@@ -1,6 +1,7 @@
 import { IStepMobileProps } from './types';
 import style from './style.module.scss';
 import { Anchor } from '@/components/Core/Anchor/Anchor';
+import clsx from 'clsx';
 
 export function StepMobile({
 	inProgress = false,
@@ -8,17 +9,14 @@ export function StepMobile({
 	isDisabled,
 	isCompleted,
 }: IStepMobileProps) {
-	const step = (
-		<div
-			className={`
-        ${style.stepMobile} 
-        ${isCurrent ? style.stepMobile__current : ''} 
-        ${isDisabled ? style.stepMobile__disabled : ''} 
-        ${isCompleted ? style.stepMobile__completed : ''} 
-        ${inProgress ? style.stepMobile__inProgress : ''}
-      `}
-		/>
-	);
+	const stepClass = clsx(style.stepMobile, {
+		[style.stepMobile__current]: isCurrent,
+		[style.stepMobile__disabled]: isDisabled,
+		[style.stepMobile__completed]: isCompleted,
+		[style.stepMobile__inProgress]: inProgress,
+	});
+
+	const step = <div className={stepClass} />;
 
 	return (
 		<Anchor href="#" aria-disabled={isDisabled}>

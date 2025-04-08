@@ -7,52 +7,51 @@ export function Step({
 	text,
 	number,
 	link,
-	isCurrent,
-	isDisabled,
-	isComplited,
+	isCurrent = false,
+	isDisabled = false,
+	isComplited = false,
 	isInteractive = true,
 }: StepProps) {
+	const anchorProps = isInteractive
+		? {
+				href: link,
+				className: clsx(style.link, {
+					[style.link_disabled]: isDisabled || isCurrent,
+				}),
+				'aria-disabled': isDisabled,
+			}
+		: {
+				href: () => undefined, // Блокировка через функцию
+				className: clsx(style.link, style.link_disabled),
+				'aria-disabled': true,
+				onClick: (e: React.MouseEvent) => e.preventDefault(),
+			};
+
+	const stepClass = clsx(
+		style.step,
+		isComplited && style.step_complited,
+		isCurrent && style.step_active,
+		isDisabled && style.step_disabled
+	);
+
+	const numberClass = clsx(
+		style.number,
+		isComplited && style.step_complited,
+		isDisabled && style.number_disabled
+	);
+
+	const textClass = clsx(
+		style.text,
+		isCurrent && style.text_active,
+		isDisabled && style.text_disabled
+	);
+
 	return (
-		<Anchor
-			href={isInteractive ? link : undefined} // Отключаем ссылку в неинтерактивном режиме
-			className={clsx(
-				style.link,
-				(isDisabled || isCurrent || !isInteractive) && style.link_disable
-			)}
-			aria-disabled={isDisabled || !isInteractive}
-			onClick={(e) => {
-				if (!isInteractive) e.preventDefault(); // Блокируем переход
-			}}
-		>
-			<div
-				className={clsx(
-					style.step,
-					isComplited && style.step_complited,
-					isCurrent && style.step_active,
-					isDisabled && style.step_disabled
-				)}
-			>
-				{isComplited ? (
-					<span className={clsx(style.number, style.step_complited)}>
-						{number}
-					</span>
-				) : (
-					<span
-						className={clsx(style.number, isDisabled && style.number_disabled)}
-					>
-						{number}
-					</span>
-				)}
+		<Anchor {...anchorProps}>
+			<div className={stepClass}>
+				<span className={numberClass}>{number}</span>
 			</div>
-			<span
-				className={clsx(
-					style.text,
-					isCurrent && style.text_active,
-					isDisabled && style.text_disabled
-				)}
-			>
-				{text}
-			</span>
+			<span className={textClass}>{text}</span>
 		</Anchor>
 	);
 }
