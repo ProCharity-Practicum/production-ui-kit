@@ -71,9 +71,22 @@
 	letter-spacing: 0;
 	margin-bottom: 16px;
 
+	&:focus{
+		outline: none;
+	}
+
+	&:focus-visible {
+    outline: 2px solid $secondary;
+    outline-offset: 2px;
+  }
+
 	&:hover:not(:disabled) {
 		background: transparent;
 	}
+
+	&:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .button:last-child {

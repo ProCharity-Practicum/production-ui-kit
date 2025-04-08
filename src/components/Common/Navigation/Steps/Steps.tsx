@@ -3,6 +3,11 @@ import { Step } from './Step';
 import StepMobile from './StepMobile/index.tsx';
 import style from './Steps.module.scss';
 
+// Конфигурация компонента
+const STEP_NAVIGATION = {
+	MAX_DIFF: 1, // Разрешать только соседние шаги
+} as const;
+
 export function Steps({
 	data,
 	title,
@@ -13,7 +18,9 @@ export function Steps({
 	// обработчик изменения шага
 	const onChangeStep = (count: number) => {
 		if (category === CategorySteps.WITH_DISABLED_STEPS) return; // Блокируем изменение в этом режиме
-		if (count - 1 === step || count + 1 === step) changeStep?.(count);
+		if (Math.abs(count - step) === STEP_NAVIGATION.MAX_DIFF) {
+			changeStep?.(count);
+		}
 	};
 
 	const mobileTitle: JSX.Element = (
@@ -63,12 +70,11 @@ export function Steps({
 							key={counter}
 							className={style.button}
 							onClick={() => onChangeStep(counter)}
-							//	disabled={category === CategorySteps.WITH_DISABLED_STEPS || disabled} // Полное отключение в этом режиме
 							aria-disabled={
 								category === CategorySteps.WITH_DISABLED_STEPS || disabled
 							}
 						>
-							{/* Мобильная версия теперь управляется через CSS */}
+							{/* Мобильная версия управляется через CSS */}
 							<div className={style.desktopStep}>
 								<Step
 									text={text}
@@ -92,7 +98,7 @@ export function Steps({
 					);
 				})}
 			</div>
-			{/* Мобильный заголовок теперь управляется через CSS */}
+			{/* Мобильный заголовок управляется через CSS */}
 			<div className={style.mobileTitleContainer}>{mobileTitle}</div>
 		</div>
 	);
