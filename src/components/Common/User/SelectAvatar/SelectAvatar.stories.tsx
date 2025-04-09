@@ -9,7 +9,16 @@ const meta: Meta<typeof SelectAvatar> = {
 	parameters: {
 		layout: 'centered',
 	},
-	args: {},
+	args: {
+		// Добавляем mock-функции по умолчанию для всех историй
+		onChangeAvatar: (newAvatar: string) =>
+			console.log('Avatar changed to:', newAvatar),
+		onDeleteAvatar: async () => {
+			console.log('Avatar delete requested');
+			await new Promise((resolve) => setTimeout(resolve, 100)); // Имитация асинхронной операции
+			return { ok: true };
+		},
+	},
 };
 
 export default meta;
@@ -17,11 +26,11 @@ export default meta;
 type Story = StoryObj<typeof SelectAvatar>;
 
 export const Default: Story = {
-	args: {},
+	args: {}, // Использует mock-функции из meta
 };
 
 export const WithImage: Story = {
 	args: {
-		avatar: defaultAvatar,
+		avatar: defaultAvatar, // Добавляем avatar, остальные пропсы берутся из meta
 	},
 };

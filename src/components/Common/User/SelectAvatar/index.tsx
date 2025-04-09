@@ -9,6 +9,7 @@ import ReactCrop, {
 import './ReactCrop.scss';
 import style from './style.module.scss';
 import { Modal } from '../../Layout/Modal/Modal';
+//import { ModalTrigger } from '../../Layout/Modal/ModalTrigger/ModalTrigger';
 import { Button } from '../../Button';
 import { ButtonVariant } from '../../Button';
 import { Avatar } from '../Avatar/Avatar';
@@ -145,7 +146,7 @@ const SelectAvatar = ({
 
 		setCroppedImage(croppedImg.src);
 		onChangeAvatar(croppedImg.src);
-	//	console.log(croppedImg.src);
+		//	console.log(croppedImg.src);
 	};
 
 	const handleSubmit = () => {
@@ -163,7 +164,6 @@ const SelectAvatar = ({
 			const inputElement: HTMLInputElement | null =
 				document.querySelector('#avatar-input');
 			if (inputElement) inputElement.value = '';
-
 		} catch (err) {
 			console.error(err);
 		}
@@ -196,9 +196,7 @@ const SelectAvatar = ({
 						>
 							<div className={style.avatar__overlay}></div>
 							<div className={style.avatar__overlay_icon}></div>
-							<Avatar className={style.image}
-								image={croppedImage}
-							/>
+							<Avatar className={style.image} image={croppedImage} />
 						</button>
 						<button
 							type="button"
@@ -227,33 +225,32 @@ const SelectAvatar = ({
 
 			{open && (
 				<Modal onClose={handleCloseModal}>
-					<h2 className={style.modal__title}>Выбери фрагмент изображения</h2>
-					{imgSrc && (
-						<div className={style.modal__image__wrapper}>
-							<ReactCrop
-								crop={crop}
-								onChange={(_, percentCrop) => setCrop(percentCrop)}
-								circularCrop
-								keepSelection
-								aspect={ASPECT_RATIO}
-								minWidth={MIN_DIMENSION}
-							>
-								<img
-									ref={imgRef}
-									src={imgSrc}
-									alt="Upload"
-									className={style.modal__image}
-									onLoad={onImageLoad}
-								/>
-							</ReactCrop>
-						</div>
-					)}
-					<Button
-						variant={ButtonVariant.primary}
-						onClick={handleSubmit}
-					>
-						СОХРАНИТЬ
-					</Button>
+					<div className={style.modal}>
+						<h2 className={style.modal__title}>Выбери фрагмент изображения</h2>
+						{imgSrc && (
+							<div className={style.modal__image__wrapper}>
+								<ReactCrop
+									crop={crop}
+									onChange={(_, percentCrop) => setCrop(percentCrop)}
+									circularCrop
+									keepSelection
+									aspect={ASPECT_RATIO}
+									minWidth={MIN_DIMENSION}
+								>
+									<img
+										ref={imgRef}
+										src={imgSrc}
+										alt="Upload"
+										className={style.modal__image}
+										onLoad={onImageLoad}
+									/>
+								</ReactCrop>
+							</div>
+						)}
+						<Button variant={ButtonVariant.primary} onClick={handleSubmit}>
+							СОХРАНИТЬ
+						</Button>
+					</div>
 				</Modal>
 			)}
 		</>

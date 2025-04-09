@@ -1,22 +1,5 @@
 @use '@styles/variables' as *;
 
-button {
-	box-sizing: border-box;
-	padding: 0;
-	&:hover{
-		outline: none;
-		border: none;
-	}
-	&:focus{
-		outline: none;
-	}
-	&:focus-visible{
-		outline: none;
-	}
-}
-
-
-
 .wrapper {
 	width: 288px;
 	box-sizing: border-box;
@@ -24,7 +7,6 @@ button {
 	flex-direction: row;
 	align-items: center;
 	position: relative;
-
 	font-family: $fontFamily;
 }
 
@@ -33,7 +15,6 @@ button {
 	min-width: 136px;
 	height: 136px;
 	min-height: 136px;
-
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -57,28 +38,37 @@ button {
 
 	&__delete {
 		cursor: pointer;
-		background: url(./icon_delete_avatar.svg) center
-			no-repeat;
+		background: url(./icon_delete_avatar.svg) center no-repeat;
 		border: none;
 		border-radius: 50%;
 		width: 24px;
 		height: 24px;
-
 		position: absolute;
 		top: 0;
 		left: 136px;
-
 		padding: 0;
-		transition: 0.4s;
+		transition: opacity 0.2s ease-in-out;
+
 		&:hover {
 			opacity: 0.7;
+		}
+
+		&:focus,
+		&:focus-visible {
+			outline: none !important;
+			box-shadow: none !important;
 		}
 	}
 
 	&__overlay_container {
+		width: 136px; // Фиксируем размер
+		height: 136px;
 		position: relative;
+		overflow: hidden;
 		cursor: pointer;
 		background-color: inherit;
+		border: none !important;
+		outline: none !important;
 
 		&:hover .avatar__overlay {
 			opacity: 0.2;
@@ -86,6 +76,12 @@ button {
 
 		&:hover .avatar__overlay_icon {
 			opacity: 1;
+		}
+
+		&:focus,
+		&:focus-visible {
+			outline: none !important;
+			box-shadow: none !important;
 		}
 	}
 
@@ -116,52 +112,47 @@ button {
 		z-index: 1;
 		transition: opacity 0.2s ease-in-out;
 	}
-	&__overlay_container, 
-	&__delete {
-		transition: opacity 0.2s ease-in-out; // Синхронизируем с оверлеем
 
-	  &:focus, &:focus-visible {
-		outline: none !important; // Отключает глобальный outline
-		box-shadow: none !important; // На всякий случай
-	  }
-
-	  &__overlay, 
-	  &__overlay_icon {
-		transition: opacity 0.2s ease-in-out; // Уже есть, оставляем
-	  }
+	&__overlay,
+	&__overlay_icon {
+		width: 136px !important; // Жёстко задаём размер
+		height: 136px !important;
 	}
 }
 
 .image {
-	height: 100%;
-	width: 160px !important;
+	width: 100% !important;
+	height: auto !important;
+	max-width: 136px;
+	border-radius: 50%;
 }
 
 .notice {
 	margin: 0 0 0 32px;
 	max-width: 120px;
 	min-width: min-content;
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weigth-medium);
-	line-height: var(--font-line-xs);
+	font-size: $fontSizeXs;
+	font-weight: $fontWeightMedium;
+	line-height: 20px;
 	letter-spacing: 0em;
 	text-align: left;
-	color: #7b878f;
+	color: $fontLabelColor;
 	font-family: inherit;
 }
 
 .modal {
+	padding: 20px;
 	&__title {
 		width: fit-content;
 		padding: 0;
 		margin: 0;
-		font-size: var(--font-size-xxl);
-		font-weight: var(--font-weigth-bold);
-		line-height: var(--font-line-xxl);
+		font-size: $fontLineS;
+		font-weight: $fontWeightBold;
+		line-height: $fontLineS;
 		letter-spacing: 0px;
 		text-align: left;
-		color: #374146;
-		font-family: var(--font-family-numbers);
+		color: $titleFontColor;
+		font-family: $fontFamily;
 	}
 
 	&__image__wrapper {
@@ -179,5 +170,18 @@ button {
 
 	&__image {
 		object-fit: contain;
+	}
+}
+
+/* Глобальные переопределения только для этого компонента */
+button.avatar__overlay_container,
+button.avatar__delete {
+	padding: 0;
+	&:hover,
+	&:focus,
+	&:active {
+		outline: none;
+		border: none;
+		box-shadow: none;
 	}
 }
