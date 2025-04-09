@@ -3,7 +3,7 @@ import SelectAvatar from '.';
 import defaultAvatar from '../../../../assets/images/img_chess_512.png';
 
 const meta: Meta<typeof SelectAvatar> = {
-	title: 'Form/SelectAvatar',
+	title: 'Common/Content/User/SelectAvatar',
 	component: SelectAvatar,
 	tags: ['autodocs'],
 	parameters: {

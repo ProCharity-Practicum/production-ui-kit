@@ -1,12 +1,31 @@
+@use '@styles/variables' as *;
+
+button {
+	box-sizing: border-box;
+	padding: 0;
+	&:hover{
+		outline: none;
+		border: none;
+	}
+	&:focus{
+		outline: none;
+	}
+	&:focus-visible{
+		outline: none;
+	}
+}
+
+
+
 .wrapper {
 	width: 288px;
-
+	box-sizing: border-box;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	position: relative;
 
-	font-family: var(--font-family-numbers);
+	font-family: $fontFamily;
 }
 
 .avatar {
@@ -19,20 +38,20 @@
 	justify-content: center;
 	align-items: center;
 	border-radius: 50%;
-	border: 1px dashed #a0abb5;
+	border: 1px dashed $buttonOutlineLight;
 
 	&__text {
 		cursor: pointer;
 		width: min-content;
 		margin: 0;
 		padding: 0;
-		font-size: var(--font-size-s);
-		font-weight: var(--font-weigth-regular);
-		line-height: var(--font-line-s);
+		font-size: $fontSizeS;
+		font-weight: $fontWeightRegular;
+		line-height: $fontLineS;
 		letter-spacing: 0px;
 		text-align: center;
 		text-decoration-skip-ink: none;
-		color: var(--color-text-link);
+		color: $buttonBlue;
 		font-family: inherit;
 	}
 
@@ -78,7 +97,7 @@
 		height: 100%;
 		border-radius: 100%;
 		opacity: 0;
-		background-image: url(../../../assets/icons/icon_add_avatar.svg);
+		background-image: url(./icon_add_avatar.svg);
 		background-repeat: no-repeat;
 		background-position: center;
 		z-index: 2;
@@ -96,6 +115,20 @@
 		opacity: 0;
 		z-index: 1;
 		transition: opacity 0.2s ease-in-out;
+	}
+	&__overlay_container, 
+	&__delete {
+		transition: opacity 0.2s ease-in-out; // Синхронизируем с оверлеем
+
+	  &:focus, &:focus-visible {
+		outline: none !important; // Отключает глобальный outline
+		box-shadow: none !important; // На всякий случай
+	  }
+
+	  &__overlay, 
+	  &__overlay_icon {
+		transition: opacity 0.2s ease-in-out; // Уже есть, оставляем
+	  }
 	}
 }
 
