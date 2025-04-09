@@ -3,7 +3,6 @@ import style from './style.module.scss';
 import { StepProps } from './types';
 import { Anchor } from '@/components/Core/Anchor/Anchor';
 import notificationIcon from '../notification.svg';
-import { CategorySteps } from '../types';
 
 export function Step({
 	text,
@@ -23,10 +22,8 @@ export function Step({
 				'aria-disabled': isDisabled,
 			}
 		: {
-				href: () => undefined, // Блокировка через функцию
 				className: clsx(style.link, style.link_disabled),
 				'aria-disabled': true,
-				onClick: (e: React.MouseEvent) => e.preventDefault(),
 			};
 
 	const stepClass = clsx(
