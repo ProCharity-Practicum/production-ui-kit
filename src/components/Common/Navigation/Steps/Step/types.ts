@@ -5,5 +5,5 @@ export type StepProps = {
 	isCurrent?: boolean;
 	isDisabled?: boolean;
 	isComplited?: boolean;
-	isInteractive?: boolean; // Новый пропс
+	isInteractive?: boolean;
 };

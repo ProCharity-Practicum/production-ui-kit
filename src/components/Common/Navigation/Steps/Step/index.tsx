@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import style from './style.module.scss';
 import { StepProps } from './types';
 import { Anchor } from '@/components/Core/Anchor/Anchor';
+import notificationIcon from '../notification.svg';
+import { CategorySteps } from '../types';
 
 export function Step({
 	text,
@@ -49,7 +51,15 @@ export function Step({
 	return (
 		<Anchor {...anchorProps}>
 			<div className={stepClass}>
-				<span className={numberClass}>{number}</span>
+				{isComplited && !isCurrent && !isInteractive ? (
+					<img
+						src={notificationIcon}
+						className={style.icon}
+						alt="completed step"
+					/>
+				) : (
+					<span className={numberClass}>{number}</span>
+				)}
 			</div>
 			<span className={textClass}>{text}</span>
 		</Anchor>
