@@ -196,7 +196,7 @@ const SelectAvatar = ({
 						>
 							<div className={style.avatar__overlay}></div>
 							<div className={style.avatar__overlay_icon}></div>
-							<Avatar
+							<Avatar className={style.image}
 								image={croppedImage}
 							/>
 						</button>
