@@ -7,11 +7,25 @@ export type SelectProps = {
 	label: string;
 	options: string[];
 	currentValue?: string;
+	name?: string;
+	onChange?: (selectedValue: string, name?: string) => void;
 };
 
-export function Select({ label, options, currentValue = '' }: SelectProps) {
+export function Select({
+	label,
+	options,
+	currentValue = '',
+	name,
+	onChange,
+}: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [value, setValue] = useState(currentValue);
+	const [internalValue, setInternalValue] = useState(currentValue);
+
+	const handleOptionClick = (option: string) => {
+		setIsOpen(false);
+		setInternalValue(option);
+		onChange?.(option, name);
+	};
 
 	return (
 		<div className={styles.select} data-testid="Select">
@@ -21,11 +35,13 @@ export function Select({ label, options, currentValue = '' }: SelectProps) {
 			>
 				<div className={styles.panel__text}>
 					<label
-						className={`${styles.label} ${value !== '' && styles.label_active}`}
+						className={`${styles.label} ${internalValue !== '' && styles.label_active}`}
 					>
 						{label}
 					</label>
-					{value !== '' && <p className={styles.value}>{value}</p>}
+					{internalValue !== '' && (
+						<p className={styles.value}>{internalValue}</p>
+					)}
 				</div>
 				<img
 					className={styles.arrow}
@@ -33,18 +49,15 @@ export function Select({ label, options, currentValue = '' }: SelectProps) {
 					alt={isOpen ? 'Стрелка вверх' : 'Стрелка вниз'}
 				/>
 			</div>
-			{!isOpen ? null : (
+			{isOpen && (
 				<div className={styles.options}>
 					{options.map((option, index) => {
-						if (option === value) return;
+						if (option === internalValue) return null;
 						return (
 							<div
 								key={index}
 								className={styles.option}
-								onClick={() => {
-									setValue(option);
-									setIsOpen(false);
-								}}
+								onClick={() => handleOptionClick(option)}
 							>
 								<p className={styles.optionText}>{option}</p>
 							</div>
