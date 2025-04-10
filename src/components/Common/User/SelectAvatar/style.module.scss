@@ -1,182 +1,185 @@
 @use '@styles/variables' as *;
 
+$avatar-size-volunteer: 96px;
+$avatar-size-nko: 136px;
+
+// Базовые стили
 .wrapper {
-	width: 288px;
-	box-sizing: border-box;
 	display: flex;
-	flex-direction: row;
+	justify-content: space-between;
 	align-items: center;
 	position: relative;
 	font-family: $fontFamily;
 }
 
 .avatar {
-	width: 136px;
-	min-width: 136px;
-	height: 136px;
-	min-height: 136px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	border-radius: 50%;
 	border: 1px dashed $buttonOutlineLight;
+	cursor: pointer;
 
-	&__text {
+	&Text {
 		cursor: pointer;
-		width: min-content;
-		margin: 0;
-		padding: 0;
-		font-size: $fontSizeS;
-		font-weight: $fontWeightRegular;
-		line-height: $fontLineS;
-		letter-spacing: 0px;
 		text-align: center;
-		text-decoration-skip-ink: none;
-		color: $buttonBlue;
-		font-family: inherit;
+		color: $linkFontColor;
 	}
+}
 
-	&__delete {
-		cursor: pointer;
-		background: url(./icon_delete_avatar.svg) center no-repeat;
-		border: none;
-		border-radius: 50%;
-		width: 24px;
-		height: 24px;
-		position: absolute;
-		top: 0;
-		left: 136px;
-		padding: 0;
-		transition: opacity 0.2s ease-in-out;
+// Модификаторы для Волонтеров
+.volunteer {
+	width: 232px;
 
-		&:hover {
-			opacity: 0.7;
-		}
-
-		&:focus,
-		&:focus-visible {
-			outline: none !important;
-			box-shadow: none !important;
+	.avatar {
+		width: $avatar-size-volunteer;
+		height: $avatar-size-volunteer;
+		&Text {
+			font-size: $fontSizeXs; // 0.9rem ≈ 14px
+			font-weight: $fontWeightMedium;
+			line-height: $fontLineS;
 		}
 	}
 
-	&__overlay_container {
-		width: 136px; // Фиксируем размер
-		height: 136px;
-		position: relative;
-		overflow: hidden;
-		cursor: pointer;
-		background-color: inherit;
-		border: none !important;
-		outline: none !important;
+	.avatarOverlayContainer {
+		width: $avatar-size-volunteer;
+		height: $avatar-size-volunteer;
+	}
 
-		&:hover .avatar__overlay {
+	.avatarDelete {
+		left: 80px;
+	}
+
+	.image {
+		width: $avatar-size-volunteer !important;
+		height: $avatar-size-volunteer;
+	}
+}
+
+// Модификаторы для НКО
+.nko {
+	width: 288px;
+
+	.avatar {
+		width: $avatar-size-nko;
+		height: $avatar-size-nko;
+
+		&Text {
+			font-size: $fontSizeS; // 1rem = 16px
+			font-weight: $fontWeightMedium;
+			line-height: $fontLineS;
+		}
+	}
+
+	.avatarOverlayContainer {
+		width: $avatar-size-nko;
+		height: $avatar-size-nko;
+	}
+
+	.avatarDelete {
+		left: 116px;
+	}
+
+	.image {
+		width: $avatar-size-nko !important;
+		height: $avatar-size-nko;
+	}
+}
+
+// Общие стили для обоих вариантов
+.avatarOverlayContainer {
+	position: relative;
+	cursor: pointer;
+	background-color: inherit;
+	border: none;
+	padding: 0;
+
+	&:hover {
+		.avatarOverlay {
 			opacity: 0.2;
 		}
-
-		&:hover .avatar__overlay_icon {
+		.avatarOverlayIcon {
 			opacity: 1;
 		}
-
-		&:focus,
-		&:focus-visible {
-			outline: none !important;
-			box-shadow: none !important;
-		}
 	}
+}
 
-	&__overlay_icon {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		border-radius: 100%;
-		opacity: 0;
-		background-image: url(./icon_add_avatar.svg);
-		background-repeat: no-repeat;
-		background-position: center;
-		z-index: 2;
-		transition: opacity 0.2s ease-in-out;
-	}
+.avatarOverlayIcon {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+	opacity: 0;
+	background: url(./icon_add_avatar.svg) center no-repeat;
+	z-index: 2;
+	transition: opacity 0.2s ease-in-out;
+}
 
-	&__overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: #000000;
-		border-radius: 100%;
-		opacity: 0;
-		z-index: 1;
-		transition: opacity 0.2s ease-in-out;
-	}
+.avatarOverlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	border-radius: 100%;
+	opacity: 0;
+	z-index: 1;
+	transition: opacity 0.2s ease-in-out;
+}
 
-	&__overlay,
-	&__overlay_icon {
-		width: 136px !important; // Жёстко задаём размер
-		height: 136px !important;
+.avatarDelete {
+	cursor: pointer;
+	background: url(./icon_delete_avatar.svg) center no-repeat;
+	background-size: contain;
+	border: none;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: 0;
+	transition: opacity 0.2s ease-in-out;
+
+	&:hover {
+		opacity: 0.7;
 	}
 }
 
 .image {
-	width: 100% !important;
-	height: auto !important;
-	max-width: 136px;
 	border-radius: 50%;
 }
 
 .notice {
-	margin: 0 0 0 32px;
-	max-width: 120px;
-	min-width: min-content;
+	display: block;
+	margin-left: 20px;
+	width: 110px;
 	font-size: $fontSizeXs;
 	font-weight: $fontWeightMedium;
 	line-height: 20px;
-	letter-spacing: 0em;
-	text-align: left;
 	color: $fontLabelColor;
-	font-family: inherit;
 }
 
 .modal {
-	padding: 20px;
-	&__title {
-		width: fit-content;
-		padding: 0;
-		margin: 0;
-		font-size: $fontLineS;
+	padding: 36px 36px 40px;
+
+	&Title {
+		font-size: $fontSizeXXL;
 		font-weight: $fontWeightBold;
 		line-height: $fontLineS;
-		letter-spacing: 0px;
-		text-align: left;
 		color: $titleFontColor;
-		font-family: $fontFamily;
 	}
 
-	&__image__wrapper {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		position: relative;
+	&ImageWrapper {
 		margin: 20px 0;
 		width: 472px;
 		height: 472px;
-		max-width: 472px;
-		max-height: 472px;
 		background-color: rgba(0, 0, 0, 0.2);
 	}
 
-	&__image {
+	&Image {
 		object-fit: contain;
 	}
 }
 
-/* Глобальные переопределения только для этого компонента */
-button.avatar__overlay_container,
-button.avatar__delete {
-	padding: 0;
+// Reset button styles
+button {
 	&:hover,
 	&:focus,
 	&:active {

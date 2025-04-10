@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import ReactCrop, {
 	Crop,
 	PixelCrop,
@@ -9,85 +9,64 @@ import ReactCrop, {
 import './ReactCrop.scss';
 import style from './style.module.scss';
 import { Modal } from '../../Layout/Modal/Modal';
-//import { ModalTrigger } from '../../Layout/Modal/ModalTrigger/ModalTrigger';
 import { Button } from '../../Button';
 import { ButtonVariant } from '../../Button';
 import { Avatar } from '../Avatar/Avatar';
-
-// Cropper size params
-const ASPECT_RATIO = 1;
-const MIN_DIMENSION = 50;
-
-interface ISelectAvatar {
-	avatar: string; // src отображаемого аватара
-
-	/* Функция onDeleteAvatar должна удалять avatar
-  из данных пользователя на сервере,
-  отправляет запрос на сервер и т.д. */
-	onDeleteAvatar: () => Promise<{ ok: boolean }>;
-
-	/* Функция onChangeAvatar принимает src новой обрезанной картинки и обновляет avatar,
-  далее отправляет запрос на сервер и т.д. */
-	onChangeAvatar: (newAvatar: string) => void;
-}
+import { ASPECT_RATIO, MIN_DIMENSION, MAX_FILE_SIZE } from './constants';
+import { ISelectAvatar } from './types';
 
 const SelectAvatar = ({
 	avatar,
 	onChangeAvatar,
 	onDeleteAvatar,
+	variant = 'volunteer', // Значение по умолчанию
 }: ISelectAvatar) => {
-	// стейт видимости модалки
-	const [open, setOpen] = useState<boolean>(false);
-	// Исходный загруженный файл
+	const [open, setOpen] = useState(false);
 	const [imgSrc, setImgSrc] = useState<string | null>(null);
-	// Данные самого кропа: размеры, расположение
 	const [crop, setCrop] = useState<Crop>();
-	// Отображение аватара на странице
 	const [croppedImage, setCroppedImage] = useState<string | null>(
 		avatar || null
 	);
-
 	const imgRef = useRef<HTMLImageElement>(null);
 
-	const handleOpenModal = () => {
-		setOpen(true);
-	};
-	const handleCloseModal = () => {
+	const handleOpenModal = useCallback(() => setOpen(true), []);
+	const handleCloseModal = useCallback(() => {
 		setOpen(false);
 		setImgSrc(null);
 		setCrop(undefined);
-	};
+	}, []);
 
-	// Загрузка файла и подготовка для предпросмотра
-	const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-		try {
-			if (!e.target.files || e.target.files[0].size > 5 * 1024 * 1024) {
-				throw new Error('Файл не найден или его размер превышает 5Мб');
-			}
-			setImgSrc(null);
-			setCrop(undefined);
-			setCroppedImage(''); // Сброс состояния аватарки
-			const file = e.target.files[0];
-			const reader = new FileReader();
-
-			reader.addEventListener('load', () => {
-				const result = reader.result;
-				if (typeof result === 'string') {
-					setImgSrc(result);
+	const onSelectFile = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			try {
+				const file = e.target.files?.[0];
+				if (!file || file.size > MAX_FILE_SIZE) {
+					throw new Error('Файл не найден или его размер превышает 5Мб');
 				}
-			});
-			reader.readAsDataURL(file);
-			handleOpenModal();
-		} catch (err) {
-			console.log(err);
-		}
-	};
 
-	// Отображение кроппера
-	const onImageLoad = (e: React.ChangeEvent<HTMLImageElement>) => {
+				setImgSrc(null);
+				setCrop(undefined);
+				setCroppedImage('');
+
+				const reader = new FileReader();
+				reader.onload = () => {
+					if (typeof reader.result === 'string') {
+						setImgSrc(reader.result);
+					}
+				};
+				reader.readAsDataURL(file);
+				handleOpenModal();
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		[handleOpenModal]
+	);
+
+	const onImageLoad = useCallback((e: React.ChangeEvent<HTMLImageElement>) => {
 		const { width, height } = e.currentTarget;
 		const cropWidthInPercent = 80;
-		const crop = makeAspectCrop(
+		const newCrop = makeAspectCrop(
 			{
 				unit: '%',
 				width: cropWidthInPercent,
@@ -96,60 +75,56 @@ const SelectAvatar = ({
 			width,
 			height
 		);
-		const centeredCrop = centerCrop(crop, width, height);
-		setCrop(centeredCrop);
-	};
+		setCrop(centerCrop(newCrop, width, height));
+	}, []);
 
-	// Нажатие на неотображаемый на странице input
-	const handleImageChange = () => {
+	const handleImageChange = useCallback(() => {
 		document.getElementById('avatar-input')?.click();
-	};
+	}, []);
 
-	// Создание обрезанного изображения для аватара
-	const setCanvasPreview = (image: HTMLImageElement, crop: PixelCrop) => {
-		const canvas = document.createElement('canvas');
-		const ctx = canvas.getContext('2d');
-		if (!ctx) {
-			throw new Error('no 2d context');
-		}
+	const setCanvasPreview = useCallback(
+		(image: HTMLImageElement, crop: PixelCrop) => {
+			const canvas = document.createElement('canvas');
+			const ctx = canvas.getContext('2d');
+			if (!ctx) return;
 
-		const pixelRatio = window.devicePixelRatio;
-		const scaleX = image.naturalWidth / image.width;
-		const scaleY = image.naturalHeight / image.height;
+			const pixelRatio = window.devicePixelRatio;
+			const scaleX = image.naturalWidth / image.width;
+			const scaleY = image.naturalHeight / image.height;
 
-		canvas.width = Math.floor(crop.width * scaleX * pixelRatio);
-		canvas.height = Math.floor(crop.height * scaleY * pixelRatio);
+			canvas.width = Math.floor(crop.width * scaleX * pixelRatio);
+			canvas.height = Math.floor(crop.height * scaleY * pixelRatio);
 
-		ctx.scale(pixelRatio, pixelRatio);
-		ctx.imageSmoothingQuality = 'high';
+			ctx.scale(pixelRatio, pixelRatio);
+			ctx.imageSmoothingQuality = 'high';
 
-		const cropX = crop.x * scaleX;
-		const cropY = crop.y * scaleY;
+			const cropX = crop.x * scaleX;
+			const cropY = crop.y * scaleY;
 
-		ctx.save();
-		ctx.translate(-cropX, -cropY);
-		ctx.drawImage(
-			image,
-			0,
-			0,
-			image.naturalWidth,
-			image.naturalHeight,
-			0,
-			0,
-			image.naturalWidth,
-			image.naturalHeight
-		);
-		ctx.restore();
+			ctx.save();
+			ctx.translate(-cropX, -cropY);
+			ctx.drawImage(
+				image,
+				0,
+				0,
+				image.naturalWidth,
+				image.naturalHeight,
+				0,
+				0,
+				image.naturalWidth,
+				image.naturalHeight
+			);
+			ctx.restore();
 
-		const croppedImg = new Image();
-		croppedImg.src = canvas.toDataURL();
+			const croppedImg = new Image();
+			croppedImg.src = canvas.toDataURL();
+			setCroppedImage(croppedImg.src);
+			onChangeAvatar(croppedImg.src);
+		},
+		[onChangeAvatar]
+	);
 
-		setCroppedImage(croppedImg.src);
-		onChangeAvatar(croppedImg.src);
-		//	console.log(croppedImg.src);
-	};
-
-	const handleSubmit = () => {
+	const handleSubmit = useCallback(() => {
 		try {
 			if (crop && imgRef.current) {
 				const cropInfo = convertToPixelCrop(
@@ -161,55 +136,53 @@ const SelectAvatar = ({
 				handleCloseModal();
 			}
 
-			const inputElement: HTMLInputElement | null =
-				document.querySelector('#avatar-input');
+			const inputElement =
+				document.querySelector<HTMLInputElement>('#avatar-input');
 			if (inputElement) inputElement.value = '';
 		} catch (err) {
 			console.error(err);
 		}
-	};
+	}, [crop, handleCloseModal, setCanvasPreview]);
 
-	const handleDeleteAvatar = async () => {
+	const handleDeleteAvatar = useCallback(async () => {
 		try {
-			const response = await onDeleteAvatar(); // Ожидаем успешного выполнения запроса к серверу
+			const response = await onDeleteAvatar();
 			if (response.ok) {
 				setImgSrc(null);
-				setCroppedImage(null); // Сброс состояния croppedImage
-				setCrop(undefined); // Сброс состояния crop
+				setCroppedImage(null);
+				setCrop(undefined);
 			} else {
-				console.error('Ошибка при удалении аватара: не удалось удалить аватар');
+				console.error('Ошибка при удалении аватара');
 			}
 		} catch (error) {
 			console.error('Ошибка при удалении аватара:', error);
 		}
-	};
+	}, [onDeleteAvatar]);
 
 	return (
 		<>
-			<div className={style.wrapper}>
+			<div className={`${style.wrapper} ${style[variant]}`}>
 				{croppedImage ? (
 					<>
 						<button
 							type="button"
-							className={style.avatar__overlay_container}
+							className={style.avatarOverlayContainer}
 							onClick={handleImageChange}
 						>
-							<div className={style.avatar__overlay}></div>
-							<div className={style.avatar__overlay_icon}></div>
+							<div className={style.avatarOverlay} />
+							<div className={style.avatarOverlayIcon} />
 							<Avatar className={style.image} image={croppedImage} />
 						</button>
 						<button
 							type="button"
-							className={style.avatar__delete}
+							className={style.avatarDelete}
 							// eslint-disable-next-line @typescript-eslint/no-misused-promises
-							onClick={handleDeleteAvatar} // Используем новую функцию
+							onClick={handleDeleteAvatar}
 						/>
 					</>
 				) : (
-					<div className={style.avatar}>
-						<span className={style.avatar__text} onClick={handleImageChange}>
-							Добавить фото
-						</span>
+					<div className={style.avatar} onClick={handleImageChange}>
+						<span className={style.avatarText}>Добавить фото</span>
 					</div>
 				)}
 
@@ -226,9 +199,9 @@ const SelectAvatar = ({
 			{open && (
 				<Modal onClose={handleCloseModal}>
 					<div className={style.modal}>
-						<h2 className={style.modal__title}>Выбери фрагмент изображения</h2>
+						<h2 className={style.modalTitle}>Выбери фрагмент изображения</h2>
 						{imgSrc && (
-							<div className={style.modal__image__wrapper}>
+							<div className={style.modalImageWrapper}>
 								<ReactCrop
 									crop={crop}
 									onChange={(_, percentCrop) => setCrop(percentCrop)}
@@ -241,7 +214,7 @@ const SelectAvatar = ({
 										ref={imgRef}
 										src={imgSrc}
 										alt="Upload"
-										className={style.modal__image}
+										className={style.modalImage}
 										onLoad={onImageLoad}
 									/>
 								</ReactCrop>
