@@ -47,14 +47,20 @@ export function SelectCategories({
 
 	useEffect(() => {}, [initialValues]);
 
-	function onHandleClick() {
-		if (isOpen) {
-			setIsOpen(false);
-			setValues(initialValues);
-		} else {
-			setIsOpen(true);
-		}
-	}
+	function onHandleClick(e: React.MouseEvent) {
+    // Проверяем, был ли клик по чипсу (элементу Chips)
+    const target = e.target as HTMLElement;
+    if (target.closest('.chips') || target.closest('.chips-close')) {
+      return; // Не обрабатываем клик, если он был по чипсу или его кнопке удаления
+    }
+
+    if (isOpen) {
+      setIsOpen(false);
+      setValues(initialValues);
+    } else {
+      setIsOpen(true);
+    }
+  }
 
 	function onDeleteOption(value: string): void {
 		setValues(values.filter((item) => item !== value));
@@ -94,7 +100,6 @@ export function SelectCategories({
 			>
 				<div
 					className={styles.selection__wrapper}
-					onClick={(e: React.MouseEvent) => e.stopPropagation()}
 				>
 					<label className={styles.label}>{label}</label>
 					<Chips filters={initialValues} onDelete={onDeleteOption} />
