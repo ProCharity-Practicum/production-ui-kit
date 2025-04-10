@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styles from './Select.module.scss';
 import ArrowRoundedUp from './assets/icon_arrow_rounded_up_light.svg';
 import ArrowRoundedDown from './assets/icon_arrow_rounded_down_light.svg';
@@ -6,7 +6,7 @@ import ArrowRoundedDown from './assets/icon_arrow_rounded_down_light.svg';
 export type SelectProps = {
 	label: string;
 	options: string[];
-	currentValue?: string;
+	value?: string;
 	name?: string;
 	onChange?: (selectedValue: string, name?: string) => void;
 };
@@ -14,12 +14,13 @@ export type SelectProps = {
 export function Select({
 	label,
 	options,
-	currentValue = '',
+	value = '',
 	name,
 	onChange,
 }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [internalValue, setInternalValue] = useState(currentValue);
+	const [internalValue, setInternalValue] = useState(value);
+	const selectRef = useRef<HTMLDivElement>(null);
 
 	const handleOptionClick = (option: string) => {
 		setIsOpen(false);
@@ -27,8 +28,21 @@ export function Select({
 		onChange?.(option, name);
 	};
 
+	const handleBlur = (e: React.FocusEvent) => {
+		// Проверяем, что новый фокус НЕ внутри нашего селекта
+		if (!selectRef.current?.contains(e.relatedTarget as Node)) {
+			setIsOpen(false);
+		}
+	};
+
 	return (
-		<div className={styles.select} data-testid="Select">
+		<div
+			className={styles.select}
+			data-testid="Select"
+			ref={selectRef}
+			onBlur={handleBlur}
+			tabIndex={0}
+		>
 			<div
 				className={`${styles.panel} ${isOpen && styles.panel_open}`}
 				onClick={() => setIsOpen(!isOpen)}

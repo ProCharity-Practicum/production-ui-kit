@@ -36,7 +36,7 @@ export const HasValue: Story = {
 		options: ['chocolate', 'strawberry', 'vanilla'],
 		label: 'Выберите',
 		onChange: fn(),
-		currentValue: 'chocolate',
+		value: 'chocolate',
 		name: 'hasValueSelect', // Добавляем name
 	},
 	play: async ({ canvasElement }) => {
@@ -57,12 +57,12 @@ export const InteractiveExample: Story = {
 	},
 	render: (args) => {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [value, setValue] = useState(args.currentValue || '');
+		const [value, setValue] = useState(args.value || '');
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 				<Select
 					{...args}
-					currentValue={value}
+					value={value}
 					onChange={(val, name) => {
 						args.onChange?.(val, name); // Передаем в actions
 						setValue(val);
@@ -76,98 +76,124 @@ export const InteractiveExample: Story = {
 	},
 };
 
-// Добавляем новую историю с группой селектов
-/*export const MultipleSelectsGrid: Story = {
-	name: 'Группа селектов',
-	parameters: {
-	  layout: 'padded', // Меняем на padded для лучшего отображения
+const Container = ({ children }: { children: React.ReactNode }) => (
+	<div
+		style={{
+			maxWidth: '800px',
+			padding: '20px',
+			background: '#fff',
+			borderRadius: '8px',
+		}}
+	>
+		{children}
+	</div>
+);
+
+// Группа из двух селектов в ряд
+const Row = ({ children }: { children: React.ReactNode }) => (
+	<div
+		style={{
+			display: 'flex',
+			gap: '16px',
+			marginTop: '16px',
+			marginBottom: '16px',
+		}}
+	>
+		{children}
+	</div>
+);
+
+export const MultipleSelects: StoryObj<typeof Select> = {
+	args: {
+		onChange: fn(),
 	},
-	render: () => {
-	  // eslint-disable-next-line react-hooks/rules-of-hooks
-	  const [values, setValues] = useState<Record<string, string>>({
-		main: '',
-		first: '',
-		second: '',
-		third: '',
-		fourth: ''
-	  });
-  
-	  const handleChange = (val: string, name?: string) => {
-		if (name) {
-		  setValues(prev => ({ ...prev, [name]: val }));
-		}
-	  };
-  
-	  return (
-		<div style={{ 
-		  width: '600px',
-		  display: 'flex',
-		  flexDirection: 'column',
-		  gap: '20px',
-		  padding: '20px'
-		}}>
-		 // Верхний селект (во всю ширину)
-		  <Select
-			label="Основной выбор"
-			options={['Вариант 1', 'Вариант 2', 'Вариант 3']}
-			currentValue={values.main}
-			onChange={handleChange}
-			name="main"
-		  />
-  
-		  //Два ряда по два селекта 
-		  <div style={{ display: 'flex', gap: '20px' }}>
-			<Select
-			  label="Первый селект"
-			  options={['Опция A', 'Опция B', 'Опция C']}
-			  currentValue={values.first}
-			  onChange={handleChange}
-			  name="first"
-			/>
-			<Select
-			  label="Второй селект"
-			  options={['Тип X', 'Тип Y', 'Тип Z']}
-			  currentValue={values.second}
-			  onChange={handleChange}
-			  name="second"
-			/>
-		  </div>
-  
-		  <div style={{ display: 'flex', gap: '20px' }}>
-			<Select
-			  label="Третий селект"
-			  options={['Версия 1', 'Версия 2', 'Версия 3']}
-			  currentValue={values.third}
-			  onChange={handleChange}
-			  name="third"
-			/>
-			<Select
-			  label="Четвертый селект"
-			  options={['Статус 1', 'Статус 2', 'Статус 3']}
-			  currentValue={values.fourth}
-			  onChange={handleChange}
-			  name="fourth"
-			/>
-		  </div>
-  
-		  /* Блок с текущими значениями
-		  <div style={{ 
-			marginTop: '20px',
-			padding: '15px',
-			backgroundColor: '#f5f5f5',
-			borderRadius: '6px'
-		  }}>
-			<h4>Текущие значения:</h4>
-			<ul>
-			  {Object.entries(values).map(([name, value]) => (
-				<li key={name}>
-				  <strong>{name}:</strong> {value || 'не выбрано'}
-				</li>
-			  ))}
-			</ul>
-		  </div>
-		</div>
-	  );
+	render: (args) => {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [values, setValues] = useState({
+			main: '',
+			color: '',
+			size: '',
+			material: '',
+			country: '',
+			additional: '',
+		});
+
+		const handleChange =
+			(field: keyof typeof values) => (value: string, name?: string) => {
+				args.onChange?.(value, name); // Логируем в actions
+				setValues((prev) => ({ ...prev, [field]: value }));
+			};
+
+		return (
+			<Container>
+				{/* Полноширинный селект */}
+				<Select
+					label="Основной выбор"
+					options={['Вариант 1', 'Вариант 2', 'Вариант 3', 'Вариант 4']}
+					value=""
+					onChange={handleChange('main')}
+					name="mainSelect"
+				/>
+
+				{/* Два селекта в ряд */}
+				<Row>
+					<Select
+						label="Цвет"
+						options={['Красный', 'Зеленый', 'Синий', 'Желтый']}
+						value=""
+						onChange={handleChange('color')}
+						name="colorSelect"
+					/>
+					<Select
+						label="Размер"
+						options={['S', 'M', 'L', 'XL']}
+						value=""
+						onChange={handleChange('size')}
+						name="sizeSelect"
+					/>
+				</Row>
+
+				{/* Еще два селекта в ряд */}
+				<Row>
+					<Select
+						label="Материал"
+						options={['Хлопок', 'Полиэстер', 'Шерсть', 'Шелк']}
+						value=""
+						onChange={handleChange('material')}
+						name="materialSelect"
+					/>
+					<Select
+						label="Страна"
+						options={['Россия', 'Китай', 'Турция', 'Германия']}
+						value=""
+						onChange={handleChange('country')}
+						name="countrySelect"
+					/>
+				</Row>
+
+				{/* Одиночный селект с ограниченной шириной */}
+				<div style={{ width: '333px' }}>
+					<Select
+						label="Доп. параметр"
+						options={['Да', 'Нет', 'Не важно']}
+						value=""
+						onChange={handleChange('additional')}
+						name="additionalSelect"
+					/>
+				</div>
+				{/* Блок с текущими значениями для наглядности */}
+				<div
+					style={{
+						marginTop: '24px',
+						padding: '16px',
+						background: '#f5f5f5',
+						borderRadius: '4px',
+					}}
+				>
+					<h4>Текущие значения:</h4>
+					<pre>{JSON.stringify(values, null, 2)}</pre>
+				</div>
+			</Container>
+		);
 	},
-  };
- */ 
+};
