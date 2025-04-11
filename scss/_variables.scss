@@ -12,6 +12,14 @@ $fontSizeXXS: 0.8rem;
 $fontSizeXs: 0.9rem;
 $fontSizeS: 1rem;
 $fontLineS: 1.5rem;
+$font-size-xxl: 32px;
+$font-Size-XXS: 14px;
+$font-Size-XXXS: 12px;
+$font-Size-M: 20px;
+$font-Size-L: 24px;
+$font-Size-Xl: 24px;
+$font-Size-XXXl: 40px;
+$font-Size-XXXXl: 48px;
 
 // fontColors
 $fontColor: #58646a;
@@ -28,7 +36,7 @@ $largeMobileScreenWidth: 560px; $largeMobileContainerSize: 520px;
 $mobileScreenWidth: 360px; $mobileContainerSize: 312px;
 
 // colors
-$backgroundColor: #ffffff;
+$backgroundColor: #ffffff; //$lightPrimary
 $colorBgLightPrimary: #f8fbff;
 $primary: #7dcdd7;
 $secondary: #374146;
@@ -43,8 +51,13 @@ $buttonPrimaryDark: #374146;
 $buttonPrimaryLight: #f8fbff;
 $buttonSecondary: $secondary;
 $buttonSecondaryDark: #58646a;
-$buttonSecondaryLight: #f1f5f9;
+$buttonSecondaryLight: #f1f5f9; //$lightSecondary
 $buttonOutlineLight: #a0abb5;
 $buttonOutlineDark: #7b878f;
 $buttonBlue: #048aa7;
 $buttonDarkBlue: #006b83;
+
+//fonts
+$fontSBold: $fontWeightBold $baseFontSize $fontFamily;
+$fontSMedium: $fontWeightMedium $baseFontSize $fontFamily;
+$fontSSmall: $fontWeightMedium $fontSizeXs $fontFamily;
