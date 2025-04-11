@@ -1,11 +1,14 @@
 import { useState, useRef } from 'react';
 import styles from './Select.module.scss';
-import ArrowRoundedUp from './assets/icon_arrow_rounded_up_light.svg';
-import ArrowRoundedDown from './assets/icon_arrow_rounded_down_light.svg';
+import ArrowRoundedUp from './icon_arrow_rounded_up_light.svg';
+import ArrowRoundedDown from './icon_arrow_rounded_down_light.svg';
+
+type Option = string | object;
 
 export type SelectProps = {
 	label: string;
-	options: string[];
+	options: Option[];
+	optionLabel: string;
 	value?: string;
 	name?: string;
 	onChange?: (selectedValue: string, name?: string) => void;
@@ -14,6 +17,7 @@ export type SelectProps = {
 export function Select({
 	label,
 	options,
+	optionLabel,
 	value = '',
 	name,
 	onChange,
@@ -22,18 +26,35 @@ export function Select({
 	const [internalValue, setInternalValue] = useState(value);
 	const selectRef = useRef<HTMLDivElement>(null);
 
-	const handleOptionClick = (option: string) => {
+	const getDisplayText = (option: Option): string => {
+		if (typeof option === 'string') return option;
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		return String(Object(option)[optionLabel]);
+	};
+
+	const getOptionValue = (option: Option): string => {
+		if (typeof option === 'string') return option;
+		// Сначала проверяем стандартное поле 'value', затем 'id', затем любое другое поле
+		if ('value' in option) return String(option.value);
+		if ('id' in option) return String(option.id);
+		return JSON.stringify(option);
+	};
+
+	const handleOptionClick = (selectedValue: string) => {
 		setIsOpen(false);
-		setInternalValue(option);
-		onChange?.(option, name);
+		setInternalValue(selectedValue);
+		onChange?.(selectedValue, name);
 	};
 
 	const handleBlur = (e: React.FocusEvent) => {
-		// Проверяем, что новый фокус НЕ внутри нашего селекта
 		if (!selectRef.current?.contains(e.relatedTarget as Node)) {
 			setIsOpen(false);
 		}
 	};
+
+	const selectedOption = options.find(
+		(option) => getOptionValue(option) === internalValue
+	);
 
 	return (
 		<div
@@ -53,8 +74,8 @@ export function Select({
 					>
 						{label}
 					</label>
-					{internalValue !== '' && (
-						<p className={styles.value}>{internalValue}</p>
+					{internalValue !== '' && selectedOption && (
+						<p className={styles.value}>{getDisplayText(selectedOption)}</p>
 					)}
 				</div>
 				<img
@@ -66,14 +87,16 @@ export function Select({
 			{isOpen && (
 				<div className={styles.options}>
 					{options.map((option, index) => {
-						if (option === internalValue) return null;
+						const displayText = getDisplayText(option);
+						const optionValue = getOptionValue(option);
+						if (optionValue === internalValue) return null;
 						return (
 							<div
-								key={index}
+								key={`${optionValue}-${index}`}
 								className={styles.option}
-								onClick={() => handleOptionClick(option)}
+								onClick={() => handleOptionClick(optionValue)}
 							>
-								<p className={styles.optionText}>{option}</p>
+								<p className={styles.optionText}>{displayText}</p>
 							</div>
 						);
 					})}

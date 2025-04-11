@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, within } from '@storybook/test';
 import { fn } from '@storybook/test';
-import { useState } from 'react';
 import { Select } from './Select';
+import { useState } from 'react';
 
 const meta = {
 	title: 'Forms/Select',
@@ -15,64 +14,56 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Базовая история
-export const Default: Story = {
+export const DefaultWithStrings: Story = {
 	args: {
-		options: ['chocolate', 'strawberry', 'vanilla'],
-		label: 'Выберите',
+		label: 'Выберите вариант',
+		options: ['Первый', 'Второй', 'Третий'], // Простые строки
+		optionLabel: 'anyField', // Любое значение, т.к. для строк игнорируется
 		onChange: fn(),
-		name: 'defaultSelect', // Добавляем name
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const element = canvas.getByTestId('Select');
-		await expect(element).toBeInTheDocument();
+		name: 'stringSelect',
 	},
 };
 
-// История с предвыбранным значением
-export const HasValue: Story = {
+// 2. Вариант с объектами
+export const ObjectOptions: Story = {
 	args: {
-		options: ['chocolate', 'strawberry', 'vanilla'],
-		label: 'Выберите',
+		label: 'Выберите город',
+		options: [
+			{ name: 'Москва', value: 'moscow' },
+			{ name: 'Санкт-Петербург', value: 'spb' },
+			{ name: 'Казань', value: 'kazan' },
+		],
+		optionLabel: 'name', // Указываем поле для отображения
 		onChange: fn(),
-		value: 'chocolate',
-		name: 'hasValueSelect', // Добавляем name
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const element = canvas.getByTestId('Select');
-		await expect(element).toBeInTheDocument();
+		name: 'citySelect',
 	},
 };
 
-// Интерактивный пример
-export const InteractiveExample: Story = {
-	name: 'Интерактивный пример',
+// 3.1 Вариант с предвыбранным значением (строки)
+export const StringOptionsWithDefault: Story = {
 	args: {
-		options: ['chocolate', 'strawberry', 'vanilla'],
-		label: 'Выберите',
+		label: 'Выберите напиток',
+		options: ['Кофе', 'Чай', 'Сок'],
+		optionLabel: 'anyField',
+		value: 'Чай', // Предвыбранное значение (должно совпадать с одним из элементов массива)
 		onChange: fn(),
-		name: 'interactiveSelect', // Добавляем name
+		name: 'drinkSelect',
 	},
-	render: (args) => {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [value, setValue] = useState(args.value || '');
-		return (
-			<div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-				<Select
-					{...args}
-					value={value}
-					onChange={(val, name) => {
-						args.onChange?.(val, name); // Передаем в actions
-						setValue(val);
-					}}
-				/>
-				<div>
-					Текущее значение: <strong>{value || 'не выбрано'}</strong>
-				</div>
-			</div>
-		);
+};
+
+// 3.2 Вариант с предвыбранным значением (для объектов)
+export const ObjectOptionsWithDefault: Story = {
+	args: {
+		label: 'Выберите пользователя',
+		options: [
+			{ username: 'Иван', id: 'user1' },
+			{ username: 'Мария', id: 'user2' },
+			{ username: 'Алексей', id: 'user3' },
+		],
+		optionLabel: 'username',
+		value: 'user2', // Предвыбранное значение (id)
+		onChange: fn(),
+		name: 'userSelect',
 	},
 };
 
@@ -89,105 +80,91 @@ const Container = ({ children }: { children: React.ReactNode }) => (
 	</div>
 );
 
-// Группа из двух селектов в ряд
 const Row = ({ children }: { children: React.ReactNode }) => (
-	<div
-		style={{
-			display: 'flex',
-			gap: '16px',
-			marginTop: '16px',
-			marginBottom: '16px',
-		}}
-	>
+	<div style={{ display: 'flex', gap: '16px', margin: '16px 0' }}>
 		{children}
 	</div>
 );
 
-export const MultipleSelects: StoryObj<typeof Select> = {
+export const MultipleSelects: Story = {
 	args: {
+		label: '', // Пустые значения по умолчанию
+		options: [],
+		optionLabel: '',
 		onChange: fn(),
 	},
-	render: (args) => {
+	render: () => {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const [values, setValues] = useState({
-			main: '',
+			product: '',
+			city: '',
 			color: '',
 			size: '',
 			material: '',
-			country: '',
-			additional: '',
 		});
 
-		const handleChange =
-			(field: keyof typeof values) => (value: string, name?: string) => {
-				args.onChange?.(value, name); // Логируем в actions
-				setValues((prev) => ({ ...prev, [field]: value }));
-			};
+		const handleChange = (field: keyof typeof values) => (value: string) => {
+			setValues((prev) => ({ ...prev, [field]: value }));
+		};
 
 		return (
 			<Container>
-				{/* Полноширинный селект */}
+				{/* 1. Селект с объектами (продукты) */}
 				<Select
-					label="Основной выбор"
-					options={['Вариант 1', 'Вариант 2', 'Вариант 3', 'Вариант 4']}
-					value=""
-					onChange={handleChange('main')}
-					name="mainSelect"
+					label="Продукт"
+					options={[
+						{ name: 'Ноутбук', value: 'laptop' },
+						{ name: 'Смартфон', value: 'phone' },
+						{ name: 'Планшет', value: 'tablet' },
+					]}
+					optionLabel="name"
+					value={values.product}
+					onChange={handleChange('product')}
+					name="productSelect"
 				/>
 
-				{/* Два селекта в ряд */}
+				{/* 2. Селект со строками (цвета) */}
 				<Row>
 					<Select
 						label="Цвет"
-						options={['Красный', 'Зеленый', 'Синий', 'Желтый']}
-						value=""
+						options={['Красный', 'Синий', 'Зеленый']}
+						optionLabel="any"
+						value={values.color}
 						onChange={handleChange('color')}
 						name="colorSelect"
 					/>
+
+					{/* 3. Селект со строками (размеры) */}
 					<Select
 						label="Размер"
 						options={['S', 'M', 'L', 'XL']}
-						value=""
+						optionLabel="any"
+						value={values.size}
 						onChange={handleChange('size')}
 						name="sizeSelect"
 					/>
 				</Row>
 
-				{/* Еще два селекта в ряд */}
-				<Row>
+				{/* 4. Селект со строками (материалы) */}
+				<div style={{ width: '400px' }}>
 					<Select
 						label="Материал"
-						options={['Хлопок', 'Полиэстер', 'Шерсть', 'Шелк']}
-						value=""
+						options={['Хлопок', 'Полиэстер', 'Шерсть']}
+						optionLabel="any"
+						value={values.material}
 						onChange={handleChange('material')}
 						name="materialSelect"
 					/>
-					<Select
-						label="Страна"
-						options={['Россия', 'Китай', 'Турция', 'Германия']}
-						value=""
-						onChange={handleChange('country')}
-						name="countrySelect"
-					/>
-				</Row>
-
-				{/* Одиночный селект с ограниченной шириной */}
-				<div style={{ width: '333px' }}>
-					<Select
-						label="Доп. параметр"
-						options={['Да', 'Нет', 'Не важно']}
-						value=""
-						onChange={handleChange('additional')}
-						name="additionalSelect"
-					/>
 				</div>
-				{/* Блок с текущими значениями для наглядности */}
+
+				{/* Блок с текущими значениями */}
 				<div
 					style={{
 						marginTop: '24px',
 						padding: '16px',
 						background: '#f5f5f5',
 						borderRadius: '4px',
+						fontFamily: 'monospace',
 					}}
 				>
 					<h4>Текущие значения:</h4>
