@@ -1,0 +1,38 @@
+@use '@styles/variables' as *;
+
+.stepMobile {
+	width: 100%;
+	height: 8px; // Фиксированная высота вместо 100%
+	border-radius: 4px;
+
+	background-color: $primary;
+
+	&__current {
+		background-color: $accent;
+	}
+
+	&__disabled {
+		background-color: $buttonSecondaryLight;
+	}
+
+	&__completed {
+		background-color: $primary;
+	}
+
+	&__inProgress {
+		width: 50%;
+		border-radius: 4px 0 0 4px;
+	}
+}
+
+.stepWrapper {
+	width: 100%;
+	height: 100%;
+}
+
+.stepBackground {
+	width: 100%;
+	height: 100%;
+	background-color: $buttonSecondaryLight;
+	border-radius: 4px;
+}
