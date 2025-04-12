@@ -1,5 +1,5 @@
 import styles from './SelectCategories.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { Checkbox } from '../../Checkbox/Checkbox';
 import { Chips } from '../../Chips/Chips';
 import { Icon } from '@/components/Core/Icon';
@@ -26,86 +26,98 @@ export function SelectCategories({
 	const [isOpen, setIsOpen] = useState(false);
 	const [values, setValues] = useState(initialValues);
 	const isSingle = options.length <= 1;
+	const selectRef = useRef<HTMLDivElement>(null);
 
-	const toggleExpand = (index: number) => {
-		setExpand((prevExpand) => ({ ...prevExpand, [index]: !prevExpand[index] }));
-	};
+	const toggleExpand = useCallback((index: number) => {
+		setExpand((prev) => ({ ...prev, [index]: !prev[index] }));
+	}, []);
 
-	const countAllvalues = (options: MultipleOption[]) => {
-		return options.reduce((count, option) => {
-			if ('values' in option) {
-				return count + option.values.length;
-			} else {
-				return count;
+	const result = useMemo(
+		() =>
+			options.reduce(
+				(count, option) => count + (option.values?.length || 0),
+				0
+			),
+		[options]
+	);
+
+	const closeDropdown = useCallback(() => {
+		setIsOpen(false);
+		setValues(initialValues);
+	}, [initialValues]);
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				selectRef.current &&
+				!selectRef.current.contains(event.target as Node)
+			) {
+				closeDropdown();
 			}
-		}, 0);
-	};
+		};
 
-	const result = countAllvalues(options);
+		const handleEscapeKey = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') closeDropdown();
+		};
 
-	useEffect(() => {}, [initialValues]);
-
-	function onHandleClick(e: React.MouseEvent) {
-		const target = e.target as HTMLElement;
-		
-		// 1. Проверяем клик по чипсам через data-testid
-		const isChipClick = target.closest('[data-testid="Element_chips"]') !== null;
-		
-		// 2. Дополнительная проверка по элементам кнопки удаления
-		const isDeleteButtonClick = 
-		  target.closest('button') !== null ||
-		  target.closest('svg') !== null ||
-		  target.closest('path') !== null;
-		
-		// 3. Проверяем, что это именно кнопка удаления в чипсах
-		const isChipDeleteButton = isDeleteButtonClick && isChipClick;
-	  
-		// Игнорируем только клики по чипсам или их кнопкам удаления
-		if (isChipClick || isChipDeleteButton) {
-		  return;
-		}
-	  
-		// Обрабатываем клик для всех остальных случаев
 		if (isOpen) {
-		  setIsOpen(false);
-		  setValues(initialValues);
-		} else {
-		  setIsOpen(true);
+			document.addEventListener('mousedown', handleClickOutside);
+			document.addEventListener('keydown', handleEscapeKey);
 		}
-	  }
 
-	function onDeleteOption(value: string): void {
-		setValues(values.filter((item) => item !== value));
-		setInitialValues(values.filter((item) => item !== value));
-	}
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+			document.removeEventListener('keydown', handleEscapeKey);
+		};
+	}, [isOpen, closeDropdown]);
 
-	function onClickMultipleOption(value: string): void {
-		if (values.includes(value)) {
-			setValues(values.filter((item) => item !== value));
-			if (isSingle) {
-				setInitialValues(values.filter((item) => item !== value));
-			}
-		} else {
-			setValues([...values, value]);
-			if (isSingle) {
-				setInitialValues([...values, value]);
-			}
-		}
-	}
+	const onHandleClick = useCallback((e: React.MouseEvent) => {
+		const target = e.target as HTMLElement;
+		const isChipInteraction = target.closest(
+			'[data-testid="Element_chips"], button, svg, path'
+		);
+		if (!isChipInteraction) setIsOpen((prev) => !prev);
+	}, []);
 
-	function onClickResetOption(): void {
+	const onDeleteOption = useCallback(
+		(value: string) => {
+			const newValues = values.filter((item) => item !== value);
+			setValues(newValues);
+			setInitialValues(newValues);
+		},
+		[values, setInitialValues]
+	);
+
+	const onClickMultipleOption = useCallback(
+		(value: string) => {
+			setValues((prev) => {
+				const newValues = prev.includes(value)
+					? prev.filter((item) => item !== value)
+					: [...prev, value];
+				if (isSingle) setInitialValues(newValues);
+				return newValues;
+			});
+		},
+		[isSingle, setInitialValues]
+	);
+
+	const onClickResetOption = useCallback(() => {
 		setValues([]);
 		setInitialValues([]);
 		setIsOpen(false);
-	}
+	}, [setInitialValues]);
 
-	function onClickSubmit(): void {
+	const onClickSubmit = useCallback(() => {
 		setInitialValues(values);
 		setIsOpen(false);
-	}
+	}, [values, setInitialValues]);
 
 	return (
-		<div className={styles.select} data-testid="SelectCategories">
+		<div
+			className={styles.select}
+			data-testid="SelectCategories"
+			ref={selectRef}
+		>
 			<div
 				className={`${styles.selection} ${isOpen && styles.selection__open}`}
 				onClick={onHandleClick}
@@ -118,9 +130,9 @@ export function SelectCategories({
 				</div>
 				<div className={styles.selectionControls}>
 					{isOpen && (
-						<p className={styles.selectionCount}>
-							<span>{`${values.length}/${result}`}</span>
-						</p>
+						<p
+							className={styles.selectionCount}
+						>{`${values.length}/${result}`}</p>
 					)}
 					<Icon
 						name={isOpen ? 'chevronUp' : 'chevronDown'}
@@ -129,63 +141,52 @@ export function SelectCategories({
 					/>
 				</div>
 			</div>
+
 			{isOpen && (
 				<div className={styles.options}>
 					<div className={styles.scroll}>
-						{options &&
-							options.map((option, optIndex) => (
-								<div key={optIndex} className={styles.optionGroup}>
-									<p className={styles.optionTitle}>{option.title}</p>
-									<div
-										className={`${isSingle ? styles.singleWrap : styles.optionWrap} ${
-											isSingle
-												? styles.single
-												: expand[optIndex]
-													? styles.expanded
-													: styles.collapsed
-										}`}
-									>
-										{option.values.map((value, index) => {
-											const isSelect = values.some((item) => item === value);
-
-											return (
-												<Checkbox
-													key={index}
-													checked={isSelect}
-													onChange={() => onClickMultipleOption(value)}
-													className={styles.option}
-												>
-													<p className={styles.checkboxText}>{value}</p>
-												</Checkbox>
-											);
-										})}
-									</div>
-									{!isSingle && (
-										<div
-											className={styles.multiplyLink}
-											onClick={() => toggleExpand(optIndex)}
+						{options.map((option, optIndex) => (
+							<div key={optIndex} className={styles.optionGroup}>
+								<p className={styles.optionTitle}>{option.title}</p>
+								<div
+									className={`${isSingle ? styles.singleWrap : styles.optionWrap} ${
+										isSingle
+											? styles.single
+											: expand[optIndex]
+												? styles.expanded
+												: styles.collapsed
+									}`}
+								>
+									{option.values.map((value, index) => (
+										<Checkbox
+											key={index}
+											checked={values.includes(value)}
+											onChange={() => onClickMultipleOption(value)}
+											className={styles.option}
 										>
-											<p>
-												{expand[optIndex] ? (
-													'Скрыть'
-												) : option.values.length > 4 ? (
-													<span>
-														Показать еще&nbsp;
-														<span>{option.values.length - 4}</span>
-													</span>
-												) : null}
-											</p>
-											{option.values.length > 4 && (
-												<Icon
-													name={expand[optIndex] ? 'chevronUp' : 'chevronDown'}
-													size={16}
-													color="#048AA7"
-												/>
-											)}
-										</div>
-									)}
+											<p className={styles.checkboxText}>{value}</p>
+										</Checkbox>
+									))}
 								</div>
-							))}
+								{!isSingle && option.values.length > 4 && (
+									<div
+										className={styles.multiplyLink}
+										onClick={() => toggleExpand(optIndex)}
+									>
+										<p>
+											{expand[optIndex]
+												? 'Скрыть'
+												: `Показать еще ${option.values.length - 4}`}
+										</p>
+										<Icon
+											name={expand[optIndex] ? 'chevronUp' : 'chevronDown'}
+											size={16}
+											color="#048AA7"
+										/>
+									</div>
+								)}
+							</div>
+						))}
 					</div>
 
 					{!isSingle && (
