@@ -6,55 +6,45 @@ import ArrowRoundedDown from './icon_arrow_rounded_down_light.svg';
 type Option = string | object;
 
 export type SelectProps = {
-	label: string;
-	options: Option[];
-	optionLabel: string;
-	value?: string;
-	name?: string;
-	onChange?: (selectedValue: string, name?: string) => void;
+  label: string;
+  options: Option[];
+  optionLabel: string;
+  value?: Option; // Теперь принимает объект/строку
+  onChange?: (selectedOption: Option, name?: string) => void; // Возвращает весь объект
+  name?: string;
 };
 
 export function Select({
-	label,
-	options,
-	optionLabel,
-	value = '',
-	name,
-	onChange,
-}: SelectProps) {
+  label,
+  options,
+  optionLabel,
+  value = '',
+  name,
+  onChange,
+}: SelectProps) { 
 	const [isOpen, setIsOpen] = useState(false);
-	const [internalValue, setInternalValue] = useState(value);
-	const selectRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef<HTMLDivElement>(null);
 
 	const getDisplayText = (option: Option): string => {
 		if (typeof option === 'string') return option;
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-		return String(Object(option)[optionLabel]);
+		const record = option as Record<string, unknown>;
+		const labelValue = record[optionLabel];
+		
+		return typeof labelValue === 'string' || typeof labelValue === 'number' 
+			? String(labelValue) 
+			: '';
 	};
 
-	const getOptionValue = (option: Option): string => {
-		if (typeof option === 'string') return option;
-		// Сначала проверяем стандартное поле 'value', затем 'id', затем любое другое поле
-		if ('value' in option) return String(option.value);
-		if ('id' in option) return String(option.id);
-		return JSON.stringify(option);
-	};
+  const handleOptionClick = (option: Option) => {
+    setIsOpen(false);
+    onChange?.(option, name);
+  };
 
-	const handleOptionClick = (selectedValue: string) => {
-		setIsOpen(false);
-		setInternalValue(selectedValue);
-		onChange?.(selectedValue, name);
-	};
-
-	const handleBlur = (e: React.FocusEvent) => {
-		if (!selectRef.current?.contains(e.relatedTarget as Node)) {
-			setIsOpen(false);
-		}
-	};
-
-	const selectedOption = options.find(
-		(option) => getOptionValue(option) === internalValue
-	);
+  const handleBlur = (e: React.FocusEvent) => {
+    if (!selectRef.current?.contains(e.relatedTarget as Node)) {
+      setIsOpen(false);
+    }
+  };
 
 	return (
 		<div
@@ -69,14 +59,14 @@ export function Select({
 				onClick={() => setIsOpen(!isOpen)}
 			>
 				<div className={styles.panel__text}>
-					<label
-						className={`${styles.label} ${internalValue !== '' && styles.label_active}`}
-					>
-						{label}
-					</label>
-					{internalValue !== '' && selectedOption && (
-						<p className={styles.value}>{getDisplayText(selectedOption)}</p>
-					)}
+				<label
+            className={`${styles.label} ${value !== null && styles.label_active}`}
+          >
+            {label}
+          </label>
+					{value !== null && (
+            <p className={styles.value}>{getDisplayText(value)}</p>
+          )}
 				</div>
 				<img
 					className={styles.arrow}
@@ -85,23 +75,21 @@ export function Select({
 				/>
 			</div>
 			{isOpen && (
-				<div className={styles.options}>
-					{options.map((option, index) => {
-						const displayText = getDisplayText(option);
-						const optionValue = getOptionValue(option);
-						if (optionValue === internalValue) return null;
-						return (
-							<div
-								key={`${optionValue}-${index}`}
-								className={styles.option}
-								onClick={() => handleOptionClick(optionValue)}
-							>
-								<p className={styles.optionText}>{displayText}</p>
-							</div>
-						);
-					})}
-				</div>
-			)}
-		</div>
-	);
+        <div className={styles.options}>
+          {options.map((option, index) => {
+            const displayText = getDisplayText(option);
+            return (
+              <div
+                key={`${typeof option === 'string' ? option : JSON.stringify(option)}-${index}`}
+                className={styles.option}
+                onClick={() => handleOptionClick(option)}
+              >
+                <p className={styles.optionText}>{displayText}</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
