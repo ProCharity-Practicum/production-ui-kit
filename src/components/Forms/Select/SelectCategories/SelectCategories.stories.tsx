@@ -50,17 +50,17 @@ const baseContainerStyle: CSSProperties = {
 // Стили для конкретных контейнеров
 const container750Style: CSSProperties = {
 	...baseContainerStyle,
-	width: '750px',
+	width: '736px',
 };
 
 const container600Style: CSSProperties = {
 	...baseContainerStyle,
-	width: '600px',
+	width: '511px',
 };
 
 const container450Style: CSSProperties = {
 	...baseContainerStyle,
-	width: '450px',
+	width: '312px',
 	marginBottom: '0',
 };
 
@@ -111,9 +111,9 @@ export const MultipleContainers: Story = {
 
 		return (
 			<div style={wrapperStyle}>
-				{/* Контейнер 750px */}
+				{/* Контейнер 736px */}
 				<div style={container750Style}>
-					<div style={containerLabelStyle}>Контейнер 750px</div>
+					<div style={containerLabelStyle}>Контейнер 736px</div>
 					<SelectCategories
 						{...args}
 						label={designCategories.label}
@@ -123,9 +123,9 @@ export const MultipleContainers: Story = {
 					/>
 				</div>
 
-				{/* Контейнер 600px */}
+				{/* Контейнер 511px */}
 				<div style={container600Style}>
-					<div style={containerLabelStyle}>Контейнер 600px</div>
+					<div style={containerLabelStyle}>Контейнер 511px</div>
 					<SelectCategories
 						{...args}
 						label={marketingCategories.label}
@@ -135,9 +135,9 @@ export const MultipleContainers: Story = {
 					/>
 				</div>
 
-				{/* Контейнер 450px */}
+				{/* Контейнер 312px */}
 				<div style={container450Style}>
-					<div style={containerLabelStyle}>Контейнер 450px</div>
+					<div style={containerLabelStyle}>Контейнер 312px</div>
 					<SelectCategories
 						{...args}
 						label={developmentCategories.label}

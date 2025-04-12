@@ -71,13 +71,29 @@ export function SelectCategories({
 		};
 	}, [isOpen, closeDropdown]);
 
-	const onHandleClick = useCallback((e: React.MouseEvent) => {
-		const target = e.target as HTMLElement;
-		const isChipInteraction = target.closest(
-			'[data-testid="Element_chips"], button, svg, path'
-		);
-		if (!isChipInteraction) setIsOpen((prev) => !prev);
-	}, []);
+	const onHandleClick = useCallback(
+		(e: React.MouseEvent) => {
+			const target = e.target as HTMLElement;
+			const isChipClick =
+				target.closest('[data-testid="Element_chips"]') !== null;
+			const isDeleteButtonClick =
+				target.closest('button') !== null ||
+				target.closest('svg') !== null ||
+				target.closest('path') !== null;
+			const isChipInteraction =
+				isChipClick || (isDeleteButtonClick && isChipClick);
+
+			if (!isChipInteraction) {
+				if (isOpen) {
+					setIsOpen(false);
+					setValues(initialValues);
+				} else {
+					setIsOpen(true);
+				}
+			}
+		},
+		[isOpen, initialValues]
+	);
 
 	const onDeleteOption = useCallback(
 		(value: string) => {
@@ -149,24 +165,23 @@ export function SelectCategories({
 							<div key={optIndex} className={styles.optionGroup}>
 								<p className={styles.optionTitle}>{option.title}</p>
 								<div
-									className={`${isSingle ? styles.singleWrap : styles.optionWrap} ${
-										isSingle
-											? styles.single
-											: expand[optIndex]
-												? styles.expanded
-												: styles.collapsed
-									}`}
+									className={`${isSingle ? styles.singleWrap : styles.optionWrap}`}
 								>
-									{option.values.map((value, index) => (
-										<Checkbox
-											key={index}
-											checked={values.includes(value)}
-											onChange={() => onClickMultipleOption(value)}
-											className={styles.option}
-										>
-											<p className={styles.checkboxText}>{value}</p>
-										</Checkbox>
-									))}
+									{/* Фильтруем массив: в свёрнутом состоянии показываем только первые 4 элемента */}
+									{option.values
+										.filter(
+											(_, index) => isSingle || expand[optIndex] || index < 4
+										)
+										.map((value) => (
+											<Checkbox
+												key={value}
+												checked={values.includes(value)}
+												onChange={() => onClickMultipleOption(value)}
+												className={styles.option}
+											>
+												<p className={styles.checkboxText}>{value}</p>
+											</Checkbox>
+										))}
 								</div>
 								{!isSingle && option.values.length > 4 && (
 									<div
