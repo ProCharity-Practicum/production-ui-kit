@@ -27,12 +27,10 @@ export function SelectCategories({
 	const [values, setValues] = useState(initialValues);
 	const isSingle = options.length <= 1;
 
-	// Функция расширения и уменьшения группы элементов в выпадающем списке
 	const toggleExpand = (index: number) => {
 		setExpand((prevExpand) => ({ ...prevExpand, [index]: !prevExpand[index] }));
 	};
 
-	// Функция подсчета количества всех value в массиве options
 	const countAllvalues = (options: MultipleOption[]) => {
 		return options.reduce((count, option) => {
 			if ('values' in option) {
@@ -48,19 +46,33 @@ export function SelectCategories({
 	useEffect(() => {}, [initialValues]);
 
 	function onHandleClick(e: React.MouseEvent) {
-    // Проверяем, был ли клик по чипсу (элементу Chips)
-    const target = e.target as HTMLElement;
-    if (target.closest('.chips') || target.closest('.chips-close')) {
-      return; // Не обрабатываем клик, если он был по чипсу или его кнопке удаления
-    }
-
-    if (isOpen) {
-      setIsOpen(false);
-      setValues(initialValues);
-    } else {
-      setIsOpen(true);
-    }
-  }
+		const target = e.target as HTMLElement;
+		
+		// 1. Проверяем клик по чипсам через data-testid
+		const isChipClick = target.closest('[data-testid="Element_chips"]') !== null;
+		
+		// 2. Дополнительная проверка по элементам кнопки удаления
+		const isDeleteButtonClick = 
+		  target.closest('button') !== null ||
+		  target.closest('svg') !== null ||
+		  target.closest('path') !== null;
+		
+		// 3. Проверяем, что это именно кнопка удаления в чипсах
+		const isChipDeleteButton = isDeleteButtonClick && isChipClick;
+	  
+		// Игнорируем только клики по чипсам или их кнопкам удаления
+		if (isChipClick || isChipDeleteButton) {
+		  return;
+		}
+	  
+		// Обрабатываем клик для всех остальных случаев
+		if (isOpen) {
+		  setIsOpen(false);
+		  setValues(initialValues);
+		} else {
+		  setIsOpen(true);
+		}
+	  }
 
 	function onDeleteOption(value: string): void {
 		setValues(values.filter((item) => item !== value));
@@ -98,23 +110,23 @@ export function SelectCategories({
 				className={`${styles.selection} ${isOpen && styles.selection__open}`}
 				onClick={onHandleClick}
 			>
-				<div
-					className={styles.selection__wrapper}
-				>
+				<div className={styles.selectionContent}>
 					<label className={styles.label}>{label}</label>
-					<Chips filters={initialValues} onDelete={onDeleteOption} />
+					<div className={styles.chipsWrapper}>
+						<Chips filters={initialValues} onDelete={onDeleteOption} />
+					</div>
 				</div>
-				<div className={styles.selection__wrapper}>
-					<Icon
-						name={isOpen ? 'chevronUp' : 'chevronDown'}
-						size={24}
-						color="#A0ABB5"
-					/>
+				<div className={styles.selectionControls}>
 					{isOpen && (
 						<p className={styles.selectionCount}>
 							<span>{`${values.length}/${result}`}</span>
 						</p>
 					)}
+					<Icon
+						name={isOpen ? 'chevronUp' : 'chevronDown'}
+						size={24}
+						color="#A0ABB5"
+					/>
 				</div>
 			</div>
 			{isOpen && (
