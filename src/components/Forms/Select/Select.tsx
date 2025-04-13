@@ -3,47 +3,41 @@ import styles from './Select.module.scss';
 import ArrowRoundedUp from './icon_arrow_rounded_up_light.svg';
 import ArrowRoundedDown from './icon_arrow_rounded_down_light.svg';
 
-type Option = string | object;
+type Option = string | Record<string, unknown>;
 
 export type SelectProps = {
 	label: string;
 	options: Option[];
-	optionLabel: string;
-	value?: string;
+	optionLabel?: string;
+	value?: Option | null;
+	onChange?: (selectedOption: Option, name?: string) => void;
 	name?: string;
-	onChange?: (selectedValue: string, name?: string) => void;
 };
 
 export function Select({
 	label,
 	options,
-	optionLabel,
-	value = '',
+	optionLabel = '',
+	value = null,
 	name,
 	onChange,
 }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [internalValue, setInternalValue] = useState(value);
 	const selectRef = useRef<HTMLDivElement>(null);
 
-	const getDisplayText = (option: Option): string => {
+	const getDisplayText = (option: Option | null): string => {
+		if (!option) return '';
 		if (typeof option === 'string') return option;
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-		return String(Object(option)[optionLabel]);
+
+		const labelValue = optionLabel ? option[optionLabel] : '';
+		return typeof labelValue === 'string' || typeof labelValue === 'number'
+			? String(labelValue)
+			: '';
 	};
 
-	const getOptionValue = (option: Option): string => {
-		if (typeof option === 'string') return option;
-		// Сначала проверяем стандартное поле 'value', затем 'id', затем любое другое поле
-		if ('value' in option) return String(option.value);
-		if ('id' in option) return String(option.id);
-		return JSON.stringify(option);
-	};
-
-	const handleOptionClick = (selectedValue: string) => {
+	const handleOptionClick = (option: Option) => {
 		setIsOpen(false);
-		setInternalValue(selectedValue);
-		onChange?.(selectedValue, name);
+		onChange?.(option, name);
 	};
 
 	const handleBlur = (e: React.FocusEvent) => {
@@ -51,10 +45,6 @@ export function Select({
 			setIsOpen(false);
 		}
 	};
-
-	const selectedOption = options.find(
-		(option) => getOptionValue(option) === internalValue
-	);
 
 	return (
 		<div
@@ -70,12 +60,12 @@ export function Select({
 			>
 				<div className={styles.panel__text}>
 					<label
-						className={`${styles.label} ${internalValue !== '' && styles.label_active}`}
+						className={`${styles.label} ${value !== null && styles.label_active}`}
 					>
 						{label}
 					</label>
-					{internalValue !== '' && selectedOption && (
-						<p className={styles.value}>{getDisplayText(selectedOption)}</p>
+					{value !== null && (
+						<p className={styles.value}>{getDisplayText(value)}</p>
 					)}
 				</div>
 				<img
@@ -88,13 +78,11 @@ export function Select({
 				<div className={styles.options}>
 					{options.map((option, index) => {
 						const displayText = getDisplayText(option);
-						const optionValue = getOptionValue(option);
-						if (optionValue === internalValue) return null;
 						return (
 							<div
-								key={`${optionValue}-${index}`}
+								key={`${typeof option === 'string' ? option : JSON.stringify(option)}-${index}`}
 								className={styles.option}
-								onClick={() => handleOptionClick(optionValue)}
+								onClick={() => handleOptionClick(option)}
 							>
 								<p className={styles.optionText}>{displayText}</p>
 							</div>
