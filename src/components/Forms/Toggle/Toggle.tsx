@@ -1,27 +1,25 @@
 import styles from './Toggle.module.scss';
-import { useState } from 'react';
 
 export type ToggleProps = {
 	checked?: boolean;
+	onChange?: (isChecked: boolean) => void;
 	text?: string;
 };
 
-export function Toggle({ checked = false, text = '' }: ToggleProps) {
-	const [isChecked, setIsChecked] = useState(checked);
-
+export function Toggle({ checked = false, onChange, text = '' }: ToggleProps) {
 	const onClick = () => {
-		setIsChecked(!isChecked);
+		onChange?.(!checked); // Уведомляем родителя
 	};
 
 	return (
-		<div className={styles.toggle} data-testid="Toggle">
+		<div className={styles.toggle}>
 			<p className={styles.text}>{text}</p>
 			<button
 				onClick={onClick}
-				className={`${styles.button} ${isChecked && styles.button_active}`}
+				className={`${styles.button} ${checked && styles.button_active}`}
 			>
 				<div
-					className={`${styles.cyrcleIcon} ${isChecked && styles.cyrcleIcon_active}`}
+					className={`${styles.cyrcleIcon} ${checked && styles.cyrcleIcon_active}`}
 				/>
 			</button>
 		</div>

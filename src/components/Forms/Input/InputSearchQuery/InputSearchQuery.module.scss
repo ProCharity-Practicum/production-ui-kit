@@ -2,35 +2,23 @@
 @use '@styles/mixins/forms/input' as mixins;
 
 .container {
-	@include mixins.inputStyle;
-	grid-template-areas:
-		'label . controls'
-		'input . controls';
-	grid-template-columns: 1fr 12px auto;
-	grid-template-rows: auto minmax(20px, 1fr);
-	flex-shrink: 0;
-	@include mixins.inputPseudoClasses;
+	width: 100%;
+	min-width: 0;
 }
 
 .input__controls {
 	display: flex;
 	align-items: center;
-	grid-area: controls;
 }
 
 .input__field {
 	@include mixins.inputField;
-	grid-area: input;
-	grid-template-areas:
-		'label . controls'
-		'input . controls';
-	grid-template-columns: 1fr 12px auto;
-	grid-template-rows: auto minmax(20px, 1fr);
-	flex-shrink: 0;
-	@include mixins.inputPseudoClasses;
+	flex: 1; // Занимает все доступное пространство
+	min-width: 0; // Разрешает сжатие
 }
 
 .input__button {
 	@include mixins.inputIconStyle;
 	@include mixins.buttonPseudoClasses;
+	flex-shrink: 0; // Только для кнопки
 }

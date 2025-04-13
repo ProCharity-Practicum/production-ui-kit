@@ -61,6 +61,10 @@ export function HelpSelector({
 		};
 	}, [isOpen, closeDropdown]);
 
+	useEffect(() => {
+		setValues(initialValues);
+	}, [initialValues]);
+
 	const onHandleClick = useCallback(
 		(e: React.MouseEvent) => {
 			e.preventDefault();
