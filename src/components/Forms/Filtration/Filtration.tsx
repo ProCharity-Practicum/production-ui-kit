@@ -19,8 +19,8 @@ type TFiltration = {
 
 type FiltrationProps = {
 	setSelectedFilters: (filters: TFiltration) => void;
-	howOptions: MultipleOption[];
-	whoOptions: MultipleOption[];
+	howOptions?: MultipleOption[];
+	whoOptions?: MultipleOption[];
 	role?: 'company' | 'volunteer' | 'nko';
 	defaultFilters?: TFiltration;
 };
@@ -40,25 +40,19 @@ export const Filtration = ({
 	const [filters, setFilters] = useState<TFiltration>(defaultFilters);
 	const [searchInput, setSearchInput] = useState('');
 
-	const helpOptions = [
-		{
-			title: 'Навыки',
-			values: howOptions.flatMap((cat) => cat.values),
-		},
-	];
-
-	const fundsOptions = [
-		{
-			title: 'Фонды',
-			values: whoOptions.flatMap((fund) => fund.values),
-		},
-	];
+	const fundsOptions = whoOptions
+		? [
+				{
+					title: 'Фонды',
+					values: whoOptions.flatMap((fund) => fund.values),
+				},
+			]
+		: [];
 
 	const allChips = [...filters.categories, ...filters.funds, ...filters.search];
 
 	const handleRemoveChip = (chip: string) => {
 		setFilters((prev) => {
-			// Определяем, к какому типу фильтров относится чипс
 			const isCategory = prev.categories.includes(chip);
 			const isFund = prev.funds.includes(chip);
 
@@ -77,7 +71,6 @@ export const Filtration = ({
 		setFilters((prev) => ({ ...prev, isOnline }));
 	};
 
-	// Обработка нажатия Enter в поиске
 	const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === 'Enter' && searchInput.trim()) {
 			setFilters((prev) => ({
@@ -96,23 +89,24 @@ export const Filtration = ({
 	return (
 		<div className={styles.filtration}>
 			<div className={styles.controls} data-role={role}>
-				{(!role || role === 'company' || role === 'volunteer') && (
-					<div className={styles.selector}>
-						<HelpSelector
-							label="ЧЕМ ПОМОЧЬ"
-							options={helpOptions}
-							setInitialValues={(values) =>
-								setFilters((prev) => ({
-									...prev,
-									categories: values,
-								}))
-							}
-							initialValues={filters.categories}
-						/>
-					</div>
-				)}
+				{(!role || role === 'company' || role === 'volunteer') &&
+					howOptions && (
+						<div className={styles.selector}>
+							<HelpSelector
+								label="ЧЕМ ПОМОЧЬ"
+								options={howOptions}
+								setInitialValues={(values) =>
+									setFilters((prev) => ({
+										...prev,
+										categories: values,
+									}))
+								}
+								initialValues={filters.categories}
+							/>
+						</div>
+					)}
 
-				{(!role || role === 'company' || role === 'nko') && (
+				{(!role || role === 'company' || role === 'nko') && whoOptions && (
 					<div className={styles.selector}>
 						<HelpSelector
 							label="КОМУ ПОМОЧЬ"

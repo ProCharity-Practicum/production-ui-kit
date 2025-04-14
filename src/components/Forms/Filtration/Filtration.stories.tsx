@@ -62,7 +62,6 @@ export const Default: Story = {
 export const VolunteerView: Story = {
 	args: {
 		howOptions: mockSkills,
-		whoOptions: [mockFunds],
 		role: 'volunteer',
 		setSelectedFilters: (filters) => console.log('Volunteer filters:', filters),
 	},
@@ -71,14 +70,12 @@ export const VolunteerView: Story = {
 // Стори для НКО (только "Кому помочь")
 export const NKOView: Story = {
 	args: {
-		howOptions: mockSkills,
 		whoOptions: [mockFunds],
 		role: 'nko',
 		setSelectedFilters: (filters) => console.log('NKO filters:', filters),
 	},
 };
 
-// Стори с предустановленными фильтрами
 // Стори с предустановленными фильтрами
 export const WithPreselectedFilters: Story = {
 	args: {

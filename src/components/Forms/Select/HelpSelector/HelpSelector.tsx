@@ -165,7 +165,6 @@ export function HelpSelector({
 						))}
 					</div>
 
-					{/* Кнопки точно присутствуют в этом месте */}
 					<div className={styles.buttons}>
 						<button
 							type="button"
