@@ -25,23 +25,21 @@ const meta: Meta<typeof Paginator> = {
 export default meta;
 
 // Компонент-обертка для управления состоянием
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const InteractivePaginator = (props: any) => {
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+const InteractivePaginator = (
+	props: Omit<React.ComponentProps<typeof Paginator>, 'onChangePage'>
+) => {
 	const [currentPage, setCurrentPage] = useState(props.current);
 
 	const handlePageChange = (page: number) => {
-		console.log('вызов getLink');
+		console.log(`Changing to page ${page}`);
 		setCurrentPage(page);
-		console.log(`Navigating to page ${page}`);
 	};
 
 	return (
 		<Paginator
 			{...props}
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			current={currentPage}
-			getLink={(page) => () => handlePageChange(page)}
+			onChangePage={handlePageChange}
 		/>
 	);
 };
@@ -75,23 +73,4 @@ export const LastPage: Story = {
 		total: 10,
 	},
 	render: (args) => <InteractivePaginator {...args} />,
-};
-
-export const QueryParamsPreservation: StoryObj<typeof Paginator> = {
-	args: {
-		current: 1,
-		total: 5,
-	},
-	render: (args) => {
-		// Эмуляция URL с параметрами
-		const getLink = (page: number) => `?page=${page}&filter=test&sort=asc`;
-		return <Paginator {...args} getLink={getLink} />;
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const page2 = canvas.getByText('2');
-
-		// Проверяем что параметры сохраняются в ссылках
-		await expect(page2).toHaveAttribute('href', '?page=2&filter=test&sort=asc');
-	},
 };

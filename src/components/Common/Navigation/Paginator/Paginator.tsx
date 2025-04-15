@@ -1,12 +1,11 @@
 import styles from './Paginator.module.scss';
 import { Icon } from '@/components/Core/Icon/Icon';
-import { Anchor } from '@/components/Core/Anchor/Anchor';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 export type PaginatorProps = {
 	current: number;
 	total: number;
-	getLink: (page: number) => string;
+	onChangePage: (page: number) => void;
 	maxPages?: number;
 };
 
@@ -39,7 +38,7 @@ function calculateVisiblePages(
 export function Paginator({
 	current,
 	total,
-	getLink,
+	onChangePage,
 	maxPages = 5,
 }: PaginatorProps) {
 	const visiblePages = useMemo(
@@ -47,40 +46,38 @@ export function Paginator({
 		[current, total, maxPages]
 	);
 
-	const memoizedGetLink = useCallback(getLink, [getLink]);
-
 	return (
 		<div className={styles.paginator} data-testid="Paginator">
 			{current > 1 && (
-				<Anchor
-					href={memoizedGetLink(current - 1)}
+				<button
+					onClick={() => onChangePage(current - 1)}
 					className={styles.arrow}
 					data-testid="arrowLeftButton"
 				>
 					<Icon name="chevronLeft" size={24} />
-				</Anchor>
+				</button>
 			)}
 
 			{visiblePages.map((page) => (
-				<Anchor
+				<button
 					key={page}
-					href={memoizedGetLink(page)}
+					onClick={() => onChangePage(page)}
 					className={`${styles.page} ${page === current ? styles.current : ''}`}
 					aria-current={page === current ? 'page' : undefined}
 					data-testid={page === current ? 'currentPageButton' : 'pageButton'}
 				>
 					{page}
-				</Anchor>
+				</button>
 			))}
 
 			{current < total && (
-				<Anchor
-					href={memoizedGetLink(current + 1)}
+				<button
+					onClick={() => onChangePage(current + 1)}
 					className={styles.arrow}
 					data-testid="arrowRightButton"
 				>
 					<Icon name="chevronRight" size={24} />
-				</Anchor>
+				</button>
 			)}
 		</div>
 	);
