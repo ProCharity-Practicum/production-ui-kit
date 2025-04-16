@@ -49,6 +49,13 @@ export enum IconNames {
 	warningNotification = 'warningNotification',
 	eyeCrossed = 'eyeCrossed',
 	question = 'question',
+	telegram='telegram',
+	youtube='youtube',
+	facebook='facebook',
+	instagram='instagram',
+	linkedin='linkedin',
+	okru='okru',
+	vkru='vkru',
 }
 
 export type IconName = keyof typeof IconNames;
