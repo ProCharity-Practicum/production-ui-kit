@@ -1,7 +1,7 @@
 import styles from './Paginator.module.scss';
 import { Icon } from '@/components/Core/Icon/Icon';
 import { Anchor } from '@/components/Core/Anchor/Anchor';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 export type PaginatorProps = {
 	current: number;
@@ -36,6 +36,21 @@ function calculateVisiblePages(
 	);
 }
 
+/**
+ * Важно: getLink должен обновляться при изменении любых параметров URL.
+ * Рекомендуется мемоизировать его в родительском компоненте:
+ *
+ * @example
+ * // Хорошо (с явными зависимостями)
+ * const getLink = useCallback(
+ *   (page) => `/?page=${page}&sort=${sort}&filter=${filter}`,
+ *   [sort, filter]
+ * );
+ *
+ * // Плохо (без зависимостей)
+ * const getLink = (page) => `/?page=${page}`; // Не обновится при изменении sort/filter
+ */
+
 export function Paginator({
 	current,
 	total,
@@ -47,13 +62,18 @@ export function Paginator({
 		[current, total, maxPages]
 	);
 
-	const memoizedGetLink = useCallback(getLink, [getLink]);
+	// Формируем ссылки при каждом рендере
+	const pageLinks = {
+		prev: getLink(current - 1),
+		pages: visiblePages.map((page) => getLink(page)),
+		next: getLink(current + 1),
+	};
 
 	return (
 		<div className={styles.paginator} data-testid="Paginator">
 			{current > 1 && (
 				<Anchor
-					href={memoizedGetLink(current - 1)}
+					href={pageLinks.prev}
 					className={styles.arrow}
 					data-testid="arrowLeftButton"
 				>
@@ -61,10 +81,10 @@ export function Paginator({
 				</Anchor>
 			)}
 
-			{visiblePages.map((page) => (
+			{visiblePages.map((page, index) => (
 				<Anchor
 					key={page}
-					href={memoizedGetLink(page)}
+					href={pageLinks.pages[index]}
 					className={`${styles.page} ${page === current ? styles.current : ''}`}
 					aria-current={page === current ? 'page' : undefined}
 					data-testid={page === current ? 'currentPageButton' : 'pageButton'}
@@ -75,7 +95,7 @@ export function Paginator({
 
 			{current < total && (
 				<Anchor
-					href={memoizedGetLink(current + 1)}
+					href={pageLinks.next}
 					className={styles.arrow}
 					data-testid="arrowRightButton"
 				>

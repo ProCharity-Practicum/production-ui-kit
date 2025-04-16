@@ -24,6 +24,15 @@
 	font-family: $fontFamily;
 	color: $fontColor;
 	border-radius: 4px;
+	outline: none;
+
+	&:focus-visible {
+		box-shadow: inset 0 0 0 1px $primary;
+	}
+
+	&:active {
+		box-shadow: none;
+	}
 }
 
 .page {

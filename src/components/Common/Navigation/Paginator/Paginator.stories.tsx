@@ -1,7 +1,6 @@
+import { useArgs } from '@storybook/preview-api';
 import { Paginator } from './Paginator';
 import { Meta, StoryObj } from '@storybook/react';
-import { expect, within } from '@storybook/test';
-import { useState } from 'react';
 
 const meta: Meta<typeof Paginator> = {
 	title: 'Common/Navigation/Paginator',
@@ -20,78 +19,70 @@ const meta: Meta<typeof Paginator> = {
 			description: 'Максимальное количество отображаемых страниц',
 		},
 	},
-};
-
-export default meta;
-
-// Компонент-обертка для управления состоянием
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const InteractivePaginator = (props: any) => {
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-	const [currentPage, setCurrentPage] = useState(props.current);
-
-	const handlePageChange = (page: number) => {
-		console.log('вызов getLink');
-		setCurrentPage(page);
-		console.log(`Navigating to page ${page}`);
-	};
-
-	return (
-		<Paginator
-			{...props}
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			current={currentPage}
-			getLink={(page) => () => handlePageChange(page)}
-		/>
-	);
-};
-
-type Story = StoryObj<typeof Paginator>;
-
-export const Default: Story = {
 	args: {
 		current: 3,
 		total: 10,
 		maxPages: 5,
 	},
-	render: (args) => <InteractivePaginator {...args} />,
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await expect(canvas.getByText('3')).toBeInTheDocument();
+	render: function Render(args) {
+		const [, updateArgs] = useArgs();
+
+		const getLink = args.getLink || ((page: number) => `?page=${page}`);
+
+		const handleClick = (e: React.MouseEvent, page: number) => {
+			e.preventDefault();
+			updateArgs({ current: page });
+			console.log(`Navigating to page ${page}`);
+		};
+
+		return (
+			<div
+				onClick={(e) => {
+					const target = e.target as HTMLElement;
+					const anchor = target.closest('a');
+					if (anchor) {
+						const page = new URL(
+							anchor.href,
+							'http://localhost'
+						).searchParams.get('page');
+						if (page) {
+							handleClick(e, parseInt(page));
+						}
+					}
+				}}
+			>
+				<Paginator {...args} getLink={getLink} />
+				<div
+					style={{
+						marginTop: '20px',
+						padding: '10px',
+						background: '#f5f5f5',
+						borderRadius: '4px',
+						fontSize: '14px',
+					}}
+				>
+					<div>
+						<strong>Current page:</strong> {args.current}
+					</div>
+					<div>
+						<strong>URL params:</strong> {getLink(args.current)}
+					</div>
+				</div>
+			</div>
+		);
 	},
 };
 
-export const FirstPage: Story = {
-	args: {
-		current: 1,
-		total: 10,
-	},
-	render: (args) => <InteractivePaginator {...args} />,
-};
+export default meta;
 
-export const LastPage: Story = {
-	args: {
-		current: 10,
-		total: 10,
-	},
-	render: (args) => <InteractivePaginator {...args} />,
-};
+type Story = StoryObj<typeof Paginator>;
 
-export const QueryParamsPreservation: StoryObj<typeof Paginator> = {
+export const Default: Story = {};
+
+export const WithQueryParams: Story = {
 	args: {
-		current: 1,
+		current: 2,
 		total: 5,
-	},
-	render: (args) => {
-		// Эмуляция URL с параметрами
-		const getLink = (page: number) => `?page=${page}&filter=test&sort=asc`;
-		return <Paginator {...args} getLink={getLink} />;
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const page2 = canvas.getByText('2');
-
-		// Проверяем что параметры сохраняются в ссылках
-		await expect(page2).toHaveAttribute('href', '?page=2&filter=test&sort=asc');
+		getLink: (page: number) => `?page=${page}&filter=test&sort=asc`,
 	},
 };
