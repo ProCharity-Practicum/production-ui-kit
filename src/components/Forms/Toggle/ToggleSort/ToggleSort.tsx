@@ -1,52 +1,69 @@
-import { useState } from 'react';
 import styles from './ToggleSort.module.scss';
 import vectorGray from '../assets/icon_vector_gray.svg';
 import vectorBlack from '../assets/icon_vector_black.svg';
 
+export type SortDirection = 'none' | 'asc' | 'desc';
+
 export type ToggleSortProps = {
+	id: string;
 	title: string;
-	onChange?: () => void;
+	direction: SortDirection;
+	onChange: (id: string, direction: SortDirection) => void;
+	disabled?: boolean;
 };
 
-export function ToggleSort({ title, onChange = () => {} }: ToggleSortProps) {
-	const [sort, setSort] = useState(false);
-	const [active, setActive] = useState(false);
+export function ToggleSort({
+	id,
+	title,
+	direction,
+	onChange,
+	disabled = false,
+}: ToggleSortProps) {
+	const handleClick = () => {
+		if (disabled) return;
 
-	const handleSort = () => {
-		onChange();
-		if (active) {
-			if (!sort) {
-				setActive(false);
-			} else {
-				setSort(!sort);
-			}
-		} else {
-			setActive(true);
-			setSort(!sort);
-		}
+		const newDirection: SortDirection =
+			direction === 'none' ? 'asc' : direction === 'asc' ? 'desc' : 'asc'; // После desc снова asc
+
+		onChange(id, newDirection);
 	};
 
 	return (
-		<div
-			className={`${styles.head} ${active && styles.head_active}`}
-			onClick={handleSort}
-			data-testid="ToggleSort"
+		<button
+			type="button"
+			className={`${styles.head} ${direction !== 'none' && styles.head_active} ${
+				disabled && styles.head_disabled
+			}`}
+			onClick={handleClick}
+			disabled={disabled}
+			aria-pressed={direction !== 'none'}
+			aria-label={`${title}, ${
+				direction === 'asc'
+					? 'по возрастанию'
+					: direction === 'desc'
+						? 'по убыванию'
+						: 'не активно'
+			}`}
 		>
-			<div className={`${styles.text} ${active && styles.text_active}`}>
+			<div
+				className={`${styles.text} ${direction !== 'none' && styles.text_active}`}
+			>
 				{title}
 			</div>
 			<div className={styles.containerVectors}>
 				<img
 					className={styles.vectorUp}
-					src={sort && active ? vectorBlack : vectorGray}
-					alt="Меню"
+					src={direction === 'asc' ? vectorBlack : vectorGray}
+					alt=""
+					aria-hidden="true"
 				/>
 				<img
 					className={styles.vectorDown}
-					src={!sort && active ? vectorBlack : vectorGray}
-					alt="Меню"
+					src={direction === 'desc' ? vectorBlack : vectorGray}
+					alt=""
+					aria-hidden="true"
 				/>
 			</div>
-		</div>
+		</button>
 	);
 }

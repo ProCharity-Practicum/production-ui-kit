@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import styles from './Filtration.module.scss';
-import { HelpSelector } from '../Select/HelpSelector/HelpSelector';
-import { Chips } from '../Chips/Chips';
-import { InputSearchQuery } from '../Input/InputSearchQuery/InputSearchQuery';
-import { Toggle } from '../Toggle/Toggle';
+import { HelpSelector } from '../../Forms/Select/HelpSelector/HelpSelector';
+import { Chips } from '../../Forms/Chips/Chips';
+import { InputSearchQuery } from '../../Forms/Input/InputSearchQuery/InputSearchQuery';
+import { Toggle } from '../../Forms/Toggle/Toggle';
 
 type MultipleOption = {
 	title: string;

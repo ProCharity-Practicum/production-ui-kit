@@ -1,0 +1,77 @@
+@use '@styles/variables' as *;
+
+.sortBlock {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 10px;
+	width: 100%;
+	max-width: 1140px;
+
+	@media (max-width: 768px) {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.counter {
+		color: $buttonOutlineDark;
+		font-weight: $fontWeightBold;
+		font-size: $baseFontSize;
+		line-height: 24px;
+		font-family: $fontFamily;
+
+		&.counterFilled {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+			line-height: $fontLineS;
+			font-weight: $fontWeightMedium;
+			font-size: $baseFontSize;
+		}
+
+		.filled {
+			border-radius: 50%;
+			background-color: $buttonOutlineDark;
+			color: $backgroundColor;
+			width: 17px;
+			height: 16px;
+			font-size: 12px;
+			display: inline-block;
+			line-height: 16px;
+			text-align: center;
+		}
+	}
+
+	.sortContainer {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+
+		@media (max-width: 768px) {
+			width: 100%;
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.sortLabel {
+			color: $buttonOutlineDark;
+			font-weight: $fontWeightBold;
+			font-size: $font-Size-XXS;
+			line-height: 16px;
+			font-family: $fontFamily;
+			margin-right: 8px;
+		}
+
+		.sortButtons {
+			display: flex;
+			gap: 16px;
+
+			@media (max-width: 768px) {
+				width: 100%;
+				flex-direction: column;
+				gap: 8px;
+			}
+		}
+	}
+}

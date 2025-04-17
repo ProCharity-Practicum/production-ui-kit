@@ -4,7 +4,7 @@ import { Steps } from './Steps';
 import { CategorySteps } from './types';
 
 const meta: Meta<typeof Steps> = {
-	title: 'Components/Steps',
+	title: 'Common/Navigation/Steps',
 	component: Steps,
 	parameters: {
 		layout: 'fullscreen',

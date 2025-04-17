@@ -1,35 +1,122 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, within } from '@storybook/test';
+import { expect, within, userEvent, fn } from '@storybook/test';
+import { useState } from 'react';
+import { ToggleSort, type SortDirection } from './ToggleSort';
 
-import { ToggleSort } from './ToggleSort';
+const SORT_BUTTONS = [
+	{ id: 'date', label: 'По дате' },
+	{ id: 'name', label: 'По имени' },
+	{ id: 'price', label: 'По цене' },
+];
 
 const meta = {
-	title: 'forms/Toggle/ToggleSort',
+	title: 'Forms/Toggle/ToggleSort',
 	component: ToggleSort,
 	parameters: {
-		// More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
 		layout: 'centered',
-		// viewport: {
-		// 	defaultViewport: 'desktop',
-		// },
 	},
 	args: {
-		title: 'Дата регистрации',
+		id: 'date',
+		title: 'По дате',
+		direction: 'none',
+		onChange: fn(),
+		disabled: false,
+	},
+	argTypes: {
+		direction: {
+			control: {
+				type: 'select',
+				options: ['none', 'asc', 'desc'],
+			},
+		},
 	},
 } satisfies Meta<typeof ToggleSort>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on interaction testing: https://storybook.js.org/docs/writing-tests/interaction-testing
-export const DefaultToggleSort: Story = {
-	args: {
-		title: 'Дате регистрации',
+export const Default: Story = {
+	render: (args) => {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [direction, setDirection] = useState<SortDirection>(args.direction);
+		return (
+			<ToggleSort
+				{...args}
+				direction={direction}
+				onChange={(id, dir) => {
+					args.onChange(id, dir);
+					setDirection(dir);
+				}}
+			/>
+		);
 	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const button = canvas.getByRole('button');
 
+		// Проверяем цикл none → asc → desc → asc → desc ...
+		await userEvent.click(button);
+		await expect(args.onChange).toHaveBeenCalledWith(args.id, 'asc');
+
+		await userEvent.click(button);
+		await expect(args.onChange).toHaveBeenCalledWith(args.id, 'desc');
+
+		await userEvent.click(button);
+		await expect(args.onChange).toHaveBeenCalledWith(args.id, 'asc');
+
+		await userEvent.click(button);
+		await expect(args.onChange).toHaveBeenCalledWith(args.id, 'desc');
+	},
+};
+
+export const MultipleSortButtons: Story = {
+	parameters: { controls: { disable: true } },
+	render: () => {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [activeSort, setActiveSort] = useState<{
+			id: string;
+			direction: SortDirection;
+		} | null>(null);
+
+		const handleChange = (id: string, direction: SortDirection) => {
+			// При переключении другой кнопки сбрасываем текущую
+			if (activeSort?.id !== id) {
+				setActiveSort({ id, direction: 'asc' });
+			} else {
+				setActiveSort(direction === 'none' ? null : { id, direction });
+			}
+		};
+
+		return (
+			<div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+				{SORT_BUTTONS.map(({ id, label }) => (
+					<ToggleSort
+						key={id}
+						id={id}
+						title={label}
+						direction={activeSort?.id === id ? activeSort.direction : 'none'}
+						onChange={handleChange}
+					/>
+				))}
+			</div>
+		);
+	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const element = canvas.getByTestId('ToggleSort');
-		await expect(element).toBeInTheDocument();
+		const buttons = canvas.getAllByRole('button');
+
+		// Проверяем переключение между кнопками
+		await userEvent.click(buttons[0]); // date → asc
+		await expect(buttons[0]).toHaveAttribute('aria-pressed', 'true');
+
+		await userEvent.click(buttons[0]); // date → desc
+		await expect(buttons[0]).toHaveAttribute('aria-pressed', 'true');
+
+		await userEvent.click(buttons[1]); // name → asc, date → none
+		await expect(buttons[0]).toHaveAttribute('aria-pressed', 'false');
+		await expect(buttons[1]).toHaveAttribute('aria-pressed', 'true');
+
+		await userEvent.click(buttons[1]); // name → desc
+		await expect(buttons[1]).toHaveAttribute('aria-pressed', 'true');
 	},
 };
