@@ -3,7 +3,7 @@ import { Filtration } from './Filtration';
 import { useState } from 'react';
 
 const meta: Meta<typeof Filtration> = {
-	title: 'Components/Filtration',
+	title: 'Common/Filtration',
 	component: Filtration,
 	tags: ['autodocs'],
 	argTypes: {

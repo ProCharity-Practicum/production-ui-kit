@@ -10,7 +10,7 @@ const SORT_OPTIONS = [
 ];
 
 const meta = {
-	title: 'Components/Common/SortBlock',
+	title: 'Common/SortBlock',
 	component: SortBlock,
 	parameters: {
 		layout: 'centered',
