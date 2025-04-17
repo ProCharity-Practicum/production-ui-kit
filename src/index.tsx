@@ -80,3 +80,8 @@ export { InputMultipleLinks } from './components/Forms/Input/InputLink/InputMult
 
 export { Select } from './components/Forms/Select/Select';
 export { SelectCategories } from './components/Forms/Select/SelectCategories/SelectCategories';
+
+export { Toggle } from './components/Forms/Toggle/Toggle';
+export { ToggleSort } from './components/Forms/Toggle/ToggleSort/ToggleSort';
+export { ToggleNotification } from './components/Forms/Toggle/ToggleNotification/ToggleNotification';
+export { SectionNotificationChannel } from './components/Forms/Toggle/SectionNotificationChannel/SectionNotificationChannel';
