@@ -1,5 +1,5 @@
 import styles from './Checkbox.module.scss';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 export type CheckboxProps = {
 	variant?:
@@ -11,20 +11,18 @@ export type CheckboxProps = {
 		| 'Unsubscribe'
 		| 'NoNewTasks';
 	checked?: boolean;
-	onChange?: () => void;
+	onChange: (checked: boolean) => void;
 	children?: ReactNode;
 	className?: string;
 };
 
 export function Checkbox({
-	onChange = () => {},
+	onChange,
 	variant,
 	checked = false,
 	children,
 	className,
 }: CheckboxProps) {
-	const [checkedState, setCheckedState] = useState(checked);
-
 	function renderText(): ReactNode {
 		switch (variant) {
 			case 'Ministry':
@@ -65,12 +63,13 @@ export function Checkbox({
 				return <>Отписаться</>;
 			case 'NoNewTasks':
 				return <>Не получать уведомления о новых задачах</>;
+			default:
+				return null;
 		}
 	}
 
 	function handleChange() {
-		onChange();
-		setCheckedState(!checkedState);
+		onChange(!checked);
 	}
 
 	return (
@@ -81,7 +80,7 @@ export function Checkbox({
 					className={styles['checkbox__native-input']}
 					autoComplete="off"
 					onChange={handleChange}
-					checked={checkedState}
+					checked={checked}
 					data-testid="checkbox"
 				/>
 				<span
