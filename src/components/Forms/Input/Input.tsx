@@ -17,6 +17,7 @@ export interface InputProps {
 	type: string;
 	value?: string;
 	onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+	onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 	name?: string;
 	placeholder?: string;
 	children?: ReactElement;
@@ -31,6 +32,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 	{
 		value,
 		onChange,
+		onKeyDown,
 		type,
 		name,
 		className,
@@ -69,6 +71,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 				type={type}
 				value={valueInput}
 				onChange={onInputChange}
+				onKeyDown={onKeyDown}
 				className={clsx(styles['input__field'])}
 				name={name}
 				ref={ref}

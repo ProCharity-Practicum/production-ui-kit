@@ -1,0 +1,118 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/layout' as *;
+
+.steps {
+	box-sizing: border-box;
+	margin: 0;
+	max-width: 240px;
+
+	@include mobile {
+		max-width: 100%;
+		height: 32px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+}
+
+.wrapper {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 20px;
+	width: 100%;
+	border: 1px solid rgb(241, 245, 249);
+	border-radius: 4px;
+	display: flex;
+	flex-direction: column;
+
+	@include mobile {
+		width: 100%;
+		height: 8px;
+		padding: 0;
+		flex-direction: row;
+		gap: 12px;
+		border: none;
+	}
+}
+
+// Управление отображением шагов
+.desktopStep {
+	display: block;
+
+	@include mobile {
+		display: none;
+	}
+}
+
+.mobileStep {
+	display: none;
+
+	@include mobile {
+		display: block;
+	}
+}
+
+// Управление отображением заголовка
+.mobileTitleContainer {
+	display: none;
+
+	@include mobile {
+		display: block;
+	}
+}
+
+.button {
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	background: transparent;
+	text-transform: none;
+	letter-spacing: 0;
+	margin-bottom: 16px;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $secondary;
+		outline-offset: 2px;
+	}
+
+	&:hover:not(:disabled) {
+		background: transparent;
+	}
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.button:last-child {
+	margin-bottom: 0px;
+}
+
+.titleContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.wrapperTitle {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: space-between;
+}
+
+.title,
+.counter {
+	margin: 0;
+	padding: 0;
+	font-size: $font-Size-XXS;
+	font-weight: $fontWeightMedium;
+	line-height: 16px;
+	color: $fontLabelColor;
+}

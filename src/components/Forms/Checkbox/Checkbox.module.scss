@@ -21,8 +21,9 @@
 
 .checkbox__pseudo-input {
 	@include pseudo-input;
-
+	align-items: flex-start;
 	&::before {
+		margin-top: 4px;
 		background-repeat: no-repeat;
 		background-position: center center;
 	}

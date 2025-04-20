@@ -1,0 +1,117 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/layout' as *;
+
+.filtration {
+	width: 100%;
+	margin-bottom: 24px;
+}
+
+.controls {
+	display: flex;
+	align-items: center;
+	margin-bottom: 16px;
+
+	// Общие стили для всех элементов
+	.selector {
+		min-width: 160px;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	.search {
+		min-width: 0;
+		flex-grow: 1;
+		width: 100%;
+	}
+
+	.toggle {
+		color: $fontColor;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+
+	// Вариант для company
+	&[data-role='company'] {
+		// Общий gap между элементами
+		gap: 32px;
+
+		@include desktop {
+			display: flex;
+
+			// Селекторы прижаты к левому краю с gap 32px
+			.selector + .selector {
+				margin-right: auto;
+			}
+		}
+
+		@include tablet {
+			// Планшет: две строки
+			display: grid;
+			grid-template-columns: auto auto 1fr;
+			grid-template-rows: auto auto;
+			grid-template-areas:
+				'selector1 selector2 toggle'
+				'search search search';
+			row-gap: 16px;
+			column-gap: 32px;
+
+			.selector {
+				&:nth-child(1) {
+					grid-area: selector1;
+				}
+				&:nth-child(2) {
+					grid-area: selector2;
+				}
+			}
+
+			.search {
+				grid-area: search;
+				min-width: 100%;
+			}
+
+			.toggle {
+				grid-area: toggle;
+				justify-self: end;
+				margin-left: auto;
+			}
+		}
+
+		@include mobile {
+			// Мобильный: вертикальное расположение
+			flex-direction: column;
+			gap: 16px;
+
+			.selector {
+				width: 100%;
+
+				& + .selector {
+					margin-left: 0;
+				}
+			}
+		}
+	}
+
+	// Вариант для volunteer и nko
+	&[data-role='volunteer'],
+	&[data-role='nko'] {
+		gap: 32px;
+		display: flex;
+
+		.toggle {
+			display: none;
+		}
+
+		@include tablet {
+			flex-direction: column;
+			gap: 16px;
+
+			.selector {
+				width: 100%;
+			}
+		}
+	}
+}
+
+.chips {
+	margin-top: 12px;
+}

@@ -1,0 +1,190 @@
+@use '@styles/variables' as *;
+
+$avatar-size-volunteer: 96px;
+$avatar-size-nko: 136px;
+
+// Базовые стили
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+	font-family: $fontFamily;
+}
+
+.avatar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	border: 1px dashed $buttonOutlineLight;
+	cursor: pointer;
+
+	&Text {
+		cursor: pointer;
+		text-align: center;
+		color: $linkFontColor;
+	}
+}
+
+// Модификаторы для Волонтеров
+.volunteer {
+	width: 232px;
+
+	.avatar {
+		width: $avatar-size-volunteer;
+		height: $avatar-size-volunteer;
+		&Text {
+			font-size: $fontSizeXs; // 0.9rem ≈ 14px
+			font-weight: $fontWeightMedium;
+			line-height: $fontLineS;
+		}
+	}
+
+	.avatarOverlayContainer {
+		width: $avatar-size-volunteer;
+		height: $avatar-size-volunteer;
+	}
+
+	.avatarDelete {
+		left: 80px;
+	}
+
+	.image {
+		width: $avatar-size-volunteer !important;
+		height: $avatar-size-volunteer;
+	}
+}
+
+// Модификаторы для НКО
+.nko {
+	width: 288px;
+
+	.avatar {
+		width: $avatar-size-nko;
+		height: $avatar-size-nko;
+
+		&Text {
+			font-size: $fontSizeS; // 1rem = 16px
+			font-weight: $fontWeightMedium;
+			line-height: $fontLineS;
+		}
+	}
+
+	.avatarOverlayContainer {
+		width: $avatar-size-nko;
+		height: $avatar-size-nko;
+	}
+
+	.avatarDelete {
+		left: 116px;
+	}
+
+	.image {
+		width: $avatar-size-nko !important;
+		height: $avatar-size-nko;
+	}
+}
+
+// Общие стили для обоих вариантов
+.avatarOverlayContainer {
+	position: relative;
+	cursor: pointer;
+	background-color: inherit;
+	border: none;
+	padding: 0;
+
+	&:hover {
+		.avatarOverlay {
+			opacity: 0.2;
+		}
+		.avatarOverlayIcon {
+			opacity: 1;
+		}
+	}
+}
+
+.avatarOverlayIcon {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+	opacity: 0;
+	background: url(./icon_add_avatar.svg) center no-repeat;
+	z-index: 2;
+	transition: opacity 0.2s ease-in-out;
+}
+
+.avatarOverlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	border-radius: 100%;
+	opacity: 0;
+	z-index: 1;
+	transition: opacity 0.2s ease-in-out;
+}
+
+.avatarDelete {
+	cursor: pointer;
+	background: url(./icon_delete_avatar.svg) center no-repeat;
+	background-size: contain;
+	border: none;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: 0;
+	transition: opacity 0.2s ease-in-out;
+
+	&:hover {
+		opacity: 0.7;
+	}
+}
+
+.image {
+	border-radius: 50%;
+}
+
+.notice {
+	display: block;
+	margin-left: 20px;
+	width: 110px;
+	font-size: $fontSizeXs;
+	font-weight: $fontWeightMedium;
+	line-height: 20px;
+	color: $fontLabelColor;
+}
+
+.modal {
+	padding: 36px 36px 40px;
+
+	&Title {
+		font-size: $fontSizeXXL;
+		font-weight: $fontWeightBold;
+		line-height: $fontLineS;
+		color: $titleFontColor;
+	}
+
+	&ImageWrapper {
+		margin: 20px 0;
+		width: 472px;
+		height: 472px;
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+
+	&Image {
+		object-fit: contain;
+	}
+}
+
+// Reset button styles
+button {
+	&:hover,
+	&:focus,
+	&:active {
+		outline: none;
+		border: none;
+		box-shadow: none;
+	}
+}

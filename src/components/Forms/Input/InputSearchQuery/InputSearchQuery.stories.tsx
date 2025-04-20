@@ -17,12 +17,20 @@ const meta = {
 			name: '',
 		},
 	},
+	decorators: [
+		(Story) => (
+			<div
+				style={{ width: '700px', border: '1px dashed #ccc', padding: '20px' }}
+			>
+				<Story />
+			</div>
+		),
+	],
 } satisfies Meta<typeof InputSearchQuery>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on interaction testing: https://storybook.js.org/docs/writing-tests/interaction-testing
 export const Default: Story = {
 	args: {
 		placeholder: 'Поиск по ключевым словам',

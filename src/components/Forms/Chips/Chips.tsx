@@ -9,7 +9,11 @@ export function Chips({ filters, onDelete = () => {} }: ChipsProps) {
 	return (
 		<div className={styles.inputChipsBox} data-testid="Chips">
 			{filters.map((filter, index) => (
-				<div className={styles.inputChip} key={index}>
+				<div
+					className={styles.inputChip}
+					key={index}
+					data-testid="Element_chips"
+				>
 					<p>{filter}</p>
 					<button onClick={() => onDelete(filter)} className={styles.button}>
 						<svg
