@@ -17,6 +17,9 @@ export { Header } from './components/Common/Layout/Header/Header';
 export { Footer } from './components/Common/Layout/Footer/Footer';
 export { SortBlock } from './components/Common/Sorting/SortBlock';
 export { Filtration } from './components/Common/Filtration/Filtration';
+export { Modal } from './components/Common/Layout/Modal/Modal';
+export { ModalTrigger } from './components/Common/Layout/Modal/ModalTrigger/ModalTrigger';
+export { ModalConfirm } from './components/Common/Layout/Modal/ModalConfirm/ModalConfirm';
 
 export {
 	Tag,
