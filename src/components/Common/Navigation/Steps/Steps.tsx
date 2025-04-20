@@ -61,7 +61,7 @@ export function Steps({
 	};
 
 	return (
-		<div className={style.steps}>
+		<div className={style.steps} data-testid="Steps">
 			<div className={style.wrapper}>
 				{data.map(({ counter, text, link }) => {
 					const disabled = getStepDisabled(step, counter, category);

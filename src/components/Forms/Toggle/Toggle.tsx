@@ -12,7 +12,7 @@ export function Toggle({ checked = false, onChange, text = '' }: ToggleProps) {
 	};
 
 	return (
-		<div className={styles.toggle}>
+		<div className={styles.toggle} data-testid="Toggle">
 			<p className={styles.text}>{text}</p>
 			<button
 				onClick={onClick}

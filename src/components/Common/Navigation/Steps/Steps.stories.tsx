@@ -67,7 +67,7 @@ export const Default: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const element = canvas.getByTestId('TaskDetailsVolunteer');
+		const element = canvas.getByTestId('Steps');
 		await expect(element).toBeInTheDocument();
 	},
 };
