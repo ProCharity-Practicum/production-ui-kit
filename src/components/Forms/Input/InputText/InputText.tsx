@@ -16,6 +16,7 @@ export type InputTextProps = {
 	onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 	placeholder?: string;
 	maxLength?: number;
+	name?: string;
 };
 
 export function InputText({
@@ -25,6 +26,7 @@ export function InputText({
 	onChange,
 	placeholder,
 	maxLength,
+	name,
 }: InputTextProps) {
 	const [valueInput, setValueInput] = useState(value);
 	const ref = useRef<HTMLTextAreaElement>(null);
@@ -44,6 +46,7 @@ export function InputText({
 	const handleClearClick = () => {
 		setValueInput('');
 	};
+
 	useLayoutEffect(() => {
 		if (ref.current) {
 			const input = ref.current;
@@ -72,6 +75,7 @@ export function InputText({
 			>
 				<textarea
 					ref={ref}
+					name={name}
 					className={clsx(
 						styles['textarea__field'],
 						styles['textarea__field_autosize']

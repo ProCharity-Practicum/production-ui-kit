@@ -14,6 +14,7 @@ export type SelectCategoriesProps = {
 	label: string;
 	options: MultipleOption[];
 	initialValues?: string[];
+	name?: string;
 };
 
 export function SelectCategories({
@@ -21,12 +22,26 @@ export function SelectCategories({
 	label,
 	options,
 	initialValues = [],
+	name = 'categories',
 }: SelectCategoriesProps) {
 	const [expand, setExpand] = useState<{ [key: number]: boolean }>({});
 	const [isOpen, setIsOpen] = useState(false);
 	const [values, setValues] = useState(initialValues);
 	const isSingle = options.length <= 1;
 	const selectRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		if (name) {
+			const hiddenSelect = document.querySelector(
+				`select[name="${name}"]`
+			) as HTMLSelectElement;
+			if (hiddenSelect) {
+				Array.from(hiddenSelect.options).forEach((option) => {
+					option.selected = initialValues.includes(option.value);
+				});
+			}
+		}
+	}, [initialValues, name]);
 
 	const toggleExpand = useCallback((index: number) => {
 		setExpand((prev) => ({ ...prev, [index]: !prev[index] }));
@@ -134,6 +149,22 @@ export function SelectCategories({
 			data-testid="SelectCategories"
 			ref={selectRef}
 		>
+			{/* Добавляем скрытый select для нативной формы */}
+			<select
+				name={name}
+				multiple
+				style={{ display: 'none' }}
+				value={initialValues}
+				onChange={() => {}}
+			>
+				{options.flatMap((option) =>
+					option.values.map((value) => (
+						<option key={value} value={value}>
+							{value}
+						</option>
+					))
+				)}
+			</select>
 			<div
 				className={`${styles.selection} ${isOpen && styles.selection__open}`}
 				onClick={onHandleClick}
