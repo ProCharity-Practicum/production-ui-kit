@@ -161,3 +161,107 @@ export const MultipleContainers: Story = {
 		},
 	},
 };
+
+export const NativeFormSimulation: Story = {
+	render: () => {
+		// Имитируем состояние формы
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [selectedValues, setSelectedValues] = useState<string[]>([]);
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [username, setUsername] = useState('');
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [formSubmitted, setFormSubmitted] = useState(false);
+
+		const handleSubmit = (e: React.FormEvent) => {
+			e.preventDefault();
+			setFormSubmitted(true);
+		};
+
+		const handleReset = () => {
+			setSelectedValues([]);
+			setUsername('');
+			setFormSubmitted(false);
+		};
+
+		return (
+			<div style={{ maxWidth: '500px', margin: '0 auto' }}>
+				<form
+					onSubmit={handleSubmit}
+					onReset={handleReset}
+					style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+				>
+					<h3>Имитация работы формы</h3>
+
+					{/* Наш компонент с привязкой к состоянию */}
+					<SelectCategories
+						name="skills"
+						label="Выберите навыки"
+						options={designCategories.options}
+						initialValues={selectedValues}
+						setInitialValues={setSelectedValues}
+					/>
+
+					<input
+						type="text"
+						name="username"
+						placeholder="Ваше имя"
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+						required
+					/>
+
+					<div>
+						<button type="submit">Отправить</button>
+						<button type="reset" style={{ marginLeft: '10px' }}>
+							Сбросить
+						</button>
+					</div>
+				</form>
+
+				{formSubmitted && (
+					<div
+						style={{
+							marginTop: '20px',
+							padding: '15px',
+							background: '#f5f5f5',
+						}}
+					>
+						<h4>Имитация данных формы:</h4>
+						<pre>
+							{JSON.stringify(
+								{
+									skills: selectedValues,
+									username,
+								},
+								null,
+								2
+							)}
+						</pre>
+					</div>
+				)}
+
+				<div
+					style={{ marginTop: '20px', padding: '15px', background: '#fff8e1' }}
+				>
+					<h4>Текущее состояние:</h4>
+					<p>Выбрано навыков: {selectedValues.length}</p>
+					{selectedValues.length > 0 && (
+						<ul>
+							{selectedValues.map((value) => (
+								<li key={value}>{value}</li>
+							))}
+						</ul>
+					)}
+				</div>
+			</div>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		// Проверяем начальное состояние
+		await expect(canvas.getByText('Выбрано навыков: 0')).toBeInTheDocument();
+
+		// Можно добавить тесты для взаимодействия
+	},
+};

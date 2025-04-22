@@ -14,6 +14,7 @@ export type CheckboxProps = {
 	onChange: (checked: boolean) => void;
 	children?: ReactNode;
 	className?: string;
+	name?: string;
 };
 
 export function Checkbox({
@@ -22,6 +23,7 @@ export function Checkbox({
 	checked = false,
 	children,
 	className,
+	name,
 }: CheckboxProps) {
 	function renderText(): ReactNode {
 		switch (variant) {
@@ -77,6 +79,7 @@ export function Checkbox({
 			<label className={styles.checkbox}>
 				<input
 					type="checkbox"
+					name={name}
 					className={styles['checkbox__native-input']}
 					autoComplete="off"
 					onChange={handleChange}

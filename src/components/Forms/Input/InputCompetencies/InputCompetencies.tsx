@@ -5,7 +5,7 @@ import { Icon } from '@/components/Core/Icon';
 import { ChangeEvent } from 'react';
 
 export type InputCompetenciesProps = {
-	props: Omit<InputProps, 'type'>;
+	props?: Omit<InputProps, 'type'>;
 	className?: string;
 	onClick?: () => void;
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
