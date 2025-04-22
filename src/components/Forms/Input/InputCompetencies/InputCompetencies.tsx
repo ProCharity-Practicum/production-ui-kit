@@ -1,25 +1,27 @@
 import clsx from 'clsx';
 import styles from './InputCompetencies.module.scss';
-import { Input } from '@/components/Forms/Input/Input.tsx';
+import { Input, InputProps } from '@/components/Forms/Input/Input.tsx';
 import { Icon } from '@/components/Core/Icon';
 import { ChangeEvent } from 'react';
 
 export type InputCompetenciesProps = {
+	props: Omit<InputProps, 'type'>;
 	className?: string;
 	onClick?: () => void;
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function InputCompetencies({
+	props,
 	className,
 	onClick,
 	onChange,
 }: InputCompetenciesProps) {
 	return (
 		<Input
+			{...props}
 			type={'text'}
 			className={clsx(styles.container, className)}
-			readOnly={true}
 			onChange={onChange}
 			isClearable={false}
 		>
