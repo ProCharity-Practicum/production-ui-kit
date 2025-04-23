@@ -226,100 +226,61 @@ export const MultipleSelects: Story = {
 	},
 };
 
-export const FormIntegration: Story = {
-	args: {
-		label: 'Выберите опцию',
-		options: [
-			'Опция 1',
-			'Опция 2',
-			{ value: 'opt3', label: 'Опция 3' },
-			{ value: 'opt4', label: 'Опция 4' },
-		],
-	},
-	render: (args) => {
+export const NativeFormSimulation: Story = {
+	render: () => {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [selectedValue, setSelectedValue] = useState<
-			string | Record<string, unknown> | null
-		>(null);
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [username, setUsername] = useState('');
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [formSubmitted, setFormSubmitted] = useState(false);
+		const [selectedValue, setSelectedValue] = useState<Option | null>(null);
 
-		const handleSubmit = (e: React.FormEvent) => {
-			e.preventDefault();
-			setFormSubmitted(true);
-		};
-
-		const handleReset = () => {
-			setSelectedValue(null);
-			setUsername('');
-			setFormSubmitted(false);
+		const getSelectedValueText = (value: Option | null): string => {
+			if (value === null) return 'ничего не выбрано';
+			if (typeof value === 'string') return value;
+			return JSON.stringify(value);
 		};
 
 		return (
 			<div style={{ maxWidth: '500px', margin: '0 auto' }}>
 				<form
-					onSubmit={handleSubmit}
-					onReset={handleReset}
-					style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
-				>
-					<h3>Проверка работы в форме</h3>
-
-					<Select
-						{...args}
-						name="option"
-						value={selectedValue}
-						onChange={(value) => setSelectedValue(value)}
-					/>
-
-					<input
-						type="text"
-						name="username"
-						placeholder="Ваше имя"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						required
-					/>
-
-					<div>
-						<button type="submit">Отправить</button>
-						<button type="reset" style={{ marginLeft: '10px' }}>
-							Сбросить
-						</button>
-					</div>
-				</form>
-
-				{formSubmitted && (
-					<div
-						style={{
-							marginTop: '20px',
-							padding: '15px',
-							background: '#f5f5f5',
-						}}
-					>
-						<h4>Данные формы:</h4>
-						<pre>
-							{JSON.stringify(
+					onSubmit={(e) => {
+						e.preventDefault();
+						const formData = new FormData(e.currentTarget);
+						alert(
+							`Отправленные данные:\n${JSON.stringify(
 								{
-									option: selectedValue,
-									username,
+									option: formData.get('option'),
+									username: formData.get('username'),
 								},
 								null,
 								2
-							)}
-						</pre>
-					</div>
-				)}
-
-				<div
-					style={{ marginTop: '20px', padding: '15px', background: '#fff8e1' }}
+							)}`
+						);
+					}}
+					style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
 				>
-					<h4>Текущее состояние:</h4>
-					<p>
-						Выбрано: {selectedValue ? JSON.stringify(selectedValue) : 'ничего'}
-					</p>
-				</div>
+					<h3>Демонстрация работы с нативной формой</h3>
+
+					<Select
+						name="option"
+						label="Выберите вариант"
+						options={['Вариант 1', 'Вариант 2', 'Вариант 3']}
+						value={selectedValue}
+						onChange={setSelectedValue}
+					/>
+
+					<input type="text" name="username" placeholder="Ваше имя" required />
+
+					<button type="submit">Отправить</button>
+
+					<div
+						style={{
+							marginTop: '16px',
+							padding: '12px',
+							background: '#f5f5f5',
+							borderRadius: '4px',
+						}}
+					>
+						<p>Выбранное значение: {getSelectedValueText(selectedValue)}</p>
+					</div>
+				</form>
 			</div>
 		);
 	},
