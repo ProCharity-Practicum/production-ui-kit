@@ -1,5 +1,5 @@
 import styles from './SelectCategories.module.scss';
-import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Checkbox } from '../../Checkbox/Checkbox';
 import { Chips } from '../../Chips/Chips';
 import { Icon } from '@/components/Core/Icon';
@@ -10,44 +10,35 @@ type MultipleOption = {
 };
 
 export type SelectCategoriesProps = {
-	setInitialValues?: (values: string[]) => void;
+	onChange?: (values: string[]) => void;
 	label: string;
 	options: MultipleOption[];
-	initialValues?: string[];
+	value?: string[];
 	name?: string;
 };
 
 export function SelectCategories({
-	setInitialValues = () => {},
+	onChange,
 	label,
 	options,
-	initialValues = [],
+	value = [],
 	name = 'categories',
 }: SelectCategoriesProps) {
-	const [expand, setExpand] = useState<{ [key: number]: boolean }>({});
 	const [isOpen, setIsOpen] = useState(false);
-	const [values, setValues] = useState(initialValues);
-	const isSingle = options.length <= 1;
+	const [expand, setExpand] = useState<{ [key: number]: boolean }>({});
 	const selectRef = useRef<HTMLDivElement>(null);
+	const nativeSelectRef = useRef<HTMLSelectElement>(null);
+	const isSingle = options.length <= 1;
 
 	useEffect(() => {
-		if (name) {
-			const hiddenSelect = document.querySelector(
-				`select[name="${name}"]`
-			) as HTMLSelectElement;
-			if (hiddenSelect) {
-				Array.from(hiddenSelect.options).forEach((option) => {
-					option.selected = initialValues.includes(option.value);
-				});
-			}
+		if (nativeSelectRef.current) {
+			Array.from(nativeSelectRef.current.options).forEach((option) => {
+				option.selected = value.includes(option.value);
+			});
 		}
-	}, [initialValues, name]);
+	}, [value]);
 
-	const toggleExpand = useCallback((index: number) => {
-		setExpand((prev) => ({ ...prev, [index]: !prev[index] }));
-	}, []);
-
-	const result = useMemo(
+	const totalOptions = useMemo(
 		() =>
 			options.reduce(
 				(count, option) => count + (option.values?.length || 0),
@@ -56,92 +47,58 @@ export function SelectCategories({
 		[options]
 	);
 
-	const closeDropdown = useCallback(() => {
+	const toggleExpand = useCallback((index: number) => {
+		setExpand((prev) => ({ ...prev, [index]: !prev[index] }));
+	}, []);
+
+	const handleClickOutside = useCallback((event: MouseEvent) => {
+		if (
+			selectRef.current &&
+			!selectRef.current.contains(event.target as Node)
+		) {
+			setIsOpen(false);
+		}
+	}, []);
+
+	const handleOptionToggle = useCallback(
+		(optionValue: string) => {
+			const newValues = value.includes(optionValue)
+				? value.filter((v) => v !== optionValue)
+				: [...value, optionValue];
+
+			onChange?.(newValues);
+
+			if (isSingle) {
+				setIsOpen(false);
+			}
+		},
+		[value, onChange, isSingle]
+	);
+
+	const handleChipDelete = useCallback(
+		(deletedValue: string) => {
+			onChange?.(value.filter((v) => v !== deletedValue));
+		},
+		[value, onChange]
+	);
+
+	const handleReset = useCallback(() => {
+		onChange?.([]);
 		setIsOpen(false);
-		setValues(initialValues);
-	}, [initialValues]);
+	}, [onChange]);
 
 	useEffect(() => {
-		const handleClickOutside = (event: MouseEvent) => {
-			if (
-				selectRef.current &&
-				!selectRef.current.contains(event.target as Node)
-			) {
-				closeDropdown();
-			}
-		};
+		if (!isOpen) return;
 
-		const handleEscapeKey = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') closeDropdown();
-		};
-
-		if (isOpen) {
-			document.addEventListener('mousedown', handleClickOutside);
-			document.addEventListener('keydown', handleEscapeKey);
-		}
+		document.addEventListener('mousedown', handleClickOutside);
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') setIsOpen(false);
+		});
 
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
-			document.removeEventListener('keydown', handleEscapeKey);
 		};
-	}, [isOpen, closeDropdown]);
-
-	const onHandleClick = useCallback(
-		(e: React.MouseEvent) => {
-			const target = e.target as HTMLElement;
-			const isChipClick =
-				target.closest('[data-testid="Element_chips"]') !== null;
-			const isDeleteButtonClick =
-				target.closest('button') !== null ||
-				target.closest('svg') !== null ||
-				target.closest('path') !== null;
-			const isChipInteraction =
-				isChipClick || (isDeleteButtonClick && isChipClick);
-
-			if (!isChipInteraction) {
-				if (isOpen) {
-					setIsOpen(false);
-					setValues(initialValues);
-				} else {
-					setIsOpen(true);
-				}
-			}
-		},
-		[isOpen, initialValues]
-	);
-
-	const onDeleteOption = useCallback(
-		(value: string) => {
-			const newValues = values.filter((item) => item !== value);
-			setValues(newValues);
-			setInitialValues(newValues);
-		},
-		[values, setInitialValues]
-	);
-
-	const onClickMultipleOption = useCallback(
-		(value: string) => {
-			setValues((prev) => {
-				const newValues = prev.includes(value)
-					? prev.filter((item) => item !== value)
-					: [...prev, value];
-				if (isSingle) setInitialValues(newValues);
-				return newValues;
-			});
-		},
-		[isSingle, setInitialValues]
-	);
-
-	const onClickResetOption = useCallback(() => {
-		setValues([]);
-		setInitialValues([]);
-		setIsOpen(false);
-	}, [setInitialValues]);
-
-	const onClickSubmit = useCallback(() => {
-		setInitialValues(values);
-		setIsOpen(false);
-	}, [values, setInitialValues]);
+	}, [isOpen, handleClickOutside]);
 
 	return (
 		<div
@@ -149,13 +106,13 @@ export function SelectCategories({
 			data-testid="SelectCategories"
 			ref={selectRef}
 		>
-			{/* Добавляем скрытый select для нативной формы */}
+			{/* Скрытый нативный select для работы с формами */}
 			<select
+				ref={nativeSelectRef}
 				name={name}
 				multiple
 				style={{ display: 'none' }}
-				value={initialValues}
-				onChange={() => {}}
+				value={value}
 			>
 				{options.flatMap((option) =>
 					option.values.map((value) => (
@@ -165,21 +122,23 @@ export function SelectCategories({
 					))
 				)}
 			</select>
+
+			{/* Кастомный UI */}
 			<div
 				className={`${styles.selection} ${isOpen && styles.selection__open}`}
-				onClick={onHandleClick}
+				onClick={() => setIsOpen(!isOpen)}
 			>
 				<div className={styles.selectionContent}>
 					<label className={styles.label}>{label}</label>
 					<div className={styles.chipsWrapper}>
-						<Chips filters={initialValues} onDelete={onDeleteOption} />
+						<Chips filters={value} onDelete={handleChipDelete} />
 					</div>
 				</div>
 				<div className={styles.selectionControls}>
 					{isOpen && (
 						<p
 							className={styles.selectionCount}
-						>{`${values.length}/${result}`}</p>
+						>{`${value.length}/${totalOptions}`}</p>
 					)}
 					<Icon
 						name={isOpen ? 'chevronUp' : 'chevronDown'}
@@ -196,21 +155,20 @@ export function SelectCategories({
 							<div key={optIndex} className={styles.optionGroup}>
 								<p className={styles.optionTitle}>{option.title}</p>
 								<div
-									className={`${isSingle ? styles.singleWrap : styles.optionWrap}`}
+									className={isSingle ? styles.singleWrap : styles.optionWrap}
 								>
-									{/* Фильтруем массив: в свёрнутом состоянии показываем только первые 4 элемента */}
 									{option.values
 										.filter(
 											(_, index) => isSingle || expand[optIndex] || index < 4
 										)
-										.map((value) => (
+										.map((val) => (
 											<Checkbox
-												key={value}
-												checked={values.includes(value)}
-												onChange={() => onClickMultipleOption(value)}
+												key={val}
+												checked={value.includes(val)}
+												onChange={() => handleOptionToggle(val)}
 												className={styles.option}
 											>
-												<p className={styles.checkboxText}>{value}</p>
+												<p className={styles.checkboxText}>{val}</p>
 											</Checkbox>
 										))}
 								</div>
@@ -238,24 +196,22 @@ export function SelectCategories({
 					{!isSingle && (
 						<div className={styles.buttons}>
 							<button
-								type="reset"
+								type="button"
 								className={styles.button}
-								onClick={onClickResetOption}
+								onClick={handleReset}
 							>
 								Сбросить все
 							</button>
 							<button
 								type="button"
 								className={styles.button}
-								onClick={onClickSubmit}
+								onClick={() => setIsOpen(false)}
 							>
 								Выбрать
-								{values.length > 0 && (
+								{value.length > 0 && (
 									<div className={styles.buttonCountCircle}>
-										<p
-											className={`${styles.buttonCountCircleText} ${styles.numberText}`}
-										>
-											{values.length}
+										<p className={styles.buttonCountCircleText}>
+											{value.length}
 										</p>
 									</div>
 								)}

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styles from './Select.module.scss';
 import ArrowRoundedUp from './icon_arrow_rounded_up_light.svg';
 import ArrowRoundedDown from './icon_arrow_rounded_down_light.svg';
@@ -24,6 +24,14 @@ export function Select({
 }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const selectRef = useRef<HTMLDivElement>(null);
+	const nativeSelectRef = useRef<HTMLSelectElement>(null);
+
+	// Синхронизируем значение с нативным select
+	useEffect(() => {
+		if (nativeSelectRef.current) {
+			nativeSelectRef.current.value = JSON.stringify(value);
+		}
+	}, [value]);
 
 	const getDisplayText = (option: Option | null): string => {
 		if (!option) return '';
@@ -38,6 +46,10 @@ export function Select({
 	const handleOptionClick = (option: Option) => {
 		setIsOpen(false);
 		onChange?.(option, name);
+		// Обновляем нативный select
+		if (nativeSelectRef.current) {
+			nativeSelectRef.current.value = JSON.stringify(option);
+		}
 	};
 
 	const handleBlur = (e: React.FocusEvent) => {
@@ -54,6 +66,18 @@ export function Select({
 			onBlur={handleBlur}
 			tabIndex={0}
 		>
+			<select
+				ref={nativeSelectRef}
+				name={name}
+				style={{ display: 'none' }}
+				defaultValue={JSON.stringify(value)}
+			>
+				{options.map((option, index) => (
+					<option key={index} value={JSON.stringify(option)}>
+						{getDisplayText(option)}
+					</option>
+				))}
+			</select>
 			<div
 				className={`${styles.panel} ${isOpen && styles.panel_open}`}
 				onClick={() => setIsOpen(!isOpen)}
