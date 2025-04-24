@@ -17,7 +17,7 @@ export function Modal({
 	closeOnOverlayClick,
 }: ModalProps) {
 	useEffect(() => {
-		if (!closeOnOverlayClick) return; // Если закрытие по клику отключено, Escape тоже игнорируем
+		if (!closeOnOverlayClick) return;
 
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') onClose();
@@ -35,7 +35,7 @@ export function Modal({
 	};
 
 	const handleModalClick = (e: React.MouseEvent) => {
-		e.stopPropagation(); // блокируем всплытие клика из модалки
+		e.stopPropagation();
 	};
 
 	return (

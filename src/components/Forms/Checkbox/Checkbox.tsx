@@ -15,6 +15,7 @@ export type CheckboxProps = {
 	children?: ReactNode;
 	className?: string;
 	name?: string;
+	required?: boolean;
 };
 
 export function Checkbox({
@@ -24,6 +25,7 @@ export function Checkbox({
 	children,
 	className,
 	name,
+	required = false,
 }: CheckboxProps) {
 	function renderText(): ReactNode {
 		switch (variant) {
@@ -47,20 +49,7 @@ export function Checkbox({
 			case 'Materials':
 				return <>Все необходимые материалы предоставим волонтеру лично</>;
 			case 'Admin':
-				return (
-					<>Права администратора</>
-					// <Hint
-					// 	position={ hintPosition.centerBottom }
-					// >
-					// 	Сотрудник с правами администратора может:
-					// 	<ul className={ style.checkbox_hint__text }>
-					// 		<li>добавлять коллег в личный кабинет НКО и удалять их оттуда,</li>
-					// 		<li>редактировать список избранных волонтеров,</li>
-					// 		<li>работать с задачами всех сотрудников НКО,</li>
-					// 		<li>редактировать профиль организации.</li>
-					// 	</ul>
-					// </Hint>
-				);
+				return <>Права администратора</>;
 			case 'Unsubscribe':
 				return <>Отписаться</>;
 			case 'NoNewTasks':
@@ -84,6 +73,7 @@ export function Checkbox({
 					autoComplete="off"
 					onChange={handleChange}
 					checked={checked}
+					required={required}
 					data-testid="checkbox"
 				/>
 				<span
