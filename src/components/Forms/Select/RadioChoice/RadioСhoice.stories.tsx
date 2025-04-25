@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { RadioChoice } from './index';
+import { RadioChoice } from './RadioChoice';
 import { useState } from 'react';
 
 const meta = {
-	title: 'UI-kit/Controls/RadioChoice',
+	title: 'Forms/Select/RadioChoice',
 	component: RadioChoice,
 	tags: ['autodocs'],
 	args: {},
@@ -102,6 +102,70 @@ export const NativeFormSimulation: Story = {
 						}}
 					>
 						<p>Выбранное значение: {selectedValue}</p>
+					</div>
+				</form>
+			</div>
+		);
+	},
+};
+
+export const RatesInNativeForm: Story = {
+	render: () => {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [selectedRate, setSelectedRate] = useState('');
+
+		return (
+			<div style={{ maxWidth: '500px', margin: '0 auto' }}>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						const formData = new FormData(e.currentTarget);
+						alert(
+							`Отправленные данные:\n${JSON.stringify(
+								{
+									rating: formData.get('rating'),
+									feedback: formData.get('feedback'),
+								},
+								null,
+								2
+							)}`
+						);
+					}}
+					style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+				>
+					<h3>Оцените наш сервис</h3>
+
+					<RadioChoice
+						name="rating"
+						array={[
+							{ title: '1', value: '1' },
+							{ title: '2', value: '2' },
+							{ title: '3', value: '3' },
+							{ title: '4', value: '4' },
+							{ title: '5', value: '5' },
+						]}
+						selected={selectedRate}
+						onChange={setSelectedRate}
+						state="rates"
+					/>
+
+					<textarea
+						name="feedback"
+						placeholder="Ваш отзыв (необязательно)"
+						rows={3}
+					/>
+
+					<button type="submit">Отправить оценку</button>
+
+					<div
+						style={{
+							marginTop: '16px',
+							padding: '12px',
+							background: '#f5f5f5',
+							borderRadius: '4px',
+						}}
+					>
+						<p>Текущая оценка: {selectedRate}</p>
 					</div>
 				</form>
 			</div>
