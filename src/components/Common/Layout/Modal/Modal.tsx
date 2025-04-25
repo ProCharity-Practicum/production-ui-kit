@@ -25,7 +25,8 @@ export function Modal({
 
 		document.addEventListener('keydown', handleKeyDown);
 		return () => document.removeEventListener('keydown', handleKeyDown);
-	}, [onClose, closeOnOverlayClick]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleOverlayClick = (e: React.MouseEvent) => {
 		if (closeOnOverlayClick) {
