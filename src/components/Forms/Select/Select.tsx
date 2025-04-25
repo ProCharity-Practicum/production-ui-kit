@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './Select.module.scss';
 import ArrowRoundedUp from './icon_arrow_rounded_up_light.svg';
 import ArrowRoundedDown from './icon_arrow_rounded_down_light.svg';
@@ -24,20 +24,42 @@ export function Select({
 }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const selectRef = useRef<HTMLDivElement>(null);
+	const nativeSelectRef = useRef<HTMLSelectElement>(null);
 
-	const getDisplayText = (option: Option | null): string => {
-		if (!option) return '';
-		if (typeof option === 'string') return option;
+	const getDisplayText = useCallback(
+		(option: Option | null): string => {
+			if (!option) return '';
+			if (typeof option === 'string') return option;
+			const labelValue = optionLabel ? option[optionLabel] : '';
+			return typeof labelValue === 'string' || typeof labelValue === 'number'
+				? String(labelValue)
+				: '';
+		},
+		[optionLabel]
+	);
 
-		const labelValue = optionLabel ? option[optionLabel] : '';
-		return typeof labelValue === 'string' || typeof labelValue === 'number'
-			? String(labelValue)
-			: '';
-	};
+	// Синхронизируем значение с нативным select
+	useEffect(() => {
+		if (nativeSelectRef.current && value !== null) {
+			nativeSelectRef.current.value =
+				typeof value === 'string' ? value : JSON.stringify(value);
+		}
+	}, [value]);
 
 	const handleOptionClick = (option: Option) => {
 		setIsOpen(false);
 		onChange?.(option, name);
+
+		if (nativeSelectRef.current) {
+			const stringValue =
+				typeof option === 'string' ? option : JSON.stringify(option);
+			nativeSelectRef.current.value = stringValue;
+
+			// Важно: имитация события change для корректной работы форм
+			nativeSelectRef.current.dispatchEvent(
+				new Event('change', { bubbles: true })
+			);
+		}
 	};
 
 	const handleBlur = (e: React.FocusEvent) => {
@@ -54,6 +76,31 @@ export function Select({
 			onBlur={handleBlur}
 			tabIndex={0}
 		>
+			{/* Скрытый нативный select для работы с формами */}
+			<select
+				ref={nativeSelectRef}
+				name={name}
+				style={{ display: 'none' }}
+				value={
+					value
+						? typeof value === 'string'
+							? value
+							: JSON.stringify(value)
+						: ''
+				}
+				onChange={() => {}}
+			>
+				{!value && <option value="" />}
+				{options.map((option, index) => (
+					<option
+						key={index}
+						value={typeof option === 'string' ? option : JSON.stringify(option)}
+					>
+						{getDisplayText(option)}
+					</option>
+				))}
+			</select>
+			{/* Кастомный UI */}
 			<div
 				className={`${styles.panel} ${isOpen && styles.panel_open}`}
 				onClick={() => setIsOpen(!isOpen)}
@@ -76,18 +123,15 @@ export function Select({
 			</div>
 			{isOpen && (
 				<div className={styles.options}>
-					{options.map((option, index) => {
-						const displayText = getDisplayText(option);
-						return (
-							<div
-								key={`${typeof option === 'string' ? option : JSON.stringify(option)}-${index}`}
-								className={styles.option}
-								onClick={() => handleOptionClick(option)}
-							>
-								<p className={styles.optionText}>{displayText}</p>
-							</div>
-						);
-					})}
+					{options.map((option, index) => (
+						<div
+							key={`${typeof option === 'string' ? option : JSON.stringify(option)}-${index}`}
+							className={styles.option}
+							onClick={() => handleOptionClick(option)}
+						>
+							<p className={styles.optionText}>{getDisplayText(option)}</p>
+						</div>
+					))}
 				</div>
 			)}
 		</div>

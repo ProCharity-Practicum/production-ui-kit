@@ -1,0 +1,179 @@
+@use '@styles/variables' as *;
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+.selectors {
+	display: flex;
+	width: 100%;
+	max-width: 736px;
+}
+
+.rates {
+	display: flex;
+	width: 100%;
+	max-width: 352px;
+}
+
+.rates_buttonLike {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: flex-start;
+	flex-direction: row;
+	gap: 8px;
+	width: 464px;
+	height: 40px;
+}
+
+.item {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	padding: 16px 0;
+	cursor: pointer;
+}
+
+.item_buttonLike {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	white-space: nowrap;
+	max-width: 124px;
+	max-height: 40px;
+	padding: 12px 24px;
+	cursor: pointer;
+}
+
+.border:first-child {
+	background: $backgroundColor;
+	border-radius: 6px 0px 0px 6px;
+	border-top: 1px solid $buttonBlue;
+	border-right: 0.5px solid $buttonBlue;
+	border-bottom: 1px solid $buttonBlue;
+	border-left: 0.5px solid $buttonBlue;
+}
+
+.border {
+	background: $backgroundColor;
+	border-top: 1px solid $buttonBlue;
+	border-right: 0.5px solid $buttonBlue;
+	border-bottom: 1px solid $buttonBlue;
+	border-left: 0.5px solid $buttonBlue;
+}
+
+.border:last-child {
+	border-radius: 0px 6px 6px 0px;
+	border-top: 1px solid $buttonBlue;
+	border-right: 0.5px solid $buttonBlue;
+	border-bottom: 1px solid $buttonBlue;
+	border-left: 0.5px solid $buttonBlue;
+}
+
+.border_buttonLike:first-child {
+	background: $backgroundColor;
+	border-radius: 20px;
+	border: 1px solid $colorTextNavSecondaryLight;
+}
+
+.border_buttonLike {
+	background: $backgroundColor;
+	border-radius: 20px;
+	border: 1px solid $colorTextNavSecondaryLight;
+}
+
+.border_buttonLike:last-child {
+	background: $backgroundColor;
+	border-radius: 20px;
+	border: 1px solid $colorTextNavSecondaryLight;
+}
+
+.input {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.label {
+	font-weight: $fontWeightBold;
+	font-size: $font-Size-XXXS;
+	line-height: $baseFontSize;
+	font-family: $fontFamily;
+	color: $buttonBlue;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.label_buttonLike {
+	font-weight: $fontWeightBold;
+	font-size: $font-Size-XXS;
+	line-height: $baseFontSize;
+	font-family: $fontFamily;
+	color: $buttonOutlineDark;
+	cursor: pointer;
+}
+.item_active {
+	background: $primary;
+	border: 1px solid $primary;
+}
+
+.item_active:first-child {
+	background: $primary;
+	border: 1px solid $primary;
+}
+
+.item_active:last-child {
+	background: $primary;
+	border: 1px solid $primary;
+}
+
+.item_active_buttonLike {
+	background: $accent;
+	border: 1px solid $secondary;
+}
+
+.item_active_buttonLike:first-child {
+	background: $accent;
+	border: 1px solid $secondary;
+}
+
+.item_active_buttonLike:last-child {
+	background: $accent;
+	border: 1px solid $secondary;
+}
+
+.label_active_buttonLike {
+	color: $backgroundColor;
+}
+
+.label_active {
+	color: $backgroundColor;
+}
+
+@media screen and (max-width: 640px) {
+	.selectors {
+		flex-direction: column;
+	}
+	.selectors .border:first-child {
+		border-radius: 6px 6px 0px 0px;
+	}
+	.selectors .border:last-child {
+		border-radius: 0px 0px 6px 6px;
+		border-top: 0;
+		border-left: 1px solid $buttonBlue;
+	}
+}

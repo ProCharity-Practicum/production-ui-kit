@@ -225,3 +225,63 @@ export const MultipleSelects: Story = {
 		options: [],
 	},
 };
+
+export const NativeFormSimulation: Story = {
+	render: () => {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [selectedValue, setSelectedValue] = useState<Option | null>(null);
+
+		const getSelectedValueText = (value: Option | null): string => {
+			if (value === null) return 'ничего не выбрано';
+			if (typeof value === 'string') return value;
+			return JSON.stringify(value);
+		};
+
+		return (
+			<div style={{ maxWidth: '500px', margin: '0 auto' }}>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						const formData = new FormData(e.currentTarget);
+						alert(
+							`Отправленные данные:\n${JSON.stringify(
+								{
+									option: formData.get('option'),
+									username: formData.get('username'),
+								},
+								null,
+								2
+							)}`
+						);
+					}}
+					style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
+				>
+					<h3>Демонстрация работы с нативной формой</h3>
+
+					<Select
+						name="option"
+						label="Выберите вариант"
+						options={['Вариант 1', 'Вариант 2', 'Вариант 3']}
+						value={selectedValue}
+						onChange={setSelectedValue}
+					/>
+
+					<input type="text" name="username" placeholder="Ваше имя" required />
+
+					<button type="submit">Отправить</button>
+
+					<div
+						style={{
+							marginTop: '16px',
+							padding: '12px',
+							background: '#f5f5f5',
+							borderRadius: '4px',
+						}}
+					>
+						<p>Выбранное значение: {getSelectedValueText(selectedValue)}</p>
+					</div>
+				</form>
+			</div>
+		);
+	},
+};
