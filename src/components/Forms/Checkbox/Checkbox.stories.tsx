@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, within, userEvent } from '@storybook/test';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { Checkbox } from './Checkbox';
 
 const meta = {
@@ -14,16 +14,15 @@ const meta = {
 		onChange: () => {},
 	},
 	render: (args) => {
-		// Используем обертку для управления состоянием
 		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const [checked, setChecked] = useState(args.checked);
 		return (
 			<Checkbox
 				{...args}
 				checked={checked}
-				onChange={(newChecked) => {
-					setChecked(newChecked);
-					args.onChange?.(newChecked);
+				onChange={(e: ChangeEvent<HTMLInputElement>) => {
+					setChecked(e.target.checked);
+					args.onChange?.(e);
 				}}
 			/>
 		);
@@ -35,110 +34,124 @@ type Story = StoryObj<typeof meta>;
 
 const commonPlay = async (canvasElement: HTMLElement) => {
 	const canvas = within(canvasElement);
-	const checkbox = canvas.getByTestId('checkbox');
-	const text = canvas.getByTestId('checkbox-text');
+	const checkbox = canvas.getByRole('checkbox');
 	await expect(checkbox).toBeInTheDocument();
-	await expect(text).toBeInTheDocument();
 };
 
-export const MinistryCheckbox: Story = {
+export const Basic: Story = {
 	args: {
-		variant: 'Ministry',
+		children: 'Базовый чекбокс',
 	},
 	play: async ({ canvasElement }) => {
 		await commonPlay(canvasElement);
 		const canvas = within(canvasElement);
-		const checkbox = canvas.getByTestId('checkbox');
+		const checkbox = canvas.getByRole('checkbox');
 		await userEvent.click(checkbox);
 		await expect(checkbox).toBeChecked();
 	},
 };
 
-export const SiteRulesCheckbox: Story = {
+export const WithLink: Story = {
 	args: {
-		variant: 'SiteRules',
+		children: (
+			<>
+				Соглашаюсь с <a href="/terms">условиями</a>
+			</>
+		),
 	},
 	play: async ({ canvasElement }) => {
 		await commonPlay(canvasElement);
 	},
 };
 
-export const ReviewCheckbox: Story = {
+export const Disabled: Story = {
 	args: {
-		variant: 'Review',
+		children: 'Отключённый чекбокс',
+		disabled: true,
 	},
 	play: async ({ canvasElement }) => {
 		await commonPlay(canvasElement);
+		const canvas = within(canvasElement);
+		const checkbox = canvas.getByRole('checkbox');
+		await expect(checkbox).toBeDisabled();
 	},
 };
 
-export const MaterialsCheckbox: Story = {
+export const Required: Story = {
 	args: {
-		variant: 'Materials',
+		children: 'Обязательный чекбокс',
+		required: true,
 	},
 	play: async ({ canvasElement }) => {
 		await commonPlay(canvasElement);
+		const canvas = within(canvasElement);
+		const checkbox = canvas.getByRole('checkbox');
+		await expect(checkbox).toBeRequired();
 	},
 };
 
-export const AdminCheckbox: Story = {
+export const MultilineText: Story = {
 	args: {
-		variant: 'Admin',
+		children: (
+			<div style={{ display: 'grid', gap: '4px' }}>
+				<div>Я согласен со следующими условиями:</div>
+				<ul style={{ margin: 0, paddingLeft: '20px' }}>
+					<li>Пользовательское соглашение</li>
+					<li>Политика конфиденциальности</li>
+					<li>Условия обработки персональных данных</li>
+				</ul>
+				<div style={{ fontSize: '0.8em', color: '#666' }}>
+					Нажимая на кнопку, вы принимаете все перечисленные условия
+				</div>
+			</div>
+		),
 	},
 	play: async ({ canvasElement }) => {
-		await commonPlay(canvasElement);
-	},
-};
+		const canvas = within(canvasElement);
+		const checkbox = canvas.getByRole('checkbox');
+		const listItems = canvas.getAllByRole('listitem');
 
-export const CustomTextCheckbox: Story = {
-	args: {
-		children: <span>Кастомный текст чекбокса</span>,
-	},
-	play: async ({ canvasElement }) => {
-		await commonPlay(canvasElement);
+		await expect(checkbox).toBeInTheDocument();
+		await expect(listItems).toHaveLength(3);
+
+		// Кликаем по тексту (не по самому чекбоксу)
+		const text = canvas.getByText(/Я согласен со следующими условиями/i);
+		await userEvent.click(text);
+		await expect(checkbox).toBeChecked();
 	},
 };
 
 export const NativeFormTest: Story = {
 	render: () => {
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [consentChecked, setConsentChecked] = useState(false);
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [newsletterChecked, setNewsletterChecked] = useState(false);
-		// eslint-disable-next-line react-hooks/rules-of-hooks
 		const [lastSubmission, setLastSubmission] = useState<string | null>(null);
+
+		const handleSubmit = (e: React.FormEvent) => {
+			e.preventDefault();
+			const formData = new FormData(e.currentTarget as HTMLFormElement);
+			setLastSubmission(
+				JSON.stringify(
+					{
+						consent: formData.get('consent') === 'on',
+						newsletter: formData.get('newsletter') === 'on',
+					},
+					null,
+					2
+				)
+			);
+		};
 
 		return (
 			<form
-				onSubmit={(e) => {
-					e.preventDefault();
-					const data = new FormData(e.currentTarget);
-					setLastSubmission(
-						JSON.stringify(
-							{
-								consent: data.get('consent') || 'off',
-								newsletter: data.get('newsletter') || 'off',
-							},
-							null,
-							2
-						)
-					);
-				}}
+				onSubmit={handleSubmit}
 				style={{ display: 'grid', gap: '16px', width: '300px' }}
 			>
-				<Checkbox
-					name="consent"
-					variant="SiteRules"
-					checked={consentChecked}
-					onChange={setConsentChecked}
-					required
-				/>
-				<Checkbox
-					name="newsletter"
-					variant="NoNewTasks"
-					checked={newsletterChecked}
-					onChange={setNewsletterChecked}
-				/>
+				<Checkbox name="consent" required>
+					Я согласен с условиями
+				</Checkbox>
+
+				<Checkbox name="newsletter">Подписаться на рассылку</Checkbox>
+
 				<button type="submit">Отправить</button>
 
 				{lastSubmission && (
@@ -150,13 +163,7 @@ export const NativeFormTest: Story = {
 							fontFamily: 'monospace',
 						}}
 					>
-						<p>Отправленные данные:</p>
-						<pre>{lastSubmission}</pre>
-						<p>Текущие состояния:</p>
-						<ul>
-							<li>Согласие: {consentChecked.toString()}</li>
-							<li>Рассылка: {newsletterChecked.toString()}</li>
-						</ul>
+						<pre>Form data: {lastSubmission}</pre>
 					</div>
 				)}
 			</form>
@@ -164,13 +171,12 @@ export const NativeFormTest: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const consentCheckbox = canvas.getByLabelText(
-			/Соглашаюсь с правилами сайта/i
-		);
+		const consentCheckbox = canvas.getByLabelText(/Я согласен с условиями/i);
 		const submitButton = canvas.getByText('Отправить');
 
 		// Первая попытка отправки без согласия
 		await userEvent.click(submitButton);
+		await expect(consentCheckbox).toBeInvalid();
 
 		// Отмечаем чекбокс согласия
 		await userEvent.click(consentCheckbox);
@@ -178,5 +184,6 @@ export const NativeFormTest: Story = {
 
 		// Успешная отправка
 		await userEvent.click(submitButton);
+		await expect(canvas.getByText(/Form data:/i)).toBeInTheDocument();
 	},
 };
