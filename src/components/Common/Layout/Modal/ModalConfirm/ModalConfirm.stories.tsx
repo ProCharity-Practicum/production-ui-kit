@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ModalConfirm } from './ModalConfirm';
+import { useState } from 'react';
 
 const meta = {
 	title: 'Common/Layout/ModalConfirm',
@@ -10,7 +11,14 @@ const meta = {
 	},
 	decorators: [
 		(Story) => (
-			<div style={{ minWidth: '800px', minHeight: '800px' }}>
+			<div
+				style={{
+					width: '100%',
+					height: '100vh',
+					display: 'grid',
+					placeItems: 'center',
+				}}
+			>
 				<Story />
 			</div>
 		),
@@ -20,15 +28,26 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof ModalConfirm>;
-const onTransition = () => {
-	alert('Закрытие модального окна');
-};
 
 export const Default: Story = {
-	args: {
-		title: 'Удалить данные сотрудника?',
-		children: <div>Данные о сотруднике Яковлев Анатолий будут удалены</div>,
-		onConfirm: onTransition,
-		text: 'Удалить',
+	render: () => {
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [isOpen, setIsOpen] = useState(true);
+
+		return isOpen ? (
+			<ModalConfirm
+				title="Удалить данные сотрудника?"
+				onConfirm={() => {
+					alert('Действие подтверждено!');
+					setIsOpen(false);
+				}}
+				onClose={() => setIsOpen(false)}
+				text="Удалить"
+			>
+				<div>Данные о сотруднике Яковлев Анатолий будут удалены</div>
+			</ModalConfirm>
+		) : (
+			<button onClick={() => setIsOpen(true)}>Открыть модалку</button>
+		);
 	},
 };

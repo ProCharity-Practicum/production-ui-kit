@@ -15,10 +15,11 @@ type MultipleOption = {
 };
 
 type SelectCategoriesProps = {
-	setInitialValues?: (values: string[]) => void;
+	onChange?: (values: string[]) => void;
 	label: string;
 	options: MultipleOption[];
-	initialValues?: string[];
+	value?: string[];
+	name?: string;
 };
 
 const meta = {
@@ -30,8 +31,8 @@ const meta = {
 	args: {
 		label: designCategories.label,
 		options: designCategories.options,
-		initialValues: [],
-		setInitialValues: () => {},
+		value: [], // Изменено с initialValues
+		onChange: () => {}, // Изменено с setInitialValues
 	} as SelectCategoriesProps,
 } satisfies Meta<typeof SelectCategories>;
 
@@ -87,6 +88,13 @@ export const Default: Story = {
 		label: designCategories.label,
 		options: designCategories.options,
 	},
+	render: (args) => {
+		// Добавляем состояние для дефолтной стори
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		const [values, setValues] = useState<string[]>([]);
+
+		return <SelectCategories {...args} value={values} onChange={setValues} />;
+	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		await expect(canvas.getByTestId('SelectCategories')).toBeInTheDocument();
@@ -118,8 +126,8 @@ export const MultipleContainers: Story = {
 						{...args}
 						label={designCategories.label}
 						options={designCategories.options}
-						initialValues={designValues}
-						setInitialValues={setDesignValues}
+						value={designValues}
+						onChange={setDesignValues}
 					/>
 				</div>
 
@@ -130,8 +138,8 @@ export const MultipleContainers: Story = {
 						{...args}
 						label={marketingCategories.label}
 						options={marketingCategories.options}
-						initialValues={marketingValues}
-						setInitialValues={setMarketingValues}
+						value={marketingValues}
+						onChange={setMarketingValues}
 					/>
 				</div>
 
@@ -142,8 +150,8 @@ export const MultipleContainers: Story = {
 						{...args}
 						label={developmentCategories.label}
 						options={developmentCategories.options}
-						initialValues={devValues}
-						setInitialValues={setDevValues}
+						value={devValues}
+						onChange={setDevValues}
 					/>
 				</div>
 			</div>
@@ -152,8 +160,8 @@ export const MultipleContainers: Story = {
 	args: {
 		label: '',
 		options: [],
-		initialValues: [],
-		setInitialValues: () => {},
+		value: [],
+		onChange: () => {},
 	},
 	parameters: {
 		viewport: {
@@ -164,104 +172,60 @@ export const MultipleContainers: Story = {
 
 export const NativeFormSimulation: Story = {
 	render: () => {
-		// Имитируем состояние формы
+		// Минимальное состояние только для SelectCategories
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [selectedValues, setSelectedValues] = useState<string[]>([]);
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [username, setUsername] = useState('');
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [formSubmitted, setFormSubmitted] = useState(false);
-
-		const handleSubmit = (e: React.FormEvent) => {
-			e.preventDefault();
-			setFormSubmitted(true);
-		};
-
-		const handleReset = () => {
-			setSelectedValues([]);
-			setUsername('');
-			setFormSubmitted(false);
-		};
+		const [skills, setSkills] = useState<string[]>([]);
 
 		return (
 			<div style={{ maxWidth: '500px', margin: '0 auto' }}>
 				<form
-					onSubmit={handleSubmit}
-					onReset={handleReset}
-					style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+					onSubmit={(e) => {
+						e.preventDefault();
+						const formData = new FormData(e.currentTarget);
+						alert(
+							`Отправленные данные:\n${JSON.stringify(
+								{
+									skills: formData.getAll('skills'),
+									username: formData.get('username'),
+								},
+								null,
+								2
+							)}`
+						);
+					}}
+					style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
 				>
-					<h3>Имитация работы формы</h3>
+					<h3>Демонстрация работы с нативной формой</h3>
 
-					{/* Наш компонент с привязкой к состоянию */}
+					{/* SelectCategories с привязкой к состоянию */}
 					<SelectCategories
 						name="skills"
 						label="Выберите навыки"
 						options={designCategories.options}
-						initialValues={selectedValues}
-						setInitialValues={setSelectedValues}
+						value={skills}
+						onChange={setSkills}
 					/>
 
-					<input
-						type="text"
-						name="username"
-						placeholder="Ваше имя"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						required
-					/>
+					<input type="text" name="username" placeholder="Ваше имя" required />
 
-					<div>
-						<button type="submit">Отправить</button>
-						<button type="reset" style={{ marginLeft: '10px' }}>
-							Сбросить
-						</button>
-					</div>
-				</form>
+					<button type="submit">Отправить</button>
 
-				{formSubmitted && (
+					{/* Блок для визуализации выбранных значений */}
 					<div
 						style={{
-							marginTop: '20px',
-							padding: '15px',
+							marginTop: '16px',
+							padding: '12px',
 							background: '#f5f5f5',
+							borderRadius: '4px',
 						}}
 					>
-						<h4>Имитация данных формы:</h4>
-						<pre>
-							{JSON.stringify(
-								{
-									skills: selectedValues,
-									username,
-								},
-								null,
-								2
-							)}
-						</pre>
+						<p>
+							Выбранные навыки:{' '}
+							{skills.length ? skills.join(', ') : 'ничего не выбрано'}
+						</p>
 					</div>
-				)}
-
-				<div
-					style={{ marginTop: '20px', padding: '15px', background: '#fff8e1' }}
-				>
-					<h4>Текущее состояние:</h4>
-					<p>Выбрано навыков: {selectedValues.length}</p>
-					{selectedValues.length > 0 && (
-						<ul>
-							{selectedValues.map((value) => (
-								<li key={value}>{value}</li>
-							))}
-						</ul>
-					)}
-				</div>
+				</form>
 			</div>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Проверяем начальное состояние
-		await expect(canvas.getByText('Выбрано навыков: 0')).toBeInTheDocument();
-
-		// Можно добавить тесты для взаимодействия
 	},
 };

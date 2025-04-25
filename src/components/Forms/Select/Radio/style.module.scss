@@ -1,0 +1,56 @@
+@use '@styles/variables' as *;
+
+.radio {
+	display: flex;
+	align-items: center;
+	padding: 0 4px;
+	cursor: pointer;
+	gap: 12px;
+}
+
+.radio__pseudo-input {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	padding: 0 4px;
+	margin: 0;
+	color: $buttonSecondaryDark;
+	font-weight: $fontWeightRegular;
+	font-size: $fontSizeS;
+	line-height: $fontLineS;
+	font-family: $fontFamily;
+	gap: 8px;
+
+	&::before {
+		display: block;
+		position: relative;
+		left: 0;
+		top: 0;
+		flex-shrink: 0;
+		width: 16px;
+		height: 16px;
+		background: url(./icon_radio.svg) no-repeat center center;
+		content: '';
+	}
+}
+
+.radio__native-input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(0 0 0 0);
+
+	&:checked {
+		+ .radio__pseudo-input {
+			&::before {
+				background: url(./icon_radio_checked.svg) no-repeat center center;
+			}
+		}
+	}
+
+	&:disabled + .checkbox__label {
+		opacity: 0.6;
+	}
+}

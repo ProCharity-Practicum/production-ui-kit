@@ -37,13 +37,14 @@ $largeMobileScreenWidth: 560px; $largeMobileContainerSize: 520px;
 $mobileScreenWidth: 360px; $mobileContainerSize: 312px;
 
 // colors
-$backgroundColor: #ffffff; //$lightPrimary
+$backgroundColor: #ffffff; //$lightPrimary 	--color-text-nav-primary
 $colorBgLightPrimary: #f8fbff;
-$primary: #7dcdd7;
-$secondary: #374146;
+$primary: #7dcdd7; // --color-bg-secondary
+$secondary: #374146; //--secondary-color
 $accent: #ea5a0a;
 $error: #d20202;
 $colorBgInputHover: #e0e9f2;
+$colorTextNavSecondaryLight: #c7d0da;
 
 // common button colors
 $accentHard: #aa4000;
@@ -52,10 +53,10 @@ $buttonPrimary: $accent;
 $buttonPrimaryDark: #374146;
 $buttonPrimaryLight: #f8fbff;
 $buttonSecondary: $secondary;
-$buttonSecondaryDark: #58646a;
-$buttonSecondaryLight: #f1f5f9; //$lightSecondary
+$buttonSecondaryDark: #58646a; //--dark-secondary
+$buttonSecondaryLight: #f1f5f9; // $lightSecondary
 $buttonOutlineLight: #a0abb5;
-$buttonOutlineDark: #7b878f;
+$buttonOutlineDark: #7b878f; //	--color-text-secondary-light
 $buttonBlue: #048aa7; //--color-text-link
 $buttonDarkBlue: #006b83;
 

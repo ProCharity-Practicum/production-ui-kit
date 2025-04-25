@@ -112,7 +112,7 @@ body:has(.header.collapsed) {
 .menu {
 	.menuContent {
 		display: flex;
-		gap: $menuGap;
+		gap: clamp(1rem, 2vw, 2rem);
 		padding: 0;
 		height: $menuLineHeight;
 	}
