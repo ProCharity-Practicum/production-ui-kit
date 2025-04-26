@@ -43,3 +43,29 @@ export function chunk<T>(arr: T[], chunkSize: number) {
 export function capitalizeString(s: string) {
 	return s.slice(0, 1).toUpperCase() + s.slice(1);
 }
+
+// сбор данных с полей форм
+export function processFormData<T>(formData: FormData): T {
+	const formValues: Record<string, string | string[]> = {};
+	const processedKeys = new Set<string>();
+
+	// Сначала обрабатываем все ключи
+	formData.forEach((_, key) => {
+		if (processedKeys.has(key)) return;
+		processedKeys.add(key);
+
+		const allValues = formData.getAll(key);
+
+		if (allValues.length > 1) {
+			// Если несколько значений - сохраняем как массив
+			formValues[key] = allValues.map(String);
+		} else {
+			// Одиночное значение
+			const value = allValues[0];
+			formValues[key] =
+				typeof value === 'object' ? JSON.stringify(value) : String(value);
+		}
+	});
+
+	return formValues as unknown as T;
+}
