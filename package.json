@@ -1,7 +1,7 @@
 {
   "name": "@charitypro/ui-kit",
   "description": "ProCharity project UI-kit library for common usage through federated bundles",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "repository": "https://github.com/CharityPro/ui-kit",
   "type": "module",
   "main": "dist/index.js",
