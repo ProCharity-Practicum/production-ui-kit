@@ -100,7 +100,3 @@ export { SectionNotificationChannel } from './components/Forms/Toggle/SectionNot
 
 export { Form } from './components/Forms/Form/Form';
 export { FormProvider } from './components/Forms/Form/FormProvider';
-
-// utils export
-// eslint-disable-next-line react-refresh/only-export-components
-export { processFormData } from './utils';
