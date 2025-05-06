@@ -1,12 +1,23 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { Modal } from './Modal';
-import { useState } from 'react';
-import { Button } from '../../Button';
+import { expect, within } from '@storybook/test';
+import { fn } from '@storybook/test';
 
 const meta = {
 	title: 'Common/Layout/Modal',
 	component: Modal,
 	tags: ['autodocs'],
+	args: {
+		children: (
+			<div style={{ padding: '20px' }}>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas ipsum
+				dignissimos deserunt impedit praesentium voluptatem ex ducimus vel ut
+				excepturi, unde vitae maiores adipisci accusamus repudiandae deleniti
+				minima, inventore molestiae.
+			</div>
+		),
+		onClose: fn(),
+	},
 	parameters: {
 		layout: 'centered',
 	},
@@ -21,47 +32,18 @@ const meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof Modal>;
-const onTransition = () => {
-	alert('Закрытие модального окна');
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};
+
+export const WithCloseOnOverlayClickTrue: Story = {
+	args: { options: { closeOnOverlayClick: true } },
 };
 
-export const Default: Story = {
-	args: {
-		children: <div>Причина удаления задачи</div>,
-		onClose: onTransition,
-	},
-};
-
-export const WithCloseOnOverlayClick: Story = {
-	render: () => {
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [isOpen, setIsOpen] = useState(true);
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
-
-		return isOpen ? (
-			<>
-				<Modal
-					onClose={() => setIsOpen(false)}
-					closeOnOverlayClick={closeOnOverlayClick}
-				>
-					<div style={{ padding: '20px' }}>
-						<h3>Тест закрытия по клику вне модалки</h3>
-						<p>
-							Текущий режим:{' '}
-							{closeOnOverlayClick ? 'закрывается' : 'не закрывается'}
-						</p>
-						<Button
-							onClick={() => setCloseOnOverlayClick(!closeOnOverlayClick)}
-						>
-							Переключить режим ({closeOnOverlayClick ? 'on' : 'off'})
-						</Button>
-					</div>
-				</Modal>
-			</>
-		) : (
-			<Button onClick={() => setIsOpen(true)}>Открыть модалку</Button>
-		);
+export const WithStateChanged: Story = {
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const element = canvas.getByTestId('Modal');
+		await expect(element).toBeInTheDocument();
 	},
 };
