@@ -14,7 +14,10 @@ export type ModalConfirmProps = {
 	text: string;
 	disabled?: boolean;
 	isLoading?: boolean;
-	closeOnOverlayClick?: boolean;
+	options?: {
+		closeOnOverlayClick?: boolean;
+		submitButtonName?: string;
+	};
 };
 
 export function ModalConfirm({
@@ -26,14 +29,24 @@ export function ModalConfirm({
 	text,
 	disabled = false,
 	isLoading = false,
-	closeOnOverlayClick = true, // в options не вынесено, так как пока один параметр
+	options,
 }: ModalConfirmProps) {
+	const { closeOnOverlayClick, submitButtonName } = options ?? {};
+	const isCloseOverlayClick = closeOnOverlayClick ?? true;
+
 	return (
-		<Modal onClose={onClose} closeOnOverlayClick={closeOnOverlayClick}>
-			<div className={clsx(styles.modalContent, className)}>
+		<Modal
+			onClose={onClose}
+			options={{ closeOnOverlayClick: isCloseOverlayClick }}
+		>
+			<div
+				className={clsx(styles.modalContent, className)}
+				data-testid="ModalConfirm"
+			>
 				<div className={clsx(styles.title, className)}>{title}</div>
 				{children}
 				<Button
+					name={submitButtonName}
 					type={ButtonType.submit}
 					onClick={onConfirm}
 					disabled={disabled}
