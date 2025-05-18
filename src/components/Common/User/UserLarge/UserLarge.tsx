@@ -15,6 +15,7 @@ export type UserLargeProps = {
 	infoTextUp?: string;
 	infoTextDown?: string;
 	className?: string;
+	status?: 'offers' | 'archive';
 };
 
 export function UserLarge({
@@ -25,21 +26,40 @@ export function UserLarge({
 	infoTextUp,
 	infoTextDown,
 	className,
+	status,
 }: UserLargeProps) {
+	const sizeClass =
+		shape === Shape.Circle ? styles.sizeCircle : styles.sizeSquare;
 	return (
 		<div className={clsx(styles.container, className)} data-testid="User">
 			<Avatar
-				className={clsx(styles.image, seniority ? styles[seniority] : null)}
+				className={clsx(
+					styles.image,
+					sizeClass,
+					seniority ? styles[seniority] : null
+				)}
 				image={image}
 				shape={shape}
 				alt={title}
 			/>
 			<div className={styles.infoBlock}>
-				<p className={styles.infoText}>{infoTextUp}</p>
-				<h2 className={styles.title}>{title}</h2>
-				<p className={`${styles.infoText} ${styles.infoText__infoTextDown}`}>
-					{infoTextDown}
-				</p>
+				{status === 'offers' ? (
+					<>
+						<h2 className={styles.title}>{infoTextUp}</h2>
+						<p className={styles.infoText}>{title}</p>
+						<h2 className={styles.title}>{infoTextDown}</h2>
+					</>
+				) : (
+					<>
+						<p className={styles.infoText}>{infoTextUp}</p>
+						<h2 className={styles.title}>{title}</h2>
+						<p
+							className={`${styles.infoText} ${styles.infoText__infoTextDown}`}
+						>
+							{infoTextDown}
+						</p>
+					</>
+				)}
 			</div>
 		</div>
 	);
