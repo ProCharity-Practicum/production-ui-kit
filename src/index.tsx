@@ -88,6 +88,7 @@ export { Checkbox } from './components/Forms/Checkbox/Checkbox';
 
 export { Select } from './components/Forms/Select/Select';
 export { SelectCategories } from './components/Forms/Select/SelectCategories/SelectCategories';
+export { MultiSelect } from './components/Forms/Select/MultiSelect/MultiSelect';
 export { Radio } from './components/Forms/Select/Radio/Radio';
 export { RadioChoice } from './components/Forms/Select/RadioChoice/RadioChoice';
 

@@ -27,7 +27,7 @@ export function Modal({ onClose, children, className, options }: ModalProps) {
 	}, []);
 
 	const handleOverlayClick = (e: React.MouseEvent) => {
-		const isClickOutside = e.target === e.currentTarget
+		const isClickOutside = e.target === e.currentTarget;
 		if (!closeOnOverlayClick && isClickOutside) {
 			onClose();
 		}

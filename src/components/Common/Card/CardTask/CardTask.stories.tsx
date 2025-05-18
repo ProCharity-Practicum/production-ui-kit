@@ -4,7 +4,7 @@ import { CardTask } from './CardTask';
 import { ButtonOutline } from '@charitypro/ui-kit';
 import { Shape } from '../../User';
 import avatar from '../../../../assets/images/avatar_image.png';
-import logo_task from '../../../../assets/images/logo_task.png'
+import logo_task from '../../../../assets/images/logo_task.png';
 import { TagColor } from '../../Tag/types';
 
 const meta: Meta<typeof CardTask> = {

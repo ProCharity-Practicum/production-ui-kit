@@ -49,16 +49,18 @@ export function CardTask({
 	href,
 }: CardTaskProps) {
 	const tagsRow = data.tags
-	? data.tags
-			.filter((tag) => isStringTag(tag) || isObjectTag(tag))
-			.map((tag) => {
-				if (isObjectTag(tag)) {
-					return <Tag key={tag.value} value={tag.value} variant={tag.color} />;
-				} else {
-					return <Tag key={tag} value={tag} variant={TagColor.Outline} />;
-				}
-			})
-	: [];
+		? data.tags
+				.filter((tag) => isStringTag(tag) || isObjectTag(tag))
+				.map((tag) => {
+					if (isObjectTag(tag)) {
+						return (
+							<Tag key={tag.value} value={tag.value} variant={tag.color} />
+						);
+					} else {
+						return <Tag key={tag} value={tag} variant={TagColor.Outline} />;
+					}
+				})
+		: [];
 	const cardContent = (
 		<Card className={clsx(styles.container, className)} isFeatured={isFeatured}>
 			{/* === Шапка карточки === */}
@@ -78,8 +80,8 @@ export function CardTask({
 			</Card.Row>
 			{/* === Теги === */}
 			{tagsRow.length > 0 && (
-        <Card.Row className={styles.tags}>{tagsRow}</Card.Row>
-      )}
+				<Card.Row className={styles.tags}>{tagsRow}</Card.Row>
+			)}
 
 			{/* === Блок инфо: дата + место или пользователь === */}
 			<Card.Row
