@@ -3,7 +3,7 @@ import styles from './Select.module.scss';
 import ArrowRoundedUp from './icon_arrow_rounded_up_light.svg';
 import ArrowRoundedDown from './icon_arrow_rounded_down_light.svg';
 
-type Option = string | Record<string, unknown>;
+export type Option = string | Record<string, unknown>;
 
 export type SelectProps = {
 	label: string;
@@ -12,6 +12,10 @@ export type SelectProps = {
 	value?: Option | null;
 	onChange?: (selectedOption: Option, name?: string) => void;
 	name?: string;
+	// Новые пропсы для HOC
+	customDisplayValue?: string;
+	renderOption?: (option: Option) => React.ReactNode;
+	closeOnSelect?: boolean;
 };
 
 export function Select({
@@ -21,6 +25,9 @@ export function Select({
 	value = null,
 	name,
 	onChange,
+	customDisplayValue,
+	renderOption,
+	closeOnSelect,
 }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const selectRef = useRef<HTMLDivElement>(null);
@@ -47,7 +54,10 @@ export function Select({
 	}, [value]);
 
 	const handleOptionClick = (option: Option) => {
-		setIsOpen(false);
+		if (closeOnSelect !== false) {
+			// Закрываем только если closeOnSelect не false
+			setIsOpen(false);
+		}
 		onChange?.(option, name);
 
 		if (nativeSelectRef.current) {
@@ -107,12 +117,16 @@ export function Select({
 			>
 				<div className={styles.panel__text}>
 					<label
-						className={`${styles.label} ${value !== null && styles.label_active}`}
+						className={`${styles.label} ${
+							(value !== null || customDisplayValue) && styles.label_active
+						}`}
 					>
 						{label}
 					</label>
-					{value !== null && (
-						<p className={styles.value}>{getDisplayText(value)}</p>
+					{(value !== null || customDisplayValue) && (
+						<p className={styles.value}>
+							{customDisplayValue || getDisplayText(value)}
+						</p>
 					)}
 				</div>
 				<img
@@ -129,7 +143,11 @@ export function Select({
 							className={styles.option}
 							onClick={() => handleOptionClick(option)}
 						>
-							<p className={styles.optionText}>{getDisplayText(option)}</p>
+							{renderOption ? (
+								renderOption(option) // Используем renderOption если передан
+							) : (
+								<p className={styles.optionText}>{getDisplayText(option)}</p>
+							)}
 						</div>
 					))}
 				</div>

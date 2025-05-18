@@ -1,27 +1,148 @@
 @use '@styles/variables' as *;
 
 .container {
-	min-width: 352px;
-
-	.title {
-		margin: 0;
-	}
-
-	.tags {
-		display: flex;
-		gap: 0.5rem;
-		justify-content: flex-end;
-	}
-}
-
-.user {
-	height: 128px;
-	padding: 16px 0;
-}
-
-.responses {
+	width: 100%;
+	flex: 1 1 312px;
+	max-width: 352px;
+	min-width: 312px;
+	height: 374px;
+	background: $backgroundColor;
+	box-shadow: 0 0 10px rgba(55, 65, 70, 0.08);
+	border-radius: 8px;
 	display: flex;
-	justify-content: center;
-	gap: 0.5rem;
-	height: 40px;
+	flex-direction: column;
+	//justify-content: space-between;
+
+	@media (max-width: 1440px) {
+		max-width: 344px;
+	}
+
+	@media (max-width: 768px) {
+		max-width: 312px;
+	}
+}
+
+.actionsContainer {
+	display: contents;
+
+	> * {
+		pointer-events: none;
+
+		> * {
+			pointer-events: auto;
+		}
+	}
+}
+
+.anchorWrapper {
+	display: block;
+	text-decoration: none;
+	color: inherit;
+	position: relative;
+
+	// Убираем pointer-events для всего контента...
+	& > :first-child {
+		pointer-events: none;
+	}
+
+	// ...но разрешаем их для actions
+	.actions {
+		pointer-events: auto;
+
+		// Внутри actions все элементы должны быть кликабельны
+		* {
+			pointer-events: auto;
+		}
+	}
+}
+
+/* === Шапка карточки === */
+.headerTop {
+	display: flex;
+	flex-direction: row;
+	gap: 8px; // расстояние между category и metrics
+	padding: 0 24px 0;
+}
+
+.categoryLine {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.category {
+	font-size: 12px;
+	line-height: 16px;
+	color: $buttonOutlineDark;
+}
+
+.metrics {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+/* === Заголовок задачи === */
+.headerBottom {
+	height: 78px;
+	padding: 0 24px 16px;
+}
+
+.title {
+	font-weight: $fontWeightBold;
+	font-size: $font-Size-M;
+	line-height: $font-Size-L;
+	color: $buttonPrimaryDark;
+	margin: 0;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	hyphens: auto;
+	max-height: 72px; /* 3 строки по 24px */
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* === Блок даты и места === */
+.info {
+	display: flex;
+	box-sizing: border-box;
+	align-items: center;
+	padding: 16px 24px;
+	gap: 8px;
+	height: 128px;
+	border-top: 1px solid $buttonSecondaryLight;
+}
+
+// Стили когда есть пользователь (выравнивание влево)
+.infoWithUser {
+	justify-content: flex-start;
+}
+
+// Стили когда нет аватара (выравнивание по центру)
+.infoWithoutAvatar {
+	justify-content: center !important;
+}
+
+.meta {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+}
+
+.metaLabel {
+	font-size: 12px;
+	line-height: 16px;
+	color: $buttonOutlineDark;
+	margin: 0;
+	text-align: center;
+}
+
+.metaValue {
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: 700;
+	color: $buttonPrimaryDark;
+	margin: 0;
+	text-align: center;
 }

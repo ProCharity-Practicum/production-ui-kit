@@ -7,17 +7,15 @@ export type ModalProps = {
 	className?: string;
 	onClose: () => void;
 	children: React.ReactNode;
-	closeOnOverlayClick?: boolean;
+	options?: {
+		closeOnOverlayClick?: boolean;
+	};
 };
 
-export function Modal({
-	onClose,
-	children,
-	className,
-	closeOnOverlayClick,
-}: ModalProps) {
+export function Modal({ onClose, children, className, options }: ModalProps) {
+	const { closeOnOverlayClick } = options ?? {};
 	useEffect(() => {
-		if (!closeOnOverlayClick) return;
+		if (closeOnOverlayClick) return;
 
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') onClose();
@@ -29,23 +27,25 @@ export function Modal({
 	}, []);
 
 	const handleOverlayClick = (e: React.MouseEvent) => {
-		if (closeOnOverlayClick) {
+		const isClickOutside = e.target === e.currentTarget;
+		if (!closeOnOverlayClick && isClickOutside) {
 			onClose();
 		}
-		e.stopPropagation();
-	};
-
-	const handleModalClick = (e: React.MouseEvent) => {
-		e.stopPropagation();
 	};
 
 	return (
 		<div
 			className={clsx(styles.overlay, className)}
-			onClick={handleOverlayClick}
+			onClickCapture={handleOverlayClick}
+			data-testid="Modal"
 		>
-			<div className={styles.modal} onClick={handleModalClick}>
-				<button className={clsx(styles.icon, className)} onClick={onClose}>
+			<div className={styles.modal}>
+				<button
+					type="button"
+					aria-label="close"
+					className={clsx(styles.icon, className)}
+					onClick={onClose}
+				>
 					<Icon name="close" />
 				</button>
 				{children}

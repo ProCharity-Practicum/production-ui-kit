@@ -65,12 +65,56 @@
 }
 
 .option {
+	display: flex;
+	align-items: center;
 	padding: 8px 12px 8px 16px;
 	cursor: pointer;
 	transition: all 0.1s ease;
 
 	&:hover {
 		background-color: $buttonSecondaryLight;
+	}
+}
+
+.optionContainer {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.checkbox {
+	position: relative;
+	box-sizing: border-box;
+	width: 16px;
+	height: 16px;
+	margin-left: -15px;
+	margin-right: 8px;
+	flex-shrink: 0;
+	border: 1px solid $buttonOutlineLight;
+	border-radius: 3px;
+	transition: all 0.2s ease;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 1.5px;
+		left: 4.5px;
+		width: 4px;
+		height: 6px;
+		border: solid $backgroundColor;
+		border-width: 0 2px 2px 0;
+		transform: rotate(45deg);
+		opacity: 0;
+		transition: opacity 0.2s ease;
+	}
+
+	&.checked {
+		background-color: $primary;
+		border-color: $linkFontColor;
+
+		&::after {
+			opacity: 1;
+		}
 	}
 }
 
