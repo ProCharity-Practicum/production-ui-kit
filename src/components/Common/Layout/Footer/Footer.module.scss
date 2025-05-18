@@ -17,6 +17,11 @@
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 20px;
+	margin-left: 30px;
+
+	@media (max-width: 768px) {
+		display: none;
+	}
 }
 
 .column {
@@ -49,14 +54,17 @@
 
 .partners {
 	display: flex;
-	gap: 86px;
+	justify-content: center;
+	gap: 40px;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
 }
 
 .sponsors {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	gap: 48px;
-	margin-bottom: 20px;
 }
 
 .sponsorLogo {
@@ -66,6 +74,7 @@
 .social {
 	display: flex;
 	justify-content: center;
+	flex-wrap: wrap;
 	padding-top: 8px;
 	color: #c7d0da;
 	gap: 32px;

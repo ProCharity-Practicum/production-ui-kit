@@ -43,10 +43,15 @@
 	gap: 11px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 560px) {
 	.crumbSection {
 		display: none;
 	}
+
+	.crumbSeparator {
+		display: none;
+	}
+
 	.breadCrumbs {
 		gap: 0;
 	}
