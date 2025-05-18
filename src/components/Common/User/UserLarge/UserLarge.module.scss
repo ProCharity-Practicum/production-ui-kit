@@ -9,9 +9,15 @@
 	column-gap: 16px;
 
 	.image {
-		max-height: 96px;
 		width: fit-content;
 		aspect-ratio: 1;
+
+		&.sizeCircle {
+			max-height: 72px;
+		}
+		&.sizeSquare {
+			max-height: 96px;
+		}
 
 		&.junior {
 			border: 1px solid;

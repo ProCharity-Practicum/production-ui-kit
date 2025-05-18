@@ -19,7 +19,7 @@ export type ButtonProps = {
 	children?: ReactNode;
 	href?: string;
 	Tag?: ButtonTag;
-	name?: string
+	name?: string;
 } & DetailedHTMLProps<
 	HTMLAttributes<HTMLAnchorElement | HTMLButtonElement>,
 	HTMLAnchorElement | HTMLButtonElement
