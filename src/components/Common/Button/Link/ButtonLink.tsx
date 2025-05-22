@@ -80,7 +80,7 @@ export const ButtonLink = withStyle(
 );
 
 export const AddLink = withStyle(
-	ButtonLinkVariant.link,
+	ButtonLinkVariant.button,
 	ButtonLinkColor.blue,
 	IconPosition.right,
 	<Icon name="add" />,
