@@ -1,0 +1,12 @@
+@use '@styles/variables' as *;
+
+.profileProgress {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 160px;
+	height: 88px;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+}

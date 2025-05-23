@@ -29,6 +29,7 @@ export {
 	DiamondTag,
 } from './components/Common/Tag/Tag';
 export { Tooltip } from './components/Common/Tooltip/Tooltip';
+export { TooltipPosition } from './components/Common/Tooltip/types';
 export { BreadCrumbs } from './components/Common/Navigation/Breadcrumbs/Breadcrumbs';
 export { Paginator } from './components/Common/Navigation/Paginator/Paginator';
 export { Tabs } from './components/Common/Navigation/Tabs/Tabs';
@@ -70,6 +71,7 @@ export {
 	UserFundLarge,
 	UserVolunterLarge,
 	SelectAvatar,
+	Shape,
 } from './components/Common/User';
 
 // Forms exports
@@ -89,8 +91,15 @@ export { Checkbox } from './components/Forms/Checkbox/Checkbox';
 export { Select } from './components/Forms/Select/Select';
 export { SelectCategories } from './components/Forms/Select/SelectCategories/SelectCategories';
 export { MultiSelect } from './components/Forms/Select/MultiSelect/MultiSelect';
+export type { Option } from './components/Forms/Select/Select';
 export { Radio } from './components/Forms/Select/Radio/Radio';
 export { RadioChoice } from './components/Forms/Select/RadioChoice/RadioChoice';
+
+export { ProfileStatus } from './components/Common/ProfileProgress/ProfileStatus/ProfileStatus';
+export { ProgressBar } from './components/Common/ProfileProgress/ProgressBar/ProgressBar';
+export { ProfileProgress } from './components/Common/ProfileProgress/ProfileProgress';
+
+export { StatusProfile } from './components/Common/ProfileProgress/ProfileStatus/type';
 
 export { HelpSelector } from './components/Forms/Select/HelpSelector/HelpSelector';
 

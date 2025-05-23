@@ -1,0 +1,66 @@
+@use '@styles/variables' as *;
+@use '@styles/mixins/common/layout' as *;
+
+$border-radius: 12px;
+
+.progressBar {
+	box-sizing: border-box;
+	position: relative;
+	z-index: 1;
+	width: 160px;
+	height: 24px;
+	font: $fontSMedium;
+	font-size: $font-Size-XXS;
+	background-color: rgb(255 255 255 / 0%);
+	border: 1px solid $buttonOutlineLight;
+	border-radius: $border-radius;
+
+	progress {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		border: 0;
+		clip: rect(0 0 0 0);
+	}
+}
+
+.progressValue {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 160px;
+	height: 100%;
+	padding-inline-start: 12px;
+	padding-inline-end: 8px;
+	border-radius: $border-radius;
+	z-index: 10;
+	color: $buttonSecondaryDark;
+
+	@include mobile {
+		max-width: 138px;
+	}
+}
+
+.progressImg {
+	position: relative;
+	width: 12.5px;
+	height: 12px;
+	aspect-ratio: 1/1;
+
+	@include mobile {
+		width: 12px;
+	}
+}
+
+.progressIndicator {
+	position: absolute;
+	inset: 0;
+	height: 100%;
+	background-color: $primary;
+	border-radius: $border-radius;
+	z-index: 0;
+}

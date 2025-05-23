@@ -50,12 +50,12 @@ $colorTextNavSecondaryLight: #c7d0da;
 $accentHard: #aa4000;
 $accentLight: #cc4d00;
 $buttonPrimary: $accent;
-$buttonPrimaryDark: #374146;
+$buttonPrimaryDark: #374146; //--dark-primary
 $buttonPrimaryLight: #f8fbff;
 $buttonSecondary: $secondary;
 $buttonSecondaryDark: #58646a; //--dark-secondary
-$buttonSecondaryLight: #f1f5f9; // $lightSecondary
-$buttonOutlineLight: #a0abb5;
+$buttonSecondaryLight: #f1f5f9; // --lightSecondary
+$buttonOutlineLight: #a0abb5;//	--color-text-nav-secondary
 $buttonOutlineDark: #7b878f; //	--color-text-secondary-light
 $buttonBlue: #048aa7; //--color-text-link
 $buttonDarkBlue: #006b83;
