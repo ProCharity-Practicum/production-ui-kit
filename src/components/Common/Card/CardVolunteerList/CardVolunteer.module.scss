@@ -1,0 +1,18 @@
+@use '@styles/variables' as *;
+
+.container {
+	min-width: 352px;
+}
+
+.anchorWrapper {
+	display: block;
+	text-decoration: none;
+	border-radius: 8px;
+	color: inherit;
+	position: relative;
+
+	&:hover {
+		color: inherit;
+		box-shadow: 0 0 10px rgba(55, 65, 70, 0.2);
+	}
+}

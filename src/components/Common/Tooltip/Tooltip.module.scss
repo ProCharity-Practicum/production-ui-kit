@@ -23,7 +23,9 @@
 	border-radius: 8px;
 	color: $buttonSecondaryDark;
 	transform: translateX(-94%);
-	width: 352px;
+	min-width: 152px;
+	display: flex;
+	justify-content: center;
 	box-shadow: 0 4px 24px rgba(0, 77, 95, 0.24);
 	background: $backgroundColor;
 	font-size: 14px;
@@ -32,15 +34,28 @@
 	visibility: hidden;
 	transition: opacity 0.2s ease-in-out;
 	text-align: left;
+	z-index: 1000;
 }
+
+.tooltip:hover::after {
+	z-index: 1000;
+}
+
 .bottom::after {
-	left: 50%;
+	left: 30px;
 	top: calc(100% + 15px);
 }
+
 .top::after {
 	left: 50%;
 	bottom: calc(100% + 15px);
 }
+
+.top-right::after {
+	left: 100px;
+	bottom: calc(100% + 15px);
+}
+
 .tooltip::before {
 	content: '';
 	position: absolute;
@@ -59,6 +74,13 @@
 	border-width: 0 8px 16px 8px;
 	top: 100%;
 }
+
+.top-right::before {
+	border-color: $backgroundColor transparent transparent transparent;
+	border-width: 16px 8px 0 8px;
+	bottom: 100%;
+}
+
 .top::before {
 	border-color: $backgroundColor transparent transparent transparent;
 	border-width: 16px 8px 0 8px;
